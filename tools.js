@@ -87,30 +87,6 @@ function importData(){
 }
 
 
-function resetData(){
-	if(!confirm("Confirm? You can not undo this after reseting.")){
-		return false
-	}
-	resetDataProcess()
-	chrome.extension.getBackgroundPage().location.href="background.html";
-	alert("Reseted.\nIt will now re-install this extension...")
-	window.close()
-}
-function resetDataProcess(){
-	for(i=0;i<localStorage.length;i++){
-		localStorage.removeItem(localStorage.key(i))
-	}
-
-	var nnm=false
-	for(i=0;i<localStorage.length;i++){
-		nnm=true
-	}
-
-	if(nnm==true){resetDataProcess()}
-
-}
-
-
 //====File API====
 
 //---Drag and Drop thingy
