@@ -30,6 +30,6 @@ On an in-place update with the same extension ID, the first run imports alarms, 
 
 ## Publishing
 
-The original repository has no project-level license. Keep written permission from the original author for redistribution of the original code and resources before publishing. The D3 license is included in `mv3/vendor/D3-LICENSE`; the original icon license is included in `images/icons/License`; the Roboto license is included in `fonts/LICENSE (Roboto).txt`.
+The original repository has no project-level license. Keep written permission from the original author for redistribution of the original code and resources before publishing. The D3 license is included in `d3/D3-LICENSE`; the original icon license is included in `images/icons/License`; the Roboto license is included in `fonts/LICENSE (Roboto).txt`.
 
 Original resource credits: famfamfam Silk Icons (CC BY 2.5), Material Icons (Apache 2.0), Glyphicons, Roboto, Noto Sans, Oswald, Meteocons, and Sound Jay. The bundled jQuery and Bootstrap files retain their license headers.

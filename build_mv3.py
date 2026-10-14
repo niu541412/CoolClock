@@ -18,6 +18,7 @@ legacy_assets = [root / path for path in (
     'scripts/jquery_ui/sunny/jquery-ui-1.10.1.custom.min.css', 'gcfeed.js',
     'scripts/options/css_new.css', 'scripts/jquery_ui/jquery-ui-1.10.3.custom.min.js',
     'scripts/statistics/css.css',
+    'd3/d3.v7.min.js', 'd3/D3-LICENSE',
     'scripts/about/css.css', 'scripts/update/css.css',
     'jquery.js', 'scripts/transit/jquery.transit.min.js',
     'bootstrap/bootstrap.min.css', 'bootstrap/bootstrap.min.js',
@@ -212,9 +213,8 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
         options_code = options_code.replace('Components.getSingleton("BrowserActionHandler").updateIcon();', 'Components.getSingleton("BrowserActionHandler").updateIcon();')
         archive.writestr('mv3/original_options.js', options_code)
         stats_html = (root / 'statistics.html').read_text(encoding='utf-8-sig')
-        stats_html = re.sub(r'<script\b[^>]*src="/d3/d3\.v3\.min\.js"[^>]*>\s*</script>', '', stats_html)
         stats_html = re.sub(r'<script\b[^>]*src="/scripts/statistics/js\.js"[^>]*>\s*</script>', '', stats_html)
-        stats_html = stats_html.replace('</head>', '<script src="/mv3/vendor/d3.v7.min.js"></script><script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_stats.js" defer></script></head>', 1)
+        stats_html = stats_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_stats.js" defer></script></head>', 1)
         archive.writestr('statistics.html', stats_html)
         for page, old_script, replacement in (
             ('about.html', '/scripts/about/js.js', 'legacy_about.js'),
