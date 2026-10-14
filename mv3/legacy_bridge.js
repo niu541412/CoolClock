@@ -1,0 +1,263 @@
+// Adapter for the original alarm and countdown windows. Their markup and UI code
+// stay intact; persistent alarms and notifications live in the MV3 background.
+var legacyApi = globalThis.browser || globalThis.chrome;
+var legacyState;
+var alarmModels = [];
+var timerModels = [];
+
+function sendLegacy(type, values = {}) {
+  return legacyApi.runtime.sendMessage({target: 'worker', type, ...values}).then(result => {
+    if (!result?.ok) throw Error(result?.error || type);
+    return result.data;
+  }).catch(error => { console.error('Cool Clock:', error); });
+}
+
+function legacyClockShift() {
+  return localStorage.enabletimezone === 'true' && Number.isFinite(Number(localStorage.timezone)) ?
+    (Number(localStorage.timezone) + new Date().getTimezoneOffset() / 60) * 3600000 : 0;
+}
+
+class AlarmModel {
+  constructor(entry) {
+    this.id = entry.id;
+    this.hour = entry.hour;
+    this.min = entry.minute;
+    this.day = entry.days.slice();
+    this.type = this.day.length ? 's' : 'o';
+    this.text = entry.message;
+    this.off = !entry.enabled;
+  }
+  set(name, value) {
+    const changes = typeof name === 'string' ? {[name]: value} : name;
+    Object.assign(this, changes);
+    sendLegacy('update-alarm', {id: this.id, hour: this.hour, minute: this.min, days: this.day, text: this.text, enabled: !this.off});
+  }
+  getNextScheduledTime() {
+    if (this.off) return null;
+    const shift = legacyClockShift();
+    const now = new Date(Date.now() + shift);
+    for (let offset = 0; offset <= 7; offset++) {
+      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset, this.hour, this.min);
+      if (date.getTime() - shift <= Date.now()) continue;
+      if (this.day.length && !this.day.includes(date.getDay())) continue;
+      return {emulated: date, source: new Date(date.getTime() - shift), timeString: () => date.toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})};
+    }
+    return null;
+  }
+}
+
+class CountdownModel {
+  constructor(entry) {
+    Object.assign(this, entry);
+    this.start ||= this.end - this.duration;
+    this.color ||= 'primary';
+  }
+  set(name, value) {
+    const changes = typeof name === 'string' ? {[name]: value} : name;
+    Object.assign(this, changes);
+    sendLegacy('update-timer', {id: this.id, repeat: this.repeat, color: this.color});
+  }
+  getRemainingString() {
+    const seconds = Math.max(0, Math.ceil((this.end - Date.now()) / 1000));
+    return `${Math.floor(seconds / 3600)}:${String(Math.floor(seconds / 60) % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+  }
+}
+
+var LegacyBackground = {
+  Functions: {
+    ls(key) {
+      const raw = localStorage.getItem(key);
+      if (raw == null) return undefined;
+      let json;
+      try { json = JSON.parse(raw); } catch { json = undefined; }
+      return {raw, json, modify(callback) {
+        const value = JSON.parse(localStorage.getItem(key));
+        callback.call(value);
+        localStorage.setItem(key, JSON.stringify(value));
+      }};
+    },
+    time() {
+      return {getCalendar(_calendar, date = new Date()) {
+        const midday = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12));
+        const parts = new Intl.DateTimeFormat('zh-TW-u-ca-chinese', {timeZone: 'Asia/Shanghai', month: 'long', day: 'numeric'}).formatToParts(midday);
+        const month = parts.find(part => part.type === 'month')?.value || '';
+        const day = parts.find(part => part.type === 'day')?.value || '';
+        return `農曆${month}${day}`;
+      }};
+    }
+  },
+  Components: {
+    getSingleton(name) {
+      if (name === 'AlarmClock') return LegacyBackground.AlarmClock;
+      if (name === 'CountdownTimer') return LegacyBackground.CountdownTimer;
+      if (name === 'WindowManager') return {registerOnClose() {}};
+      if (name === 'BrowserActionHandler') return {
+        updateIcon() { syncLegacyOption('clockDefinition'); },
+        updatePopup() { syncLegacyOption('popup_version'); }
+      };
+      if (name === 'HourlyTimeAnnouncementHandler') return {
+        displayNotification() { sendLegacy('test-hourly'); }
+      };
+      if (name === 'Localization') return null;
+      throw Error(`Legacy component unavailable: ${name}`);
+    }
+  },
+  AlarmClock: {
+    getAll: () => alarmModels.slice(),
+    getActiveAlarms: () => alarmModels.filter(alarm => !alarm.off),
+    create(hour, minute, options = {}) {
+      const model = new AlarmModel({id: crypto.randomUUID(), hour, minute, days: options.day || [], message: options.text || '', enabled: true});
+      alarmModels.push(model);
+      sendLegacy('add-alarm', {id: model.id, hour, minute, days: model.day, text: model.text});
+      return model;
+    },
+    remove(id) {
+      alarmModels = alarmModels.filter(alarm => alarm.id !== id);
+      sendLegacy('remove-alarm', {id});
+    },
+    removeAll() { alarmModels = []; sendLegacy('remove-all-alarms'); },
+  },
+  CountdownTimer: {
+    getAll: () => timerModels.slice(),
+    get: id => timerModels.find(timer => timer.id === id),
+    getNextScheduledTimer: () => timerModels.slice().sort((a, b) => a.end - b.end)[0],
+    create(end, options = {}) {
+      const start = Date.now();
+      const model = new CountdownModel({id: crypto.randomUUID(), start, end, duration: end - start, color: options.color || 'primary', repeat: !!options.repeat, message: options.message || ''});
+      timerModels.push(model);
+      sendLegacy('add-timer', {id: model.id, seconds: Math.ceil(model.duration / 1000), color: model.color, repeat: model.repeat, text: model.message});
+      return model;
+    },
+    remove(id) {
+      timerModels = timerModels.filter(timer => timer.id !== id);
+      sendLegacy('remove-timer', {id});
+    },
+    removeAll() { timerModels = []; sendLegacy('remove-all-timers'); },
+  },
+  createNoti(options) {
+    return legacyApi.notifications.create(`coolclock:hint:${crypto.randomUUID()}`, {
+      type: 'basic', iconUrl: legacyApi.runtime.getURL('n_icon.png'),
+      title: options.title || 'Cool Clock', message: options.message || ' '
+    });
+  },
+  createMenuItem() {
+    legacyApi.contextMenus.removeAll().then(() => legacyApi.contextMenus.create({id: 'open-options', title: 'Settings', contexts: ['action']}));
+  },
+};
+
+(async () => {
+  const result = await legacyApi.runtime.sendMessage({target: 'worker', type: 'get'});
+  if (!result?.ok) throw Error(result?.error || 'Unable to load clock data');
+  legacyState = result.data;
+  alarmModels = legacyState.alarms.map(entry => new AlarmModel(entry));
+  timerModels = legacyState.countdowns.map(entry => new CountdownModel(entry));
+  localStorage.pm = String(legacyState.settings.hour12);
+  const page = location.pathname.split('/').pop();
+  if (page === 'calendar_full.html') {
+    localStorage.todo = JSON.stringify(legacyState.todos);
+    localStorage.dateorder ||= '{"1":"Date","2":"Month","3":"Year"}';
+  }
+  if (page === 'options_new.html') {
+    const saved = legacyState.settings;
+    const tracked = {
+      pm: String(saved.hour12), use_digit: String(saved.digital),
+      ringtone: saved.ringtone || 'default', ring_loop: String(saved.ringLoop ?? false),
+      shownotification: String(saved.hourlyEnabled ?? true),
+      shownotificationtime: String(saved.hourlyDuration ?? 7),
+      noti_voice: JSON.stringify({enabled: saved.hourlyVoice ?? false, text: saved.hourlyVoiceText || 'It is %h %P.'}),
+      noti_sound: saved.hourlySound || 'none',
+      noti_style: saved.hourlyStyle || 'default',
+      noti_bgColor: saved.hourlyBgColor || '#0772a1',
+      manuallyclosenoti: String(saved.hourlyManualClose ?? false),
+      badge: String(saved.badge ?? false), icon: String(saved.icon ?? true),
+      show: String(saved.badgeStatic ?? false), badge_color: saved.badgeColor || '#428bca',
+      clockcolor_value: saved.clockColor || '#000000',
+      popup_version: saved.popupVersion || '1',
+      context_menu_item_enable: String(saved.contextMenuEnabled ?? true),
+      enabletimezone: String(saved.timezoneEnabled ?? false),
+      timezone: String(saved.timezone ?? -new Date().getTimezoneOffset() / 60),
+      keepawake: String(saved.keepAwake ?? true),
+    };
+    if (saved.language) tracked.language = saved.language;
+    if (saved.weather) tracked.weather = JSON.stringify({enabled: true, name: saved.weather.name, latitude: saved.weather.latitude, longitude: saved.weather.longitude, woeid: ''});
+    if (saved.clockDefinition) tracked.clockDefinition = JSON.stringify(saved.clockDefinition);
+    for (const [key, value] of Object.entries(tracked)) localStorage.setItem(key, value);
+    const defaults = {
+      voice: '{"voiceName":"native","speed":0.7}',
+      dateorder: '{"1":"Date","2":"Month","3":"Year"}',
+      weather: '{"enabled":false,"woeid":"2459115","name":""}',
+      noti_voice: '{"enabled":false,"text":"It is %h %P."}',
+      clockDefinition: JSON.stringify({analog: {width: 19, height: 19, minY: 0.1, hrY: 0.3, minColor: '#A7A7A7', hrColor: '#808080', strokeWidth: 5, flatTip: true, circleBorder: false, circleBorderWidth: 0, circleBorderColor: '#6E6E6E', background: 'transparent', clockBg: 'transparent', notificationBg: true, indicationLines: true}, digital: {width: 19, height: 19, minXY: [8, 32], hrXY: [0, 15], font: 'default', hrFontSize: 18, minFontSize: 18}}),
+      ringtone: 'default', noti_sound: 'none', ring_loop: 'false',
+      use_digit: String(legacyState.settings.digital),
+      pm: String(legacyState.settings.hour12),
+      noti_style: 'default', context_menu_item_enable: 'true',
+      popup_version: '1', language: legacyApi.i18n.getUILanguage(),
+      shownotification: String(legacyState.settings.hourlyEnabled ?? true),
+      shownotificationtime: String(legacyState.settings.hourlyDuration ?? 7),
+      badge: String(legacyState.settings.badge ?? false), icon: String(legacyState.settings.icon ?? true),
+      show: String(legacyState.settings.badgeStatic ?? false),
+      badge_color: legacyState.settings.badgeColor || '#428bca',
+      clockcolor_value: legacyState.settings.clockColor || '#000000',
+      manuallyclosenoti: String(legacyState.settings.hourlyManualClose ?? false),
+    };
+    for (const [key, value] of Object.entries(defaults)) if (localStorage.getItem(key) == null) localStorage.setItem(key, value);
+    if (!globalThis.chrome.tts) globalThis.chrome.tts = {getVoices(callback) { callback([]); }, speak() {}, stop() {}};
+  }
+  const script = document.createElement('script');
+  script.src = page === 'alarm_interface.html' ? '/mv3/original_alarm.js' :
+    page === 'calendar_full.html' ? '/mv3/original_calendar.js' :
+    page === 'options_new.html' ? '/mv3/original_options.js' : '/mv3/original_countdown.js';
+  document.head.append(script);
+})().catch(error => { document.body.textContent = error.message; console.error(error); });
+
+function syncLegacyTodos() {
+  try { sendLegacy('replace-todos', {todos: JSON.parse(localStorage.todo || '{}')}); }
+  catch (error) { console.error('Cool Clock calendar:', error); }
+}
+
+function restoreLegacyCountdownPreset() {
+  if (!legacyState?.settings.timerPresetSaved) return;
+  const preset = legacyState.settings.timerPreset;
+  const seconds = Number(preset.seconds) || 0;
+  document.getElementById('h').value = Math.floor(seconds / 3600);
+  document.getElementById('m').value = Math.floor(seconds / 60) % 60;
+  document.getElementById('s').value = seconds % 60;
+  document.getElementById('message').value = preset.text || '';
+  document.getElementById('set').disabled = seconds <= 0;
+  $('#repeat').data('value', !!preset.repeat).toggleClass('active', !!preset.repeat);
+  if (preset.color) {
+    $('.input-color').data('value', preset.color);
+    $('.input-color button').removeClass('active').filter((_, button) => button.value === preset.color).addClass('active');
+  }
+}
+
+function syncLegacyOption(key) {
+  const voice = (() => { try { return JSON.parse(localStorage.noti_voice || '{}'); } catch { return {}; } })();
+  const definition = (() => { try { return JSON.parse(localStorage.clockDefinition || '{}'); } catch { return {}; } })();
+  const weather = (() => { try { return JSON.parse(localStorage.weather || '{}'); } catch { return {}; } })();
+  sendLegacy('settings', {
+    hour12: localStorage.pm === 'true', digital: localStorage.use_digit !== 'false',
+    ringtone: localStorage.ringtone, ringLoop: localStorage.ring_loop === 'true',
+    hourlyEnabled: localStorage.shownotification !== 'false',
+    hourlyDuration: Number(localStorage.shownotificationtime || 7),
+    hourlyVoice: voice.enabled === true, hourlyVoiceText: voice.text || 'It is %h %P.',
+    hourlySound: localStorage.noti_sound || 'none',
+    hourlyStyle: localStorage.noti_style || 'default',
+    hourlyBgColor: localStorage.noti_bgColor || '#0772a1',
+    hourlyManualClose: localStorage.manuallyclosenoti === 'true',
+    badge: localStorage.badge === 'true', icon: localStorage.icon !== 'false',
+    badgeStatic: localStorage.show === 'true',
+    badgeColor: localStorage.badge_color || '#428bca',
+    clockColor: localStorage.clockcolor_value || '#000000',
+    clockDefinition: definition,
+    popupVersion: localStorage.popup_version || '1',
+    contextMenuEnabled: localStorage.context_menu_item_enable !== 'false',
+    timezoneEnabled: localStorage.enabletimezone === 'true',
+    timezone: Number(localStorage.timezone),
+    keepAwake: localStorage.keepawake !== 'false',
+    language: localStorage.language || legacyApi.i18n.getUILanguage(),
+    weather: weather.enabled && Number.isFinite(weather.latitude) && Number.isFinite(weather.longitude) ?
+      {name: weather.name || '', latitude: weather.latitude, longitude: weather.longitude} : null
+  });
+}

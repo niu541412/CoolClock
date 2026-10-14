@@ -1,127 +1,35 @@
-# Cool Clock
-An extension fully loaded with tons of useful time-related features.
+# Cool Clock MV3
 
-This app was originally created as a simple clock displayed in a badge to test the new extension feature introduced back in Chrome 4.
-It has been growing since then. Initial release was on Dec 22, 2009.
+Manifest V3 port of Derek Leung's Cool Clock. The release packages retain the original popup layouts, settings page, alarm and countdown windows, stopwatch, calendar, icons, sound, and translations. jQuery remains in the original pages for visual and interaction fidelity. The statistics page uses bundled D3 v7.9.0.
 
+## Build and install
 
-## Components
-Components are what made up of most of the extension. Here's the list of components:
+Run `python3 build_mv3.py`. The resulting archives are:
 
-| Component                    	| Description                                                	|
-| ---                          	| ---                                                        	|
-| AlarmClock                   	| Alarm clock                                                	|
-| alarms                       	| Handles system alarms                                      	|
-| app                          	| The extension                                              	|
-| BadgeTextManager             	| Manages badge text display                                 	|
-| BrowserActionHandler         	| Browser action handler                                     	|
-| CountdownTimer               	| Countdown timer                                            	|
-| Graphics                     	| Graphics                                                   	|
-| HourlyTimeAnnouncementHandler	| Handles hourly time announcements                          	|
-| KeepAwake                    	| Manages wake lock for alarm clock and countdown timer, etc.	|
-| Localization                 	| Localization                                               	|
-| OmniboxHandler               	| Handles omnibox inputs                                     	|
-| SectionUptimeManager         	| Section uptime manager (statistics)                        	|
-| SoundManager                 	| Sound manager                                              	|
-| Stopwatch                    	| Stopwatch                                                  	|
-| TimeTZ                       	| Custom time object with customizable timezones             	|
-| WeatherHandler               	| Fetches weather information                                	|
-| WindowManager                	| Create windows and remember their positions                	|
+- `dist/cool-clock-mv3-chrome.zip` for Chrome 120 or newer. Unzip it and choose **Load unpacked** at `chrome://extensions`.
+- `dist/cool-clock-mv3-firefox.zip` for Firefox 121 or newer. It uses an MV3 background event page and includes a Gecko add-on ID for signing.
 
-They are located under `components/`.
+The Chrome package uses a service worker plus an offscreen document for legacy data import and audio. The Firefox package uses a background event page. Both packages include the original UI resources, original `_locales`, bundled jQuery, and D3 with its license.
 
+To publish a new GitHub release, change the version in `manifest.json` and add a matching `Ver. X.Y.Z` entry to `update.html`, then push both changes to `master`. The [release workflow](.github/workflows/release.yml) builds and checks both browser archives, creates the `vX.Y.Z` tag, and attaches both ZIP files to the release. It skips a version that already has a release. The workflow can also be run manually to retry a release.
 
-## Dependencies
-The extension depends on the following libraries:
+The default popup is the original blue 300 × 500 design. The original 250px popup is also available through the original **Popup Design** setting. Alarms, repeating countdowns, calendar todos, hourly announcements, voice and text commands, address bar `clock` commands, and the main original settings controls are connected to MV3 storage and browser APIs. The original Yahoo weather service has been replaced with Open-Meteo; the location search remains in the original settings page, and clicking the popup weather opens a seven-day forecast. Public Google Calendars can be imported through iCal, and private calendars can be imported from an exported `.ics` file.
 
-- jQuery 2.2.4
-- Bootstrap 3
-- D3
+On an in-place update with the same extension ID, the first run imports alarms, countdowns, todos, and clock preferences from extension `localStorage`. A new extension ID has a separate storage area and cannot read the old installation's data. The original Chrome Web Store listing ID cannot be reused for a new listing.
 
+## Known limits
 
-## Permissions Explanation
+- Direct Google sign-in for private calendar import needs a new OAuth client and is not included. Use Google Calendar's `.ics` export instead.
+- The iCal importer reads events' start dates; complex recurring rules are not expanded.
+- The statistics charts record new sessions. Historical usage stored by the original WebSQL implementation cannot be migrated on current browsers.
+- Chrome hourly announcements offer compact list and image layouts, with a newly drawn clock image. Firefox uses its basic notification layout. Notification pixels can differ from the original.
+- Voice recognition depends on the browser's Speech Recognition API; text commands work when voice recognition is unavailable.
+- The toolbar clock is drawn with modern Canvas APIs and honors the original digital/analog, color, badge, and several advanced appearance settings. Some advanced clock definition fields and individual pixels differ from the original graphics engine.
+- Firefox does not support Chrome's `power` API, so the **Prevent system from sleeping** setting works in Chrome only.
+- Open-Meteo reachability from mainland China has not been verified from a mainland network. Weather needs a network connection.
 
-| Permission                           	| Explanation                                                                     	|
-| ---                                  	| ---                                                                             	|
-| notifications                        	| Create hourly notifications and other notifications.                            	|
-| contextMenus                         	| Create context menus.                                                           	|
-| tts                                  	| Text to speech.                                                                 	|
-| `*://calendar.google.com/*`          	| Sync events from Google Calendar.                                               	|
-| `*://www.google.com/calendar/feeds/*`	| Sync events from Google Calendar.                                               	|
-| clipboardWrite                       	| Write time to clipboard.                                                        	|
-| activeTab                            	| Write time to current focused text field.                                       	|
-| alarms                               	| Extension uses system alarms so the extension does not need to poll continously.	|
-| power                                	| Acquire wake lock when there is an ongoing alarm or countdown.                  	|
-| idle                                 	| Fetch system's idle state in order to pause any updates during idle.            	|
+## Publishing
 
+The original repository has no project-level license. Keep written permission from the original author for redistribution of the original code and resources before publishing. The D3 license is included in `mv3/vendor/D3-LICENSE`; the original icon license is included in `images/icons/License`; the Roboto license is included in `fonts/LICENSE (Roboto).txt`.
 
-## Todos and Issues
-The extension originally was created for the purpose of sharpening my JavaScript skill and develop maintainable practices.
-Due to that reason, one of the major issues of the extension is that it contains a large amount of legacy code.
-
-### Issue 1 - Unorganized Files
-Many old files are unorganized and all over the root directory. The end goal is to organize them into their corresponding
-component directory.
-
-This is ongoing.
-
-### Issue 2 - Rewriting Codes Written More Than Half A Decade Ago
-Old files contain many code smells and codes that are hard to maintain. The solution is to completely rewrite
-them as components. A major part of the extension has been rewritten into components. These still need to be created:
-
-- NotificationManager
-
-There are also files that should not be used but old codes depend on, such as `tools.js`. They should be removed once the files
-that depend on them are rewritten.
-
-This is ongoing.
-
-### Issue 3 - Localization
-Localization is a particularly difficult problem to solve. Before the adoption of the component structure, localization was
-achieved via the `i18n` function in `translation.js`. It let users to specify the language that they want to use (Chrome does
-not native support this), and dynamically fetch the language files *synchronously* such that it can be used as such:
-
-    var settings_str = i18n("settings");
-
-AJAX calls should not be synchronous, however it did simply a lot of the code. It would be ideal if the extension can be rewritten
-in a way such that localized strings can be fetched synchronously. One possible solution would be to load all the strings into
-memory during extension initialization.
-
-This is being considered.
-
-### Issue 4 - Unnecessary Features
-There are some unnecessary features that I'm considering to remove in the future:
-
-- Voice control
-
-### Issue 5 - Calendar
-One of the feature that this extension has is a built-in calendar. The original idea is to support syncing events between
-Google Calendar and the extension. However I don't see how this can be useful in anyway and I'm considering removing it in
-the future.
-
-
-## Resources
-Icons used in the extension:
-
-- [famfamfam Silk Icons](http://www.famfamfam.com/lab/icons/silk/)  
-    Licensed under a Creative Commons Attribution 2.5 License.
-- [Material Icons](https://material.io/icons/)  
-    Licensed under Apache License Version 2.0.
-
-Fonts used in the extension:
-
-- Glyphicons from Bootstrap 3
-- Roboto
-- NotoSans
-- Oswald
-- Meteocons
-
-Default ringtone:
-
-- Sound Jay
-
-## Contributing
-Feel free to contribute to the project by creating a pull request.
-
-### Adding/Updating Language Files
-This is not one of my main concerns currently and should be not be done in this repository.
+Original resource credits: famfamfam Silk Icons (CC BY 2.5), Material Icons (Apache 2.0), Glyphicons, Roboto, Noto Sans, Oswald, Meteocons, and Sound Jay. The bundled jQuery and Bootstrap files retain their license headers.
