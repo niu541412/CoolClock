@@ -2,9 +2,6 @@
    "extDes": {
       "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
    },
-   "extDes_old": {
-      "message": "The first extension that has Digital + Analog clock on the toolbar + hourly time announcement on a Desktop Notification and more."
-   },
    "extName": {
       "message": "Cool Clock"
    },
@@ -24,10 +21,10 @@
       "message": "seconds"
    },
    "max999": {
-      "message": "(Maxium:999)"
+      "message": "(Maximum: 999)"
    },
    "showtodowhenopen": {
-      "message": "Display to-dos as the broswer is being opened"
+      "message": "Display to-dos when the browser opens"
    },
    "display": {
       "message": "Display"
@@ -75,7 +72,7 @@
       "message": "Refresh the icon every: "
    },
    "updateiconeverymsg": {
-      "message": "(The longest, the lightest this extension is; but the longer, the influence to other parts of extension might be bigger.)"
+      "message": "Longer intervals use fewer resources, but the clock updates less often."
    },
    "_1sec": {
       "message": "1 second"
@@ -277,5 +274,26 @@
    },
    "help": {
       "message": "Help"
+   },
+   "alarmRinging": {
+      "message": "Alarm is ringing"
+   },
+   "timesUp": {
+      "message": "Time's up"
+   },
+   "scheduledFor": {
+      "message": "Scheduled for {time}"
+   },
+   "weatherLoading": {
+      "message": "Loading weather…"
+   },
+   "weatherUnavailable": {
+      "message": "Weather unavailable"
+   },
+   "errorUnavailable": {
+      "message": "Extension unavailable"
+   },
+   "dismissLabel": {
+      "message": "Dismiss"
    }
 }

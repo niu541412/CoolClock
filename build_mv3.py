@@ -7,8 +7,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 root = Path(__file__).resolve().parent
 manifest = json.loads((root / 'manifest.json').read_text())
-additions = json.loads((root / 'mv3/locale_additions.json').read_text())
-source = sorted(path for path in (root / 'mv3').rglob('*') if path.is_file() and path.name != 'locale_additions.json')
+source = sorted(path for path in (root / 'mv3').rglob('*') if path.is_file())
 original_assets = [root / path for path in ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.mp3')]
 legacy_popup = root / 'new_popup2.html'
 legacy_assets = [root / path for path in (
@@ -81,10 +80,6 @@ def locale_files():
     for path in sorted((root / '_locales').glob('*/messages.json')):
         language = path.parent.name
         original = json.loads(strip_json_comments(path.read_text(encoding='utf-8-sig')))
-        for key, value in additions.get(language, {}).items():
-            if key == 'extDes':
-                continue
-            original[key] = {'message': value}
         yield f'_locales/{language}/messages.json', json.dumps(original, ensure_ascii=False, indent=2) + '\n'
 
 firefox = copy.deepcopy(manifest)

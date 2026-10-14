@@ -1,9 +1,9 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL." /*"La première extension qui utilise une horloge Digital + Analogique sur votre barre d'outils Chrome + l'horaire chaque heure par une notification du bureau."*/
+      "message": "Une extension riche en fonctionnalités utiles liées au temps... et surtout, elle est vraiment COOL." /*"La première extension qui utilise une horloge Digital + Analogique sur votre barre d'outils Chrome + l'horaire chaque heure par une notification du bureau."*/
    },
    "extName": {
-      "message": "Cool Horloge por Google Chrome™"
+      "message": "Cool Clock"
    },
    "settings": {
       "message": "Options"
@@ -78,7 +78,7 @@
       "message": "1 seconde"
    },
    "_2sec": {
-      "message": "2 seconds"
+      "message": "2 secondes"
    },
    "_5sec": {
       "message": "5 secondes"
@@ -111,7 +111,7 @@
       "message": "Voir ce qu'il y a de nouveau dans cette version"
    },
    "none": {
-      "message": "Non"
+      "message": "Aucun"
    },
    "defaultringtone": {
       "message": "Sonnerie par défaut"
@@ -138,19 +138,19 @@
       "message": "Version"
    },
    "countdown": {
-      "message": ""
+      "message": "Compte à rebours"
    },
    "alarm": {
-      "message": ""
+      "message": "Réveil"
    },
    "stat": {
-      "message": ""
+      "message": "Statistiques"
    },
    "timer": {
-      "message": ""
+      "message": "Chronomètre"
    },
    "tools": {
-      "message": ""
+      "message": "Outils"
    },
    "day_0": {
       "message": "Dimanche"
@@ -240,10 +240,10 @@
       "message": "Les options sont enregistrées."
    },
    "notsaved": {
-      "message": ""
+      "message": "Les options modifiées n'ont pas été enregistrées ! Continuer quand même ?"
    },
    "ctxcmt": {
-      "message": ""
+      "message": "Rapport de bogue/ commentaires"
    },
    "digital": {
       "message": "L'horloge digitale"
@@ -252,18 +252,42 @@
       "message": "L'horloge classique"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Ne pas afficher ces éléments"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Forum"
    },
    "calendar": {
-      "message": ""
+      "message": "Calendrier"
    },
    "setalarm": {
-      "message": ""
+      "message": "Définir une alarme"
+   },
+   "alarmRinging": {
+      "message": "L'alarme sonne"
+   },
+   "timesUp": {
+      "message": "Le temps est écoulé"
+   },
+   "scheduledFor": {
+      "message": "Prévu à {time}"
+   },
+   "weatherLoading": {
+      "message": "Chargement de la météo…"
+   },
+   "weatherUnavailable": {
+      "message": "Météo indisponible"
+   },
+   "errorUnavailable": {
+      "message": "Extension indisponible"
+   },
+   "dismissLabel": {
+      "message": "Fermer"
+   },
+   "help": {
+      "message": "Aide"
    }
 }

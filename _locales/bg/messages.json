@@ -111,7 +111,7 @@
       "message": "Виж списъка с обновления"
    },
    "none": {
-      "message": "Бележка"
+      "message": "Няма"
    },
    "defaultringtone": {
       "message": "Тон на звънене по подразбиране"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Задай аларма"
+   },
+   "alarmRinging": {
+      "message": "Алармата звъни"
+   },
+   "timesUp": {
+      "message": "Времето изтече"
+   },
+   "scheduledFor": {
+      "message": "Насрочено за {time}"
+   },
+   "weatherLoading": {
+      "message": "Зареждане на времето…"
+   },
+   "weatherUnavailable": {
+      "message": "Информацията за времето не е налична"
+   },
+   "errorUnavailable": {
+      "message": "Разширението не е налично"
+   },
+   "dismissLabel": {
+      "message": "Затвори"
+   },
+   "help": {
+      "message": "Помощ"
    }
 }

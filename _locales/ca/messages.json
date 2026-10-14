@@ -1,9 +1,9 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL." /*"La primera extensió que té el rellotge digital + analògic a la barra d'eines del Chrome + avís horari en una notificació a l'escriptori."*/
+      "message": "Una extensió plena de funcions útils relacionades amb el temps... i, sobretot, molt COOL." /*"La primera extensió que té el rellotge digital + analògic a la barra d'eines del Chrome + avís horari en una notificació a l'escriptori."*/
    },
    "extName": {
-      "message": "Refredar Rellotge"
+      "message": "Cool Clock"
    },
    "settings": {
       "message": "Opcions"
@@ -111,19 +111,19 @@
       "message": "Veure les novetats d'aquesta versió"
    },
    "none": {
-      "message": ""
+      "message": "Cap"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "To de trucada per defecte"
    },
    "URLringtone": {
-      "message": ""
+      "message": "De l'URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "To de trucada per a tots els propòsits"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarma i to de trucada"
    },
    "close": {
       "message": "Tancar"
@@ -144,13 +144,13 @@
       "message": "Alarma"
    },
    "stat": {
-      "message": ""
+      "message": "Estadístiques"
    },
    "timer": {
-      "message": ""
+      "message": "Cronòmetre"
    },
    "tools": {
-      "message": ""
+      "message": "Eines"
    },
    "day_0": {
       "message": "Diumenge"
@@ -240,7 +240,7 @@
       "message": "Desat."
    },
    "notsaved": {
-      "message": ""
+      "message": "No s'han desat les opcions modificades. Voleu continuar de totes maneres?"
    },
    "ctxcmt": {
       "message": "Bug report / Comentari"
@@ -252,18 +252,42 @@
       "message": "Rellotge analògic"
    },
    "ctxhide": {
-      "message": ""
+      "message": "No mostris aquests elements"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Fòrum"
    },
    "calendar": {
-      "message": ""
+      "message": "Calendari"
    },
    "setalarm": {
-      "message": ""
+      "message": "Configura una alarma"
+   },
+   "alarmRinging": {
+      "message": "L'alarma està sonant"
+   },
+   "timesUp": {
+      "message": "El temps s'ha acabat"
+   },
+   "scheduledFor": {
+      "message": "Programat per a les {time}"
+   },
+   "weatherLoading": {
+      "message": "S'està carregant el temps…"
+   },
+   "weatherUnavailable": {
+      "message": "Informació meteorològica no disponible"
+   },
+   "errorUnavailable": {
+      "message": "L'extensió no està disponible"
+   },
+   "dismissLabel": {
+      "message": "Tanca"
+   },
+   "help": {
+      "message": "Ajuda"
    }
 }

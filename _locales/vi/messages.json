@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Cài báo thức"
+   },
+   "alarmRinging": {
+      "message": "Báo thức đang reo"
+   },
+   "timesUp": {
+      "message": "Hết giờ"
+   },
+   "scheduledFor": {
+      "message": "Đã lên lịch lúc {time}"
+   },
+   "weatherLoading": {
+      "message": "Đang tải thời tiết…"
+   },
+   "weatherUnavailable": {
+      "message": "Không có thông tin thời tiết"
+   },
+   "errorUnavailable": {
+      "message": "Tiện ích mở rộng không khả dụng"
+   },
+   "dismissLabel": {
+      "message": "Đóng"
+   },
+   "help": {
+      "message": "Trợ giúp"
    }
 }

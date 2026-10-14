@@ -72,7 +72,7 @@
       "message": "Ažuriraj ikonicu svakih: "
    },
    "updateiconeverymsg": {
-      "message": ""
+      "message": "Duži intervali troše manje resursa, ali se sat ređe ažurira."
    },
    "_1sec": {
       "message": "1 sekunda"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Podesi alarm."
+   },
+   "alarmRinging": {
+      "message": "Alarm zvoni"
+   },
+   "timesUp": {
+      "message": "Vreme je isteklo"
+   },
+   "scheduledFor": {
+      "message": "Zakazano za {time}"
+   },
+   "weatherLoading": {
+      "message": "Učitavanje vremena…"
+   },
+   "weatherUnavailable": {
+      "message": "Vremenska prognoza nije dostupna"
+   },
+   "errorUnavailable": {
+      "message": "Proširenje nije dostupno"
+   },
+   "dismissLabel": {
+      "message": "Zatvori"
+   },
+   "help": {
+      "message": "Pomoć"
    }
 }

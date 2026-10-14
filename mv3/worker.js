@@ -49,7 +49,14 @@ async function touchSession() {
 
 async function state() {
   const saved = (await ext.storage.local.get(STATE_KEY))[STATE_KEY];
-  if (saved) { globalThis.coolClockLanguage = saved.settings?.language || ''; return saved; }
+  if (saved) {
+    if (saved.settings?.language === 'ar') {
+      saved.settings.language = 'fa';
+      await ext.storage.local.set({[STATE_KEY]: saved});
+    }
+    globalThis.coolClockLanguage = saved.settings?.language || '';
+    return saved;
+  }
   await ensureOffscreen();
   const old = ext.offscreen ? await ext.runtime.sendMessage({target: 'offscreen', type: 'read-legacy'}) : readLegacy();
   const migrated = structuredClone(DEFAULT_STATE);
@@ -93,7 +100,7 @@ async function state() {
   migrated.settings.clockDefinition = parseLegacy(old.clockDefinition, null);
   migrated.settings.popupVersion = old.popup_version || '1';
   migrated.settings.contextMenuEnabled = old.context_menu_item_enable !== 'false';
-  migrated.settings.language = old.language || '';
+  migrated.settings.language = old.language === 'ar' ? 'fa' : (old.language || '');
   globalThis.coolClockLanguage = migrated.settings.language;
   await ext.storage.local.set({[STATE_KEY]: migrated});
   await reconcile(migrated);

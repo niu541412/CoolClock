@@ -3,7 +3,7 @@
       "message": "اولین افزونه گوگل کروم با نمایش ساعت دیجیتال و عقربه ایی بر روی نوار ابزار و اعلان ساعتی زمان بر  روی دسکتاپ"
    },
    "extName": {
-      "message": "باردة على مدار الساعة"
+      "message": "Cool Clock"
    },
    "settings": {
       "message": "تنظیمات"
@@ -111,19 +111,19 @@
       "message": "دیدن تغییرات جدید در این نسخه"
    },
    "none": {
-      "message": ""
+      "message": "هیچکدام"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "آهنگ زنگ پیش‌فرض"
    },
    "URLringtone": {
-      "message": ""
+      "message": "از آدرس اینترنتی"
    },
    "allpurpose": {
-      "message": ""
+      "message": "آهنگ زنگ برای همهٔ کاربردها"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "زنگ هشدار و آهنگ زنگ"
    },
    "close": {
       "message": "بستن "
@@ -144,13 +144,13 @@
       "message": "آلارم ساعت"
    },
    "stat": {
-      "message": ""
+      "message": "آمار"
    },
    "timer": {
-      "message": ""
+      "message": "کرونومتر"
    },
    "tools": {
-      "message": ""
+      "message": "ابزارها"
    },
    "day_0": {
       "message": "یکشنبه"
@@ -240,30 +240,54 @@
       "message": "ذخیره شد "
    },
    "notsaved": {
-      "message": ""
+      "message": "گزینه‌های اصلاح‌شده ذخیره نشده‌اند! در هر صورت ادامه می‌دهید؟"
    },
    "ctxcmt": {
-      "message": ""
+      "message": "گزارش اشکال / نظرات"
    },
    "digital": {
-      "message": ""
+      "message": "ساعت دیجیتال"
    },
    "analog": {
-      "message": ""
+      "message": "ساعت آنالوگ"
    },
    "ctxhide": {
-      "message": ""
+      "message": "این موارد را نشان ندهید"
    },
    "chat": {
-      "message": ""
+      "message": "گفت‌وگو"
    },
    "forum": {
-      "message": ""
+      "message": "انجمن"
    },
    "calendar": {
-      "message": ""
+      "message": "تقویم"
    },
    "setalarm": {
-      "message": ""
+      "message": "تنظیم زنگ هشدار"
+   },
+   "alarmRinging": {
+      "message": "زنگ هشدار به صدا درآمده است"
+   },
+   "timesUp": {
+      "message": "زمان به پایان رسید"
+   },
+   "scheduledFor": {
+      "message": "برای ساعت {time} برنامه‌ریزی شده است"
+   },
+   "weatherLoading": {
+      "message": "در حال بارگیری وضعیت آب‌وهوا…"
+   },
+   "weatherUnavailable": {
+      "message": "اطلاعات آب‌وهوا در دسترس نیست"
+   },
+   "errorUnavailable": {
+      "message": "افزونه در دسترس نیست"
+   },
+   "dismissLabel": {
+      "message": "بستن"
+   },
+   "help": {
+      "message": "کمک"
    }
 }

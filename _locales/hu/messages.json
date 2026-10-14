@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Ébresztés beállítása"
+   },
+   "alarmRinging": {
+      "message": "Az ébresztő csörög"
+   },
+   "timesUp": {
+      "message": "Lejárt az idő"
+   },
+   "scheduledFor": {
+      "message": "Ütemezve ekkorra: {time}"
+   },
+   "weatherLoading": {
+      "message": "Időjárás betöltése…"
+   },
+   "weatherUnavailable": {
+      "message": "Az időjárás nem érhető el"
+   },
+   "errorUnavailable": {
+      "message": "A bővítmény nem érhető el"
+   },
+   "dismissLabel": {
+      "message": "Bezárás"
+   },
+   "help": {
+      "message": "Segítség"
    }
 }

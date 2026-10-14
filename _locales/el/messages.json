@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."/*"Η πρώτη επέκταση που έχει Ψηφιακό + Αναλογικό ρολόι στη γραμμή εργαλείων + ωριαία ανακοίνωση της ώρας σε μια ειδοποίηση της επιφάνεια εργασίας."*/
+      "message": "Μια επέκταση γεμάτη χρήσιμες λειτουργίες για την ώρα... και το καλύτερο: είναι πραγματικά COOL."/*"Η πρώτη επέκταση που έχει Ψηφιακό + Αναλογικό ρολόι στη γραμμή εργαλείων + ωριαία ανακοίνωση της ώρας σε μια ειδοποίηση της επιφάνεια εργασίας."*/
    },
    "extName": {
       "message": "Cool Ρολόι"
@@ -111,19 +111,19 @@
       "message": "Δείτε τι νέο υπάρχει σε αυτήν την έκδοση"
    },
    "none": {
-      "message": ""
+      "message": "Κανένα"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Προεπιλεγμένος ήχος κλήσης"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Από τη διεύθυνση URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Ήχος κλήσης για όλους τους σκοπούς"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Ξυπνητήρι και ήχος κλήσης"
    },
    "close": {
       "message": "Κλείσιμο"
@@ -147,10 +147,10 @@
       "message": "Στατιστικά"
    },
    "timer": {
-      "message": ""
+      "message": "Χρονόμετρο"
    },
    "tools": {
-      "message": ""
+      "message": "Εργαλεία"
    },
    "day_0": {
       "message": "Κυριακή"
@@ -231,19 +231,19 @@
       "message": "Τώρα είναι"
    },
    "am": {
-      "message": ""
+      "message": "π.μ."
    },
    "pm": {
-      "message": ""
+      "message": "μ.μ."
    },
    "saved": {
       "message": "Αποθηκεύτηκε."
    },
    "notsaved": {
-      "message": ""
+      "message": "Οι τροποποιημένες επιλογές δεν έχουν αποθηκευτεί! Συνέχεια ούτως ή άλλως;"
    },
    "ctxcmt": {
-      "message": ""
+      "message": "Αναφορά σφάλματος/ Σχόλια"
    },
    "digital": {
       "message": "ψηφιακό ρολόι"
@@ -252,18 +252,42 @@
       "message": "αναλογικό ρολό"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Να μην εμφανίζονται αυτά τα στοιχεία"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Φόρουμ"
    },
    "calendar": {
-      "message": ""
+      "message": "Ημερολόγιο"
    },
    "setalarm": {
-      "message": ""
+      "message": "Ρύθμιση ξυπνητηριού"
+   },
+   "alarmRinging": {
+      "message": "Το ξυπνητήρι χτυπά"
+   },
+   "timesUp": {
+      "message": "Ο χρόνος τελείωσε"
+   },
+   "scheduledFor": {
+      "message": "Προγραμματισμένο για τις {time}"
+   },
+   "weatherLoading": {
+      "message": "Φόρτωση καιρού…"
+   },
+   "weatherUnavailable": {
+      "message": "Ο καιρός δεν είναι διαθέσιμος"
+   },
+   "errorUnavailable": {
+      "message": "Η επέκταση δεν είναι διαθέσιμη"
+   },
+   "dismissLabel": {
+      "message": "Κλείσιμο"
+   },
+   "help": {
+      "message": "Βοήθεια"
    }
 }

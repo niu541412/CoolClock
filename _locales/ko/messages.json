@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "자명종"
+   },
+   "alarmRinging": {
+      "message": "알람이 울리고 있습니다"
+   },
+   "timesUp": {
+      "message": "시간이 다 됐습니다"
+   },
+   "scheduledFor": {
+      "message": "{time}에 예정됨"
+   },
+   "weatherLoading": {
+      "message": "날씨 불러오는 중…"
+   },
+   "weatherUnavailable": {
+      "message": "날씨 정보를 사용할 수 없습니다"
+   },
+   "errorUnavailable": {
+      "message": "확장 프로그램을 사용할 수 없습니다"
+   },
+   "dismissLabel": {
+      "message": "닫기"
+   },
+   "help": {
+      "message": "도움말"
    }
 }

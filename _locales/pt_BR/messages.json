@@ -1,6 +1,6 @@
 {
    "extDes": {
-      "message": /*"An extensão que disponibiliza Relógios Análogo e Digital na Barra de Ferramentas de seu Chrome e também aviso de hora em hora no seu Desktop."*/"An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": /*"An extensão que disponibiliza Relógios Análogo e Digital na Barra de Ferramentas de seu Chrome e também aviso de hora em hora no seu Desktop."*/"Uma extensão repleta de recursos úteis relacionados ao tempo... e o melhor: é muito legal!"
    },
    "extName": {
       "message": "Cool Relógio"
@@ -66,7 +66,7 @@
       "message": "Animasoes geralmente \"geram\" uma nova imagem por segundo, então normalmente isto irá ocupar um pouco de memoria de seu computador após o perio de tempo que eu estou tentando reduzir para o menor."
    },
    "showupdate": {
-      "message": "Show update page after each time this extension has been updated"
+      "message": "Mostrar a página de atualização após cada atualização da extensão"
    },
    "updateiconevery": {
       "message": "Atualizar icone a cada: "
@@ -138,7 +138,7 @@
       "message": "Versão"
    },
    "countdown": {
-      "message": "Relógio do Cronometro"
+      "message": "Temporizador de contagem regressiva"
    },
    "alarm": {
       "message": "Relógio do Alarme"
@@ -147,7 +147,7 @@
       "message": "Estatísticas"
    },
    "timer": {
-      "message": "Parar o Cronometro"
+      "message": "Cronômetro"
    },
    "tools": {
       "message": "Ferramentas"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Definir um alarme"
+   },
+   "alarmRinging": {
+      "message": "O alarme está tocando"
+   },
+   "timesUp": {
+      "message": "O tempo acabou"
+   },
+   "scheduledFor": {
+      "message": "Programado para {time}"
+   },
+   "weatherLoading": {
+      "message": "Carregando previsão do tempo…"
+   },
+   "weatherUnavailable": {
+      "message": "Previsão do tempo indisponível"
+   },
+   "errorUnavailable": {
+      "message": "Extensão indisponível"
+   },
+   "dismissLabel": {
+      "message": "Fechar"
+   },
+   "help": {
+      "message": "Ajuda"
    }
 }

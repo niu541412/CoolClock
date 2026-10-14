@@ -24,7 +24,7 @@
       "message": "(מקסימום: 999)"
    },
    "showtodowhenopen": {
-      "message": ""
+      "message": "הצגת משימות כאשר הדפדפן נפתח"
    },
    "display": {
       "message": "הצג"
@@ -66,16 +66,16 @@
       "message": "\"אנימציה בדר כלל גוזלת הרבה זיכרון מערכת,"
    },
    "showupdate": {
-      "message": ""
+      "message": "הצג דף עדכון לאחר כל עדכון של תוסף זה"
    },
    "updateiconevery": {
-      "message": ""
+      "message": "רענן את הסמל כל:"
    },
    "updateiconeverymsg": {
-      "message": ""
+      "message": "מרווחי זמן ארוכים יותר חוסכים משאבים, אך השעון מתעדכן לעיתים רחוקות יותר."
    },
    "_1sec": {
-      "message": "1 שניות"
+      "message": "שנייה אחת"
    },
    "_2sec": {
       "message": "2 שניות"
@@ -90,10 +90,10 @@
       "message": "30 שניות"
    },
    "_1min": {
-      "message": ""
+      "message": "דקה אחת"
    },
    "viewsavedalarm": {
-      "message": ""
+      "message": "הצגת שעונים מעוררים שמורים"
    },
    "OK": {
       "message": "בסדר"
@@ -111,19 +111,19 @@
       "message": "הצג פרטים חדשים בגירסה זו"
    },
    "none": {
-      "message": ""
+      "message": "ללא"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "רינגטון ברירת מחדל"
    },
    "URLringtone": {
-      "message": ""
+      "message": "מכתובת URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "רינגטון לכל מטרה"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "שעון מעורר ורינגטון"
    },
    "close": {
       "message": "סגור"
@@ -135,22 +135,22 @@
       "message": "אני לא גרסת שעון פלש"
    },
    "version": {
-      "message": ""
+      "message": "גרסה"
    },
    "countdown": {
-      "message": ""
+      "message": "טיימר ספירה לאחור"
    },
    "alarm": {
-      "message": ""
+      "message": "שעון מעורר"
    },
    "stat": {
-      "message": ""
+      "message": "סטטיסטיקה"
    },
    "timer": {
-      "message": ""
+      "message": "סטופר"
    },
    "tools": {
-      "message": ""
+      "message": "כלים"
    },
    "day_0": {
       "message": "יום ראשון"
@@ -237,22 +237,22 @@
       "message": "ערב"
    },
    "saved": {
-      "message": ""
+      "message": "נשמר."
    },
    "notsaved": {
-      "message": ""
+      "message": "האפשרויות ששונו לא נשמרו! האם להמשיך בכל זאת?"
    },
    "ctxcmt": {
-      "message": ""
+      "message": "דוח באגים/ הערות"
    },
    "digital": {
-      "message": ""
+      "message": "שעון דיגיטלי"
    },
    "analog": {
-      "message": ""
+      "message": "שעון אנלוגי"
    },
    "ctxhide": {
-      "message": ""
+      "message": "לא להציג את הפריטים האלה"
    },
    "chat": {
       "message": "Chat box"
@@ -261,9 +261,33 @@
       "message": "Forum"
    },
    "calendar": {
-      "message": ""
+      "message": "לוח שנה"
    },
    "setalarm": {
-      "message": ""
+      "message": "הגדרת שעון מעורר"
+   },
+   "alarmRinging": {
+      "message": "ההתראה מצלצלת"
+   },
+   "timesUp": {
+      "message": "הזמן נגמר"
+   },
+   "scheduledFor": {
+      "message": "מתוזמן לשעה {time}"
+   },
+   "weatherLoading": {
+      "message": "טוען נתוני מזג אוויר…"
+   },
+   "weatherUnavailable": {
+      "message": "מזג האוויר אינו זמין"
+   },
+   "errorUnavailable": {
+      "message": "התוסף אינו זמין"
+   },
+   "dismissLabel": {
+      "message": "סגירה"
+   },
+   "help": {
+      "message": "עזרה"
    }
 }

@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL." /*"De eerste extentie dat een digitale en een analoge klok in de hoofdbalk van de Chrome browser plaatst en daarbij een uursignaal kan weergeven met een melding op het scherm."*/
+      "message": "Een extensie boordevol handige tijdfuncties... en het mooiste is: hij is echt COOL." /*"De eerste extentie dat een digitale en een analoge klok in de hoofdbalk van de Chrome browser plaatst en daarbij een uursignaal kan weergeven met een melding op het scherm."*/
    },
    "extName": {
       "message": "Cool Klok"
@@ -21,10 +21,10 @@
       "message": "seconde"
    },
    "max999": {
-      "message": "(Maximum: 999)"
+      "message": "(Maximaal: 999)"
    },
    "showtodowhenopen": {
-      "message": ""
+      "message": "Taken weergeven wanneer de browser wordt geopend"
    },
    "display": {
       "message": "Geef weer"
@@ -66,34 +66,34 @@
       "message": "Animaties 'tekenen' normaal gesproken een nieuw plaatje per seconde, dus over het algemeen zal het veel geheugen verbruiken terwijl ik het probeer tot het minumum te beperken."
    },
    "showupdate": {
-      "message": ""
+      "message": "Updatepagina weergeven na elke keer dat deze extensie is bijgewerkt"
    },
    "updateiconevery": {
-      "message": ""
+      "message": "Ververs het pictogram elke:"
    },
    "updateiconeverymsg": {
-      "message": ""
+      "message": "Langere intervallen verbruiken minder systeembronnen, maar de klok wordt minder vaak bijgewerkt."
    },
    "_1sec": {
-      "message": ""
+      "message": "1 seconde"
    },
    "_2sec": {
-      "message": ""
+      "message": "2 seconden"
    },
    "_5sec": {
-      "message": ""
+      "message": "5 seconden"
    },
    "_10sec": {
-      "message": ""
+      "message": "10 seconden"
    },
    "_30sec": {
-      "message": ""
+      "message": "30 seconden"
    },
    "_1min": {
-      "message": ""
+      "message": "1 minuut"
    },
    "viewsavedalarm": {
-      "message": ""
+      "message": "Opgeslagen alarmen bekijken"
    },
    "OK": {
       "message": "OK"
@@ -111,19 +111,19 @@
       "message": "Bekijk wat nieuw is in deze versie"
    },
    "none": {
-      "message": "None"
+      "message": "Geen"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Standaard beltoon"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Van URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Beltoon voor alle doeleinden"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarm en beltoon"
    },
    "close": {
       "message": "Sluiten"
@@ -135,22 +135,22 @@
       "message": "(Ik ben geen Flash klok)"
    },
    "version": {
-      "message": ""
+      "message": "Versie"
    },
    "countdown": {
-      "message": ""
+      "message": "Afteltimer"
    },
    "alarm": {
-      "message": ""
+      "message": "Wekker"
    },
    "stat": {
-      "message": ""
+      "message": "Statistieken"
    },
    "timer": {
-      "message": ""
+      "message": "Stopwatch"
    },
    "tools": {
-      "message": ""
+      "message": "Hulpmiddelen"
    },
    "day_0": {
       "message": "Zondag"
@@ -240,10 +240,10 @@
       "message": "Opties worden opgeslagen."
    },
    "notsaved": {
-      "message": ""
+      "message": "Gewijzigde opties zijn niet opgeslagen! Toch doorgaan?"
    },
    "ctxcmt": {
-      "message": ""
+      "message": "Bugrapport / opmerkingen"
    },
    "digital": {
       "message": "Digitale klok"
@@ -252,7 +252,7 @@
       "message": "Normale klok"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Deze items niet weergeven"
    },
    "chat": {
       "message": "Chat box"
@@ -264,6 +264,30 @@
       "message": "Kalender"
    },
    "setalarm": {
-      "message": ""
+      "message": "Een alarm instellen"
+   },
+   "alarmRinging": {
+      "message": "Het alarm gaat af"
+   },
+   "timesUp": {
+      "message": "De tijd is om"
+   },
+   "scheduledFor": {
+      "message": "Gepland voor {time}"
+   },
+   "weatherLoading": {
+      "message": "Weer laden…"
+   },
+   "weatherUnavailable": {
+      "message": "Weer niet beschikbaar"
+   },
+   "errorUnavailable": {
+      "message": "Extensie niet beschikbaar"
+   },
+   "dismissLabel": {
+      "message": "Sluiten"
+   },
+   "help": {
+      "message": "Hulp"
    }
 }

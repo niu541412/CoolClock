@@ -105,25 +105,25 @@
       "message": "Annulla"
    },
    "about": {
-      "message": "About"
+      "message": "Informazioni"
    },
    "whatsnew": {
       "message": "Vedi quali sono le novità in questa versione"
    },
    "none": {
-      "message": ""
+      "message": "Nessuna"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Suoneria predefinita"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Dall'URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Suoneria per tutti gli usi"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Sveglia e suoneria"
    },
    "close": {
       "message": "Chiudi"
@@ -144,13 +144,13 @@
       "message": "Sveglia"
    },
    "stat": {
-      "message": ""
+      "message": "Statistiche"
    },
    "timer": {
-      "message": ""
+      "message": "Cronometro"
    },
    "tools": {
-      "message": ""
+      "message": "Strumenti"
    },
    "day_0": {
       "message": "Domenica"
@@ -231,16 +231,16 @@
       "message": "Sono le"
    },
    "am": {
-      "message": ""
+      "message": "am"
    },
    "pm": {
-      "message": ""
+      "message": "pm"
    },
    "saved": {
       "message": "Le opzioni sono salvate."
    },
    "notsaved": {
-      "message": ""
+      "message": "Le opzioni modificate non sono state salvate! Continuare comunque?"
    },
    "ctxcmt": {
       "message": "Bug report / Commenti"
@@ -252,18 +252,42 @@
       "message": "Orologio Analogico"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Non mostrare questi elementi"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Forum"
    },
    "calendar": {
       "message": "Calendario"
    },
    "setalarm": {
-      "message": ""
+      "message": "Impostare una sveglia"
+   },
+   "alarmRinging": {
+      "message": "La sveglia sta suonando"
+   },
+   "timesUp": {
+      "message": "Tempo scaduto"
+   },
+   "scheduledFor": {
+      "message": "Programmato per le {time}"
+   },
+   "weatherLoading": {
+      "message": "Caricamento meteo…"
+   },
+   "weatherUnavailable": {
+      "message": "Meteo non disponibile"
+   },
+   "errorUnavailable": {
+      "message": "Estensione non disponibile"
+   },
+   "dismissLabel": {
+      "message": "Chiudi"
+   },
+   "help": {
+      "message": "Guida"
    }
 }

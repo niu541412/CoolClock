@@ -275,5 +275,26 @@
    },
    "help": {
       "message": "帮助"
+   },
+   "alarmRinging": {
+      "message": "闹钟响了"
+   },
+   "timesUp": {
+      "message": "时间到！"
+   },
+   "scheduledFor": {
+      "message": "设定时间：{time}"
+   },
+   "weatherLoading": {
+      "message": "正在加载天气…"
+   },
+   "weatherUnavailable": {
+      "message": "天气暂不可用"
+   },
+   "errorUnavailable": {
+      "message": "扩展暂不可用"
+   },
+   "dismissLabel": {
+      "message": "关闭"
    }
 }

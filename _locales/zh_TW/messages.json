@@ -268,5 +268,26 @@
    },
    "help": {
       "message": "幫助"
+   },
+   "alarmRinging": {
+      "message": "鬧鐘響了"
+   },
+   "timesUp": {
+      "message": "時間到！"
+   },
+   "scheduledFor": {
+      "message": "設定時間：{time}"
+   },
+   "weatherLoading": {
+      "message": "正在載入天氣…"
+   },
+   "weatherUnavailable": {
+      "message": "天氣暫時無法使用"
+   },
+   "errorUnavailable": {
+      "message": "擴充功能暫時無法使用"
+   },
+   "dismissLabel": {
+      "message": "關閉"
    }
 }

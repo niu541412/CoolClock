@@ -3,7 +3,7 @@
       "message": "Cool Clock"
    },
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": "Rozszerzenie pełne przydatnych funkcji związanych z czasem... a najlepsze jest to, że jest naprawdę COOL."
    },
    "settings": {
       "message": "Opcje"
@@ -111,19 +111,19 @@
       "message": "Wyświetl co nowego w tej wersji rozszerzenia"
    },
    "none": {
-      "message": ""
+      "message": "Brak"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Dzwonek domyślny"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Z adresu URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Dzwonek do wszystkich celów"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarm i dzwonek"
    },
    "close": {
       "message": "Zamknij"
@@ -144,13 +144,13 @@
       "message": "Budzik"
    },
    "stat": {
-      "message": ""
+      "message": "Statystyki"
    },
    "timer": {
-      "message": ""
+      "message": "Stoper"
    },
    "tools": {
-      "message": ""
+      "message": "Narzędzia"
    },
    "day_0": {
       "message": "Niedziela"
@@ -231,16 +231,16 @@
       "message": "Aktualny czas"
    },
    "am": {
-      "message": ""
+      "message": "am"
    },
    "pm": {
-      "message": ""
+      "message": "po południu"
    },
    "saved": {
       "message": "Opcje zostaną zapisane."
    },
    "notsaved": {
-      "message": ""
+      "message": "Zmodyfikowane opcje nie zostały zapisane! Kontynuować mimo to?"
    },
    "ctxcmt": {
       "message": "Bug Report / Komentarz"
@@ -252,7 +252,7 @@
       "message": "Zegara analogowego"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Nie pokazuj tych elementów"
    },
    "chat": {
       "message": "Chat box"
@@ -264,6 +264,30 @@
       "message": "Kalendarz"
    },
    "setalarm": {
-      "message": ""
+      "message": "Ustaw alarm"
+   },
+   "alarmRinging": {
+      "message": "Alarm dzwoni"
+   },
+   "timesUp": {
+      "message": "Czas minął"
+   },
+   "scheduledFor": {
+      "message": "Zaplanowano na {time}"
+   },
+   "weatherLoading": {
+      "message": "Wczytywanie pogody…"
+   },
+   "weatherUnavailable": {
+      "message": "Pogoda jest niedostępna"
+   },
+   "errorUnavailable": {
+      "message": "Rozszerzenie jest niedostępne"
+   },
+   "dismissLabel": {
+      "message": "Zamknij"
+   },
+   "help": {
+      "message": "Pomoc"
    }
 }

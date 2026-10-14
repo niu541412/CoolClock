@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": "Zamanla ilgili birçok kullanışlı özellikle dolu bir uzantı... ve en güzeli, gerçekten çok havalı!"
    },
    "extName": {
       "message": "Cool Saat"
@@ -231,10 +231,10 @@
       "message": "Şu an saat"
    },
    "am": {
-      "message": ""
+      "message": "ÖÖ"
    },
    "pm": {
-      "message": ""
+      "message": "ÖS"
    },
    "saved": {
       "message": "Seçenekler kaydedilir."
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Alarm ayarla"
+   },
+   "alarmRinging": {
+      "message": "Alarm çalıyor"
+   },
+   "timesUp": {
+      "message": "Süre doldu"
+   },
+   "scheduledFor": {
+      "message": "{time} için planlandı"
+   },
+   "weatherLoading": {
+      "message": "Hava durumu yükleniyor…"
+   },
+   "weatherUnavailable": {
+      "message": "Hava durumu kullanılamıyor"
+   },
+   "errorUnavailable": {
+      "message": "Uzantı kullanılamıyor"
+   },
+   "dismissLabel": {
+      "message": "Kapat"
+   },
+   "help": {
+      "message": "Yardım"
    }
 }

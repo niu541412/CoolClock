@@ -268,5 +268,26 @@
    },
    "help": {
       "message": "Ayuda"
+   },
+   "alarmRinging": {
+      "message": "La alarma está sonando"
+   },
+   "timesUp": {
+      "message": "Se acabó el tiempo"
+   },
+   "scheduledFor": {
+      "message": "Programado para las {time}"
+   },
+   "weatherLoading": {
+      "message": "Cargando el tiempo…"
+   },
+   "weatherUnavailable": {
+      "message": "Información meteorológica no disponible"
+   },
+   "errorUnavailable": {
+      "message": "Extensión no disponible"
+   },
+   "dismissLabel": {
+      "message": "Cerrar"
    }
 }

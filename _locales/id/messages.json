@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": "Ekstensi dengan banyak fitur berguna terkait waktu... dan yang terbaik, benar-benar keren."
    },
    "extName": {
       "message": "Cool Clock"
@@ -117,13 +117,13 @@
       "message": "Standar ringtone"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Dari URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Nada dering untuk semua tujuan"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarm & Nada Dering"
    },
    "close": {
       "message": "Tutup"
@@ -147,10 +147,10 @@
       "message": "Statistik"
    },
    "timer": {
-      "message": ""
+      "message": "Pengukur waktu"
    },
    "tools": {
-      "message": ""
+      "message": "Alat"
    },
    "day_0": {
       "message": "Minggu"
@@ -237,10 +237,10 @@
       "message": "pm"
    },
    "saved": {
-      "message": ""
+      "message": "Tersimpan."
    },
    "notsaved": {
-      "message": ""
+      "message": "Opsi yang dimodifikasi belum disimpan! Lanjutkan saja?"
    },
    "ctxcmt": {
       "message": "Bug Report / Komentar"
@@ -252,18 +252,42 @@
       "message": "Jam Analog"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Jangan tampilkan item ini"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Forum"
    },
    "calendar": {
       "message": "Kalender"
    },
    "setalarm": {
-      "message": ""
+      "message": "Atur alarm"
+   },
+   "alarmRinging": {
+      "message": "Alarm berbunyi"
+   },
+   "timesUp": {
+      "message": "Waktu habis"
+   },
+   "scheduledFor": {
+      "message": "Dijadwalkan pada {time}"
+   },
+   "weatherLoading": {
+      "message": "Memuat cuaca…"
+   },
+   "weatherUnavailable": {
+      "message": "Cuaca tidak tersedia"
+   },
+   "errorUnavailable": {
+      "message": "Ekstensi tidak tersedia"
+   },
+   "dismissLabel": {
+      "message": "Tutup"
+   },
+   "help": {
+      "message": "Bantuan"
    }
 }

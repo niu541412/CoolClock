@@ -24,7 +24,7 @@
       "message": "(Máximo 999)"
    },
    "showtodowhenopen": {
-      "message": ""
+      "message": "Mostrar tarefas quando o navegador é aberto"
    },
    "display": {
       "message": "Mostrar"
@@ -66,13 +66,13 @@
       "message": "a animação vai mostrar uma imagem nova por segundo, por isso, mais mem+oria vai ser ocupada"
    },
    "showupdate": {
-      "message": ""
+      "message": "Mostrar página de atualização após cada vez que esta extensão for atualizada"
    },
    "updateiconevery": {
-      "message": ""
+      "message": "Atualize o ícone a cada:"
    },
    "updateiconeverymsg": {
-      "message": ""
+      "message": "Intervalos maiores consomem menos recursos, mas o relógio é atualizado com menos frequência."
    },
    "_1sec": {
       "message": "1 segundo"
@@ -90,10 +90,10 @@
       "message": "30 segundos"
    },
    "_1min": {
-      "message": ""
+      "message": "1 minuto"
    },
    "viewsavedalarm": {
-      "message": ""
+      "message": "Ver alarmes guardados"
    },
    "OK": {
       "message": "OK"
@@ -111,19 +111,19 @@
       "message": "Nova versão"
    },
    "none": {
-      "message": ""
+      "message": "Nenhum"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Toque predefinido"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Do URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Toque para todos os fins"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarme e Toque"
    },
    "close": {
       "message": "Fechar"
@@ -135,22 +135,22 @@
       "message": "(não é usada nenhuma animação em Flash)"
    },
    "version": {
-      "message": ""
+      "message": "Versão"
    },
    "countdown": {
-      "message": ""
+      "message": "Temporizador de contagem decrescente"
    },
    "alarm": {
-      "message": ""
+      "message": "Despertador"
    },
    "stat": {
-      "message": ""
+      "message": "Estatística"
    },
    "timer": {
-      "message": ""
+      "message": "Cronómetro"
    },
    "tools": {
-      "message": ""
+      "message": "Ferramentas"
    },
    "day_0": {
       "message": "Domingo"
@@ -240,7 +240,7 @@
       "message": "As opções são salvas."
    },
    "notsaved": {
-      "message": ""
+      "message": "As opções modificadas não foram guardadas! Continuar mesmo assim?"
    },
    "ctxcmt": {
       "message": "Bug report / Comentários"
@@ -252,18 +252,42 @@
       "message": "Relógio Analógico"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Não mostrar estes itens"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Fórum"
    },
    "calendar": {
-      "message": ""
+      "message": "Calendário"
    },
    "setalarm": {
-      "message": ""
+      "message": "Definir um alarme"
+   },
+   "alarmRinging": {
+      "message": "O alarme está a tocar"
+   },
+   "timesUp": {
+      "message": "O tempo acabou"
+   },
+   "scheduledFor": {
+      "message": "Agendado para as {time}"
+   },
+   "weatherLoading": {
+      "message": "A carregar a previsão do tempo…"
+   },
+   "weatherUnavailable": {
+      "message": "Previsão do tempo indisponível"
+   },
+   "errorUnavailable": {
+      "message": "Extensão indisponível"
+   },
+   "dismissLabel": {
+      "message": "Fechar"
+   },
+   "help": {
+      "message": "Ajuda"
    }
 }

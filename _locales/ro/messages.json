@@ -6,7 +6,7 @@
       "message": "Ceasul Chrome"
    },
    "settings": {
-      "message": "Optiuni"
+      "message": "Opțiuni"
    },
    "hourlytimeannounce": {
       "message": "Notificare continua"
@@ -111,22 +111,22 @@
       "message": "Vezi ce e nou in aceasta versiune."
    },
    "none": {
-      "message": ""
+      "message": "Niciunul"
    },
    "defaultringtone": {
-      "message": ""
+      "message": "Ton de apel implicit"
    },
    "URLringtone": {
-      "message": ""
+      "message": "De la adresa URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Ton de apel pentru toate scopurile"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarmă și ton de apel"
    },
    "close": {
-      "message": "Inchide"
+      "message": "Închide"
    },
    "timeis": {
       "message": "Acum este: "
@@ -135,22 +135,22 @@
       "message": "(Nu sunt un ceas Flash!)"
    },
    "version": {
-      "message": ""
+      "message": "Versiune"
    },
    "countdown": {
-      "message": ""
+      "message": "Cronometru numărătoare inversă"
    },
    "alarm": {
-      "message": ""
+      "message": "Ceas cu alarmă"
    },
    "stat": {
-      "message": ""
+      "message": "Statistici"
    },
    "timer": {
-      "message": ""
+      "message": "Cronometru"
    },
    "tools": {
-      "message": ""
+      "message": "Instrumente"
    },
    "day_0": {
       "message": "Duminica"
@@ -240,7 +240,7 @@
       "message": "Opţiunile sunt salvate."
    },
    "notsaved": {
-      "message": ""
+      "message": "Opțiunile modificate nu au fost salvate! Continuați oricum?"
    },
    "ctxcmt": {
       "message": "Bug report / Observatie"
@@ -252,18 +252,42 @@
       "message": "Ceasul Analog"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Nu afișa aceste elemente"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Forum"
    },
    "calendar": {
-      "message": ""
+      "message": "Calendar"
    },
    "setalarm": {
-      "message": ""
+      "message": "Setați o alarmă"
+   },
+   "alarmRinging": {
+      "message": "Alarma sună"
+   },
+   "timesUp": {
+      "message": "Timpul a expirat"
+   },
+   "scheduledFor": {
+      "message": "Programat pentru {time}"
+   },
+   "weatherLoading": {
+      "message": "Se încarcă vremea…"
+   },
+   "weatherUnavailable": {
+      "message": "Vremea nu este disponibilă"
+   },
+   "errorUnavailable": {
+      "message": "Extensia nu este disponibilă"
+   },
+   "dismissLabel": {
+      "message": "Închide"
+   },
+   "help": {
+      "message": "Ajutor"
    }
 }

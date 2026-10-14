@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": "En utvidelse full av nyttige tidsfunksjoner... og det beste er at den er skikkelig kul."
    },
    "extName": {
       "message": "Cool Clock"
@@ -117,13 +117,13 @@
       "message": "Standard ringetone"
    },
    "URLringtone": {
-      "message": ""
+      "message": "Fra URL"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Ringetone for alle formål"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Alarm og ringetone"
    },
    "close": {
       "message": "Lukk"
@@ -141,16 +141,16 @@
       "message": "Nedtellingstidtaker"
    },
    "alarm": {
-      "message": "Kommentar"
+      "message": "Alarm"
    },
    "stat": {
       "message": "Statistikk"
    },
    "timer": {
-      "message": ""
+      "message": "Stoppeklokke"
    },
    "tools": {
-      "message": ""
+      "message": "Verktøy"
    },
    "day_0": {
       "message": "Søndag"
@@ -231,16 +231,16 @@
       "message": "Klokka er"
    },
    "am": {
-      "message": ""
+      "message": "f.m."
    },
    "pm": {
-      "message": ""
+      "message": "e.m."
    },
    "saved": {
       "message": "Lagret."
    },
    "notsaved": {
-      "message": ""
+      "message": "De endrede alternativene er ikke lagret! Vil du fortsette likevel?"
    },
    "ctxcmt": {
       "message": "Bug rapport / Comments"
@@ -252,18 +252,42 @@
       "message": "Analogklokke"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Ikke vis disse elementene"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Forum"
    },
    "calendar": {
-      "message": ""
+      "message": "Kalender"
    },
    "setalarm": {
-      "message": ""
+      "message": "Still inn en alarm"
+   },
+   "alarmRinging": {
+      "message": "Alarmen ringer"
+   },
+   "timesUp": {
+      "message": "Tiden er ute"
+   },
+   "scheduledFor": {
+      "message": "Planlagt til {time}"
+   },
+   "weatherLoading": {
+      "message": "Laster inn vær…"
+   },
+   "weatherUnavailable": {
+      "message": "Været er ikke tilgjengelig"
+   },
+   "errorUnavailable": {
+      "message": "Utvidelsen er ikke tilgjengelig"
+   },
+   "dismissLabel": {
+      "message": "Lukk"
+   },
+   "help": {
+      "message": "Hjelp"
    }
 }

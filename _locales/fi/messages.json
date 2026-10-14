@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "An extension fully loaded with tons of useful time-related features... But the best part is, it is totally COOL."
+      "message": "Laajennus täynnä hyödyllisiä aikaan liittyviä ominaisuuksia... ja mikä parasta, se on todella COOL."
    },
    "extName": {
       "message": "Cool Clock"
@@ -117,13 +117,13 @@
       "message": "Oletus ringtone"
    },
    "URLringtone": {
-      "message": ""
+      "message": "URL-osoitteesta"
    },
    "allpurpose": {
-      "message": ""
+      "message": "Soittoääni kaikkiin tarkoituksiin"
    },
    "alarmandringtone": {
-      "message": ""
+      "message": "Hälytys ja soittoääni"
    },
    "close": {
       "message": "Sulje"
@@ -138,7 +138,7 @@
       "message": "Versio"
    },
    "countdown": {
-      "message": "Sekuntikello"
+      "message": "Lähtölaskenta"
    },
    "alarm": {
       "message": "Herätyskello"
@@ -150,7 +150,7 @@
       "message": "Sekuntikello"
    },
    "tools": {
-      "message": ""
+      "message": "Työkalut"
    },
    "day_0": {
       "message": "Sunnuntai"
@@ -231,16 +231,16 @@
       "message": "Kello on"
    },
    "am": {
-      "message": ""
+      "message": "ap."
    },
    "pm": {
-      "message": ""
+      "message": "ip."
    },
    "saved": {
       "message": "Valinnat tallennetaan."
    },
    "notsaved": {
-      "message": ""
+      "message": "Muokattuja asetuksia ei ole tallennettu! Jatketaanko silti?"
    },
    "ctxcmt": {
       "message": "Vikailmoitus / Kommentit"
@@ -252,18 +252,42 @@
       "message": "Analogista kelloa"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Älä näytä näitä kohteita"
    },
    "chat": {
       "message": "Chat box"
    },
    "forum": {
-      "message": ""
+      "message": "Foorumi"
    },
    "calendar": {
       "message": "Kalenteri"
    },
    "setalarm": {
-      "message": ""
+      "message": "Aseta hälytys"
+   },
+   "alarmRinging": {
+      "message": "Herätys soi"
+   },
+   "timesUp": {
+      "message": "Aika loppui"
+   },
+   "scheduledFor": {
+      "message": "Asetettu ajalle {time}"
+   },
+   "weatherLoading": {
+      "message": "Säätietoja ladataan…"
+   },
+   "weatherUnavailable": {
+      "message": "Säätietoja ei ole saatavilla"
+   },
+   "errorUnavailable": {
+      "message": "Laajennus ei ole käytettävissä"
+   },
+   "dismissLabel": {
+      "message": "Sulje"
+   },
+   "help": {
+      "message": "Ohje"
    }
 }

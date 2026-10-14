@@ -24,7 +24,7 @@
       "message": "(Maximálně: 999)"
    },
    "showtodowhenopen": {
-      "message": ""
+      "message": "Zobrazit úkoly při spuštění prohlížeče"
    },
    "display": {
       "message": "Zobrazení"
@@ -252,7 +252,7 @@
       "message": "Analogové hodiny"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Nezobrazovat tyto položky"
    },
    "chat": {
       "message": "Chat box"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Nastavení budíku"
+   },
+   "alarmRinging": {
+      "message": "Budík zvoní"
+   },
+   "timesUp": {
+      "message": "Čas vypršel"
+   },
+   "scheduledFor": {
+      "message": "Naplánováno na {time}"
+   },
+   "weatherLoading": {
+      "message": "Načítání počasí…"
+   },
+   "weatherUnavailable": {
+      "message": "Počasí není dostupné"
+   },
+   "errorUnavailable": {
+      "message": "Rozšíření není dostupné"
+   },
+   "dismissLabel": {
+      "message": "Zavřít"
+   },
+   "help": {
+      "message": "Nápověda"
    }
 }

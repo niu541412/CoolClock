@@ -72,7 +72,7 @@
       "message": "Icon aktualisieren alle: "
    },
    "updateiconeverymsg": {
-      "message": ""
+      "message": "Längere Intervalle sparen Ressourcen, aber die Uhr wird seltener aktualisiert."
    },
    "_1sec": {
       "message": "1 Sekunde"
@@ -138,10 +138,10 @@
       "message": "Version"
    },
    "countdown": {
-      "message": "Countdown Timer"
+      "message": "Countdown"
    },
    "alarm": {
-      "message": "Alarm Uhr"
+      "message": "Wecker"
    },
    "stat": {
       "message": "Statistiken"
@@ -252,7 +252,7 @@
       "message": "Analog Uhr"
    },
    "ctxhide": {
-      "message": ""
+      "message": "Diese Elemente nicht anzeigen"
    },
    "chat": {
       "message": "Chat box"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "Alarm einstellen"
+   },
+   "alarmRinging": {
+      "message": "Der Wecker klingelt"
+   },
+   "timesUp": {
+      "message": "Die Zeit ist um"
+   },
+   "scheduledFor": {
+      "message": "Geplant für {time}"
+   },
+   "weatherLoading": {
+      "message": "Wetter wird geladen…"
+   },
+   "weatherUnavailable": {
+      "message": "Wetter nicht verfügbar"
+   },
+   "errorUnavailable": {
+      "message": "Erweiterung nicht verfügbar"
+   },
+   "dismissLabel": {
+      "message": "Schließen"
+   },
+   "help": {
+      "message": "Hilfe"
    }
 }

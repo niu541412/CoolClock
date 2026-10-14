@@ -147,7 +147,7 @@
       "message": "統計"
    },
    "timer": {
-      "message": ""
+      "message": "ストップウォッチ"
    },
    "tools": {
       "message": "道具"
@@ -265,5 +265,29 @@
    },
    "setalarm": {
       "message": "アラーム"
+   },
+   "alarmRinging": {
+      "message": "アラームが鳴っています"
+   },
+   "timesUp": {
+      "message": "時間です"
+   },
+   "scheduledFor": {
+      "message": "{time} に設定"
+   },
+   "weatherLoading": {
+      "message": "天気を読み込み中…"
+   },
+   "weatherUnavailable": {
+      "message": "天気を取得できません"
+   },
+   "errorUnavailable": {
+      "message": "拡張機能を利用できません"
+   },
+   "dismissLabel": {
+      "message": "閉じる"
+   },
+   "help": {
+      "message": "ヘルプ"
    }
 }

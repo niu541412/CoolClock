@@ -9,6 +9,7 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))['version']
+LOCALE_FILES = sorted((ROOT / '_locales').glob('*/messages.json'))
 
 
 def changelog_items():
@@ -31,6 +32,9 @@ def changelog_items():
 
 
 def check_archives():
+    locale_names = {f'_locales/{path.parent.name}/messages.json' for path in LOCALE_FILES}
+    if not locale_names or '_locales/en/messages.json' not in locale_names:
+        raise SystemExit('No default translation catalog')
     for browser in ('chrome', 'firefox'):
         path = ROOT / 'dist' / f'cool-clock-mv3-{browser}.zip'
         with ZipFile(path) as archive:
@@ -47,8 +51,23 @@ def check_archives():
             scripts = [background['service_worker']] if browser == 'chrome' else background['scripts']
             if any(script not in names for script in scripts):
                 raise SystemExit(f'{path.name}: missing background script')
-            if '_locales/en/messages.json' not in names:
-                raise SystemExit(f'{path.name}: missing translations')
+            if not locale_names <= names:
+                raise SystemExit(f'{path.name}: missing translations: {sorted(locale_names - names)}')
+            english = json.loads(archive.read('_locales/en/messages.json'))
+            keys = set(english)
+            for locale_name in sorted(locale_names):
+                messages = json.loads(archive.read(locale_name))
+                if set(messages) != keys:
+                    raise SystemExit(f'{path.name}: {locale_name} has missing or extra keys')
+                blanks = [key for key, entry in messages.items()
+                          if not isinstance(entry.get('message'), str) or not entry['message'].strip()]
+                if blanks:
+                    raise SystemExit(f'{path.name}: {locale_name} has blank messages: {blanks}')
+                for key, entry in messages.items():
+                    expected = set(re.findall(r'\{[a-zA-Z]+\}', english[key]['message']))
+                    actual = set(re.findall(r'\{[a-zA-Z]+\}', entry['message']))
+                    if actual != expected:
+                        raise SystemExit(f'{path.name}: {locale_name}/{key} has different placeholders')
         print(f'Checked {path.name}')
 
 
