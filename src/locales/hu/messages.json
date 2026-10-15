@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Keresés..."
    },
+   "optionsAutoLocation": {
+      "message": "Böngésző helyzetének automatikus használata"
+   },
+   "optionsCurrentLocation": {
+      "message": "Jelenlegi hely"
+   },
    "optionsNotificationSound": {
       "message": "Óránkénti bejelentés hang engedélyezése"
    },

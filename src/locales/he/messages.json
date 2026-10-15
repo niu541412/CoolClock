@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "חפש..."
    },
+   "optionsAutoLocation": {
+      "message": "שימוש אוטומטי במיקום הדפדפן"
+   },
+   "optionsCurrentLocation": {
+      "message": "המיקום הנוכחי"
+   },
    "optionsNotificationSound": {
       "message": "אפשר צליל הודעה לפי שעה"
    },

@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Търсене..."
    },
+   "optionsAutoLocation": {
+      "message": "Автоматично определяне на местоположението"
+   },
+   "optionsCurrentLocation": {
+      "message": "Текущо местоположение"
+   },
    "optionsNotificationSound": {
       "message": "Активиране на звука за почасово съобщение за час"
    },

@@ -248,8 +248,36 @@ function readAudio(input, callback) {
 
 function setupWeather() {
   const weather = JSON.parse(localStorage.weather || '{}');
+  const saveLocation = (name, latitude, longitude, woeid, mode = 'manual') => {
+    const selected = {enabled: true, name, woeid, latitude, longitude, mode,
+      unit: $id('weather_fahrenheit').checked ? 'fahrenheit' : 'celsius'};
+    localStorage.weather = JSON.stringify(selected);
+    $id('weather_woeid').value = woeid;
+    $id('weather_name').textContent = name;
+    $id('weather').checked = true;
+    $id('weather_auto').checked = mode === 'device';
+    refreshRequirements();
+    syncLegacyOption('weather');
+  };
   $id('weather').checked = !!weather.enabled;
   $id('weather_fahrenheit').checked = weather.unit === 'fahrenheit';
+  $id('weather_auto').checked = weather.mode === 'device';
+  if (weather.mode === 'device') {
+    weather.name = i18n('optionsCurrentLocation');
+    localStorage.weather = JSON.stringify(weather);
+    $id('weather_name').textContent = weather.name;
+  }
+  legacyApi.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    const latest = changes.coolClockState?.newValue?.settings?.weather;
+    const local = JSON.parse(localStorage.weather || '{}');
+    if (local.mode !== 'device' || latest?.mode !== 'device') return;
+    const coords = `${latest.latitude.toFixed(3)}, ${latest.longitude.toFixed(3)}`;
+    localStorage.weather = JSON.stringify({...local, name: i18n('optionsCurrentLocation'),
+      latitude: latest.latitude, longitude: latest.longitude, woeid: coords});
+    $id('weather_name').textContent = i18n('optionsCurrentLocation');
+    $id('weather_woeid').value = coords;
+  });
   $id('weather').addEventListener('change', function() {
     const value = JSON.parse(localStorage.weather || '{}');
     value.enabled = this.checked;
@@ -262,6 +290,40 @@ function setupWeather() {
     value.unit = this.checked ? 'fahrenheit' : 'celsius';
     localStorage.weather = JSON.stringify(value);
     syncLegacyOption('weather');
+  });
+  $id('weather_auto').addEventListener('change', async function() {
+    if (!this.checked) {
+      this.disabled = true;
+      try {
+        const result = await legacyApi.runtime.sendMessage({target: 'worker', type: 'get'}).catch(() => null);
+        const selected = result?.ok ? result.data.settings.weather : null;
+        const current = selected || JSON.parse(localStorage.weather || '{}');
+        if (Number.isFinite(current.latitude) && Number.isFinite(current.longitude)) {
+          const coords = `${current.latitude.toFixed(3)}, ${current.longitude.toFixed(3)}`;
+          saveLocation(coords, current.latitude, current.longitude, coords);
+        } else {
+          current.mode = 'manual';
+          localStorage.weather = JSON.stringify(current);
+          syncLegacyOption('weather');
+        }
+      } finally {
+        this.disabled = false;
+        refreshRequirements();
+      }
+      return;
+    }
+    this.disabled = true;
+    try {
+      const {latitude, longitude} = await getCurrentWeatherPosition();
+      const coords = `${latitude.toFixed(3)}, ${longitude.toFixed(3)}`;
+      saveLocation(i18n('optionsCurrentLocation'), latitude, longitude, coords, 'device');
+    } catch (error) {
+      this.checked = false;
+      modalDialog({title: i18n('optionsNotice'), content: error.message || i18n('optionsSearchError')});
+    } finally {
+      this.disabled = false;
+      refreshRequirements();
+    }
   });
   $id('weather_search').addEventListener('click', event => {
     event.preventDefault();
@@ -313,15 +375,7 @@ function setupWeather() {
           link.textContent = label;
           link.addEventListener('click', click => {
             click.preventDefault();
-            const selected = {enabled: true, name: label, woeid: String(place.id),
-              latitude: place.latitude, longitude: place.longitude,
-              unit: $id('weather_fahrenheit').checked ? 'fahrenheit' : 'celsius'};
-            localStorage.weather = JSON.stringify(selected);
-            $id('weather_woeid').value = selected.woeid;
-            $id('weather_name').textContent = label;
-            $id('weather').checked = true;
-            refreshRequirements();
-            syncLegacyOption('weather');
+            saveLocation(label, place.latitude, place.longitude, String(place.id));
             hideBootstrapModal(modal);
           });
           results.append(link);

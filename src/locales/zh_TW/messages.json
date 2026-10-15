@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "搜尋…"
    },
+   "optionsAutoLocation": {
+      "message": "自動使用瀏覽器定位"
+   },
+   "optionsCurrentLocation": {
+      "message": "目前位置"
+   },
    "optionsNotificationSound": {
       "message": "啟用整點報時音效"
    },

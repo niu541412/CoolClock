@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Søk..."
    },
+   "optionsAutoLocation": {
+      "message": "Bruk nettleserens posisjon automatisk"
+   },
+   "optionsCurrentLocation": {
+      "message": "Gjeldende posisjon"
+   },
    "optionsNotificationSound": {
       "message": "Aktiver timelig kunngjøringslyd"
    },

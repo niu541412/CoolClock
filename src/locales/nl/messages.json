@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Zoeken..."
    },
+   "optionsAutoLocation": {
+      "message": "Browserlocatie automatisch gebruiken"
+   },
+   "optionsCurrentLocation": {
+      "message": "Huidige locatie"
+   },
    "optionsNotificationSound": {
       "message": "Schakel het geluid van de uuraankondiging in"
    },

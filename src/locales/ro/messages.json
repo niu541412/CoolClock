@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Cauta..."
    },
+   "optionsAutoLocation": {
+      "message": "Folosește automat locația browserului"
+   },
+   "optionsCurrentLocation": {
+      "message": "Locația curentă"
+   },
    "optionsNotificationSound": {
       "message": "Activați sunetul de anunț orar"
    },

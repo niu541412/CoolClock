@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "جستجو..."
    },
+   "optionsAutoLocation": {
+      "message": "استفادهٔ خودکار از موقعیت مکانی مرورگر"
+   },
+   "optionsCurrentLocation": {
+      "message": "مکان فعلی"
+   },
    "optionsNotificationSound": {
       "message": "صدای اعلام زمان ساعتی را فعال کنید"
    },

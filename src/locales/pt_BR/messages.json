@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Pesquisar..."
    },
+   "optionsAutoLocation": {
+      "message": "Usar automaticamente a localização do navegador"
+   },
+   "optionsCurrentLocation": {
+      "message": "Localização atual"
+   },
    "optionsNotificationSound": {
       "message": "Ativar som de anúncio de hora em hora"
    },

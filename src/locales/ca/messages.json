@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Cerca..."
    },
+   "optionsAutoLocation": {
+      "message": "Utilitza automàticament la ubicació del navegador"
+   },
+   "optionsCurrentLocation": {
+      "message": "Ubicació actual"
+   },
    "optionsNotificationSound": {
       "message": "Activa el so de l'anunci horari"
    },

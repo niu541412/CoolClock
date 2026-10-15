@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Искать..."
    },
+   "optionsAutoLocation": {
+      "message": "Автоматически использовать местоположение браузера"
+   },
+   "optionsCurrentLocation": {
+      "message": "Текущее местоположение"
+   },
    "optionsNotificationSound": {
       "message": "Включить звук ежечасного объявления времени"
    },

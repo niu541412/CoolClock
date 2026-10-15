@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Αναζήτηση..."
    },
+   "optionsAutoLocation": {
+      "message": "Αυτόματη χρήση τοποθεσίας προγράμματος περιήγησης"
+   },
+   "optionsCurrentLocation": {
+      "message": "Τρέχουσα τοποθεσία"
+   },
    "optionsNotificationSound": {
       "message": "Ενεργοποιήστε τον ήχο Ωριαίας Ανακοίνωσης"
    },

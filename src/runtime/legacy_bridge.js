@@ -179,7 +179,13 @@ var LegacyBackground = {
       keepawake: String(saved.keepAwake ?? true),
     };
     if (saved.language) tracked.language = saved.language;
-    if (saved.weather) tracked.weather = JSON.stringify({enabled: true, name: saved.weather.name, latitude: saved.weather.latitude, longitude: saved.weather.longitude, woeid: '', unit: saved.weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'});
+    if (saved.weather) tracked.weather = JSON.stringify({
+      enabled: true, name: saved.weather.name,
+      latitude: saved.weather.latitude, longitude: saved.weather.longitude,
+      woeid: saved.weather.mode === 'device' ? `${saved.weather.latitude.toFixed(3)}, ${saved.weather.longitude.toFixed(3)}` : '',
+      mode: saved.weather.mode === 'device' ? 'device' : 'manual',
+      unit: saved.weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'
+    });
     if (saved.clockDefinition) tracked.clockDefinition = JSON.stringify(saved.clockDefinition);
     else localStorage.removeItem('clockDefinition');
     for (const [key, value] of Object.entries(tracked)) localStorage.setItem(key, value);
@@ -263,6 +269,7 @@ function syncLegacyOption(key) {
     language: localStorage.language || legacyApi.i18n.getUILanguage(),
     weather: weather.enabled && Number.isFinite(weather.latitude) && Number.isFinite(weather.longitude) ?
       {name: weather.name || '', latitude: weather.latitude, longitude: weather.longitude,
+        mode: weather.mode === 'device' ? 'device' : 'manual',
         unit: weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'} : null
   });
 }

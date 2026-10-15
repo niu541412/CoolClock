@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Search..."
    },
+   "optionsAutoLocation": {
+      "message": "Use browser location automatically"
+   },
+   "optionsCurrentLocation": {
+      "message": "Current location"
+   },
    "optionsNotificationSound": {
       "message": "Enable Hourly Time Announcement sound"
    },

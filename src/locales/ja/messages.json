@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "検索..."
    },
+   "optionsAutoLocation": {
+      "message": "ブラウザーの位置情報を自動的に使用"
+   },
+   "optionsCurrentLocation": {
+      "message": "現在地"
+   },
    "optionsNotificationSound": {
       "message": "毎時アナウンス音を有効にする"
    },

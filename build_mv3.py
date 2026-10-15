@@ -116,7 +116,7 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
         popup_html = source_file('new_popup2.html').read_text(encoding='utf-8-sig')
         popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', popup_html)
         popup_html = popup_html.replace('<head>', '<head><meta charset="utf-8">', 1)
-        popup_html = popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_popup.js" defer></script></head>', 1)
+        popup_html = popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/device_location.js" defer></script><script src="/mv3/legacy_popup.js" defer></script></head>', 1)
         archive.writestr('new_popup2.html', popup_html)
         old_popup_html = source_file('popup.html').read_text(encoding='utf-8-sig')
         old_popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', old_popup_html)

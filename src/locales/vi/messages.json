@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Tìm kiếm..."
    },
+   "optionsAutoLocation": {
+      "message": "Tự động dùng vị trí của trình duyệt"
+   },
+   "optionsCurrentLocation": {
+      "message": "Vị trí hiện tại"
+   },
    "optionsNotificationSound": {
       "message": "Bật âm thanh Thông báo Thời gian Hàng giờ"
    },

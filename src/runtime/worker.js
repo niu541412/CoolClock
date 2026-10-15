@@ -385,6 +385,22 @@ async function handleMessage(message) {
   const data = await state();
   switch (message.type) {
     case 'get': return data;
+    case 'refresh-device-weather': {
+      const weather = data.settings.weather;
+      if (weather?.mode !== 'device') return data;
+      const latitude = message.latitude;
+      const longitude = message.longitude;
+      if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
+          !Number.isFinite(longitude) || longitude < -180 || longitude > 180) throw Error('Invalid location');
+      const changed = Math.abs(weather.latitude - latitude) >= 0.001 ||
+        Math.abs(weather.longitude - longitude) >= 0.001;
+      const name = typeof message.name === 'string' ? message.name.trim().slice(0, 150) : '';
+      if (!changed && name === weather.name) return data;
+      weather.latitude = latitude;
+      weather.longitude = longitude;
+      if (name) weather.name = name;
+      return save(data);
+    }
     case 'test-hourly': await notifyHourly(data); return data;
     case 'get-stats': {
       const usage = (await ext.storage.local.get(STATS_KEY))[STATS_KEY] || {enabled: true, history: []};

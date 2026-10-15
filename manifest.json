@@ -24,6 +24,7 @@
     "alarms",
     "notifications",
     "storage",
+    "geolocation",
     "offscreen",
     "contextMenus",
     "tts",

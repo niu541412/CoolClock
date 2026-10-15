@@ -1,20 +1,19 @@
 const weatherApi = globalThis.browser || globalThis.chrome;
-const chinese = navigator.language.toLowerCase().startsWith('zh');
 const conditionNames = {
-  0: ['Clear sky', '晴'], 1: ['Mainly clear', '大致晴朗'], 2: ['Partly cloudy', '局部多云'], 3: ['Cloudy', '多云'],
-  45: ['Fog', '雾'], 48: ['Fog', '雾'], 51: ['Drizzle', '毛毛雨'], 53: ['Drizzle', '毛毛雨'], 55: ['Drizzle', '毛毛雨'],
-  56: ['Freezing drizzle', '冻雨'], 57: ['Freezing drizzle', '冻雨'], 61: ['Rain', '雨'], 63: ['Rain', '雨'], 65: ['Heavy rain', '大雨'],
-  66: ['Freezing rain', '冻雨'], 67: ['Freezing rain', '冻雨'], 71: ['Snow', '雪'], 73: ['Snow', '雪'], 75: ['Heavy snow', '大雪'],
-  77: ['Snow grains', '雪粒'], 80: ['Rain showers', '阵雨'], 81: ['Rain showers', '阵雨'], 82: ['Heavy rain showers', '强阵雨'],
-  85: ['Snow showers', '阵雪'], 86: ['Snow showers', '阵雪'], 95: ['Thunderstorm', '雷暴'], 96: ['Thunderstorm', '雷暴'], 99: ['Thunderstorm', '雷暴']
+  0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Cloudy',
+  45: 'Fog', 48: 'Fog', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle',
+  56: 'Freezing drizzle', 57: 'Freezing drizzle', 61: 'Rain', 63: 'Rain', 65: 'Heavy rain',
+  66: 'Freezing rain', 67: 'Freezing rain', 71: 'Snow', 73: 'Snow', 75: 'Heavy snow',
+  77: 'Snow grains', 80: 'Rain showers', 81: 'Rain showers', 82: 'Heavy rain showers',
+  85: 'Snow showers', 86: 'Snow showers', 95: 'Thunderstorm', 96: 'Thunderstorm', 99: 'Thunderstorm'
 };
-const condition = code => conditionNames[code]?.[chinese ? 1 : 0] || (chinese ? '天气' : 'Weather');
+const condition = code => conditionNames[code] || 'Weather';
 
 async function loadWeather() {
   const result = await weatherApi.runtime.sendMessage({target: 'worker', type: 'get'});
   if (!result?.ok) throw Error(result?.error || 'Unable to load weather settings');
-  const location = result.data.settings.weather;
-  if (!location) throw Error(chinese ? '请先在设置中选择天气地点。' : 'Choose a weather location in Settings.');
+  const location = await resolveWeatherLocation(result.data.settings.weather, weatherApi);
+  if (!location) throw Error('Choose a weather location in Settings.');
   const fahrenheit = location.unit === 'fahrenheit';
   const temperature = value => `${Math.round(fahrenheit ? value * 9 / 5 + 32 : value)}°${fahrenheit ? 'F' : 'C'}`;
   document.title = `${location.name} - Cool Clock`;
@@ -25,9 +24,9 @@ async function loadWeather() {
   const data = await response.json();
   const humidity = data.current?.relative_humidity_2m;
   const humidityText = typeof humidity === 'number' && Number.isFinite(humidity) ?
-    ` · ${chinese ? '湿度' : 'Humidity'} ${Math.round(humidity)}%` : '';
+    ` · Humidity ${Math.round(humidity)}%` : '';
   document.getElementById('current').textContent =
-    `${chinese ? '现在' : 'Now'}: ${temperature(data.current.temperature_2m)} · ${condition(data.current.weather_code)}${humidityText}`;
+    `Now: ${temperature(data.current.temperature_2m)} · ${condition(data.current.weather_code)}${humidityText}`;
   const cards = data.daily.time.map((date, index) => {
     const card = document.createElement('div');
     card.className = 'day';
@@ -41,5 +40,16 @@ async function loadWeather() {
     return card;
   });
   document.getElementById('forecast').replaceChildren(...cards);
+  document.getElementById('status').textContent = '';
 }
-loadWeather().catch(error => { document.getElementById('status').textContent = error.message; });
+let weatherLoading = false;
+async function refreshWeather() {
+  if (weatherLoading) return;
+  weatherLoading = true;
+  try { await loadWeather(); }
+  catch (error) { document.getElementById('status').textContent = error.message; }
+  finally { weatherLoading = false; }
+}
+refreshWeather();
+setInterval(() => { if (!document.hidden) refreshWeather(); }, 300000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshWeather(); });

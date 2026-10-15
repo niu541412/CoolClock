@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Cari..."
    },
+   "optionsAutoLocation": {
+      "message": "Gunakan lokasi peramban secara otomatis"
+   },
+   "optionsCurrentLocation": {
+      "message": "Lokasi saat ini"
+   },
    "optionsNotificationSound": {
       "message": "Aktifkan suara Pengumuman Waktu Setiap Jam"
    },

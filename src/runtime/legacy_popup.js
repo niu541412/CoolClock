@@ -94,6 +94,7 @@ class TitleWeather extends HTMLElement {
     if (!location) return;
     root.getElementById('loading-status').textContent = t('weatherLoading');
     try {
+      location = await resolveWeatherLocation(location, popupApi);
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=temperature_2m,relative_humidity_2m,weather_code`;
       const response = await fetch(url);
       if (!response.ok) throw Error(String(response.status));
@@ -215,6 +216,14 @@ async function initPopup() {
     item('alarm-status').setAttribute('message', error.message);
   }
   setInterval(updateStatuses, 1000);
+  setInterval(async () => {
+    try {
+      popupState = await request('get');
+      await item('title').querySelector('title-weather').update(popupState.settings.weather);
+    } catch (error) {
+      console.warn('Cool Clock: unable to refresh popup weather', error);
+    }
+  }, 300000);
   item('alarm-status').addEventListener('click', () => openWindow('alarm_interface.html', 785, 490));
   item('countdown-status').addEventListener('click', () => openWindow('countdown_interface.html', 700, 450));
   item('stopwatch-status').addEventListener('click', () => openWindow('timer.html', 500, 200));

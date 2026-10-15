@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Hae..."
    },
+   "optionsAutoLocation": {
+      "message": "Käytä selaimen sijaintia automaattisesti"
+   },
+   "optionsCurrentLocation": {
+      "message": "Nykyinen sijainti"
+   },
    "optionsNotificationSound": {
       "message": "Ota käyttöön tuntikohtainen ilmoitusääni"
    },

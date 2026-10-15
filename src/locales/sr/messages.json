@@ -395,6 +395,12 @@
    "optionsSearch": {
       "message": "Тражи..."
    },
+   "optionsAutoLocation": {
+      "message": "Аутоматски користи локацију прегледача"
+   },
+   "optionsCurrentLocation": {
+      "message": "Тренутна локација"
+   },
    "optionsNotificationSound": {
       "message": "Омогући звук најаве по сату"
    },
