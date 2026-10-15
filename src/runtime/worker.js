@@ -3,7 +3,7 @@ var ext = globalThis.browser || globalThis.chrome;
 const STATE_KEY = 'coolClockState';
 const STATS_KEY = 'coolClockUsage';
 const PREFIX = 'coolclock:';
-const DEFAULT_STATE = {alarms: [], countdowns: [], stopwatch: {elapsed: 0, started: null}, todos: {}, settings: {hour12: true, digital: true, timezoneEnabled: false, timezone: null, keepAwake: true, badge: false, icon: true, badgeStatic: false, badgeColor: '#428bca', clockColor: '#000000', clockDefinition: null, popupVersion: '1', contextMenuEnabled: true, sound: true, ringtone: 'default', ringLoop: false, hourlyEnabled: true, hourlyDuration: 7, hourlyVoice: false, hourlyVoiceText: 'It is %h %P.', hourlySound: 'none', hourlyStyle: 'default', hourlyBgColor: '#0772a1', hourlyManualClose: false, weather: null, timerPresetSaved: false, timerPreset: {seconds: 300, repeat: false, text: '', color: 'primary'}}};
+const DEFAULT_STATE = {alarms: [], countdowns: [], stopwatch: {elapsed: 0, started: null}, todos: {}, settings: {hour12: true, digital: true, timezoneEnabled: false, timezone: null, keepAwake: true, badge: false, icon: true, badgeStatic: false, badgeColor: '#428bca', clockColor: '#000000', clockDefinition: null, digitalFontSizeVersion: 2, popupVersion: '1', contextMenuEnabled: true, sound: true, ringtone: 'default', ringLoop: false, hourlyEnabled: true, hourlyDuration: 7, hourlyVoice: false, hourlyVoiceText: 'It is %h %P.', hourlySound: 'none', hourlyStyle: 'default', hourlyBgColor: '#0772a1', hourlyManualClose: false, weather: null, timerPresetSaved: false, timerPreset: {seconds: 300, repeat: false, text: '', color: 'primary'}}};
 let work = Promise.resolve();
 let offscreenOpening;
 let iconFontPromise;
@@ -26,6 +26,17 @@ async function ensureOffscreen() {
 
 function parseLegacy(text, fallback) {
   try { return text == null ? fallback : JSON.parse(text); } catch { return fallback; }
+}
+
+function upgradeDefaultDigitalFontSizes(settings) {
+  const digital = settings?.clockDefinition?.digital;
+  if (!digital || digital.width !== 19 || digital.height !== 19 || digital.font !== 'default' ||
+      digital.hrFontSize !== 18 || digital.minFontSize !== 18 ||
+      !Array.isArray(digital.hrXY) || digital.hrXY[0] !== 0 || digital.hrXY[1] !== 15 ||
+      !Array.isArray(digital.minXY) || digital.minXY[0] !== 8 || digital.minXY[1] !== 32) return false;
+  digital.hrFontSize = 20;
+  digital.minFontSize = 16;
+  return true;
 }
 
 async function beginSession() {
@@ -51,10 +62,17 @@ async function touchSession() {
 async function state() {
   const saved = (await ext.storage.local.get(STATE_KEY))[STATE_KEY];
   if (saved) {
+    let updated = false;
+    if (saved.settings && saved.settings.digitalFontSizeVersion !== 2) {
+      upgradeDefaultDigitalFontSizes(saved.settings);
+      saved.settings.digitalFontSizeVersion = 2;
+      updated = true;
+    }
     if (saved.settings?.language === 'ar') {
       saved.settings.language = 'fa';
-      await ext.storage.local.set({[STATE_KEY]: saved});
+      updated = true;
     }
+    if (updated) await ext.storage.local.set({[STATE_KEY]: saved});
     globalThis.coolClockLanguage = saved.settings?.language || '';
     return saved;
   }
@@ -99,6 +117,7 @@ async function state() {
   migrated.settings.badgeColor = old.badge_color || '#428bca';
   migrated.settings.clockColor = old.clockcolor_value || '#000000';
   migrated.settings.clockDefinition = parseLegacy(old.clockDefinition, null);
+  upgradeDefaultDigitalFontSizes(migrated.settings);
   migrated.settings.popupVersion = old.popup_version || '1';
   migrated.settings.contextMenuEnabled = old.context_menu_item_enable !== 'false';
   migrated.settings.language = old.language === 'ar' ? 'fa' : (old.language || '');
@@ -221,9 +240,9 @@ async function updateBadge(data) {
     context.fillStyle = settings.clockColor || '#000000';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.hrFontSize) || 18))}px ${iconFont}`;
+    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.hrFontSize) || 20))}px ${iconFont}`;
     context.fillText(String(hour).padStart(2, '0'), 16, 10, 32);
-    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.minFontSize) || 18))}px ${iconFont}`;
+    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.minFontSize) || 16))}px ${iconFont}`;
     context.fillText(String(now.getMinutes()).padStart(2, '0'), 16, 25, 32);
   } else {
     const center = 16;

@@ -6,11 +6,12 @@ from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
 root = Path(__file__).resolve().parent
+src = root / 'src'
 manifest = json.loads((root / 'manifest.json').read_text())
-source = sorted(path for path in (root / 'mv3').rglob('*') if path.is_file())
-original_assets = [root / path for path in ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.mp3')]
-legacy_popup = root / 'new_popup2.html'
-legacy_assets = [root / path for path in (
+runtime = src / 'runtime'
+runtime_files = sorted(path for path in runtime.rglob('*') if path.is_file())
+original_assets = ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.mp3')
+legacy_assets = (
     'scripts/new_popup2/css.css',
     'scripts/alarm_interface/css.css', 'scripts/countdown_interface/css.css',
     'scripts/timer/css.css', 'scripts/timer/js.js', 'scripts/stopwatch_split/js.js',
@@ -41,13 +42,39 @@ legacy_assets = [root / path for path in (
     'images/facebook_icon.gif', 'images/icons/clock_edit.png', 'images/icons/arrow_in.png',
     'images/icons/control_rewind_blue.png', 'images/icons/control_rewind.png',
     'images/icons/control_fastforward_blue.png', 'images/icons/control_fastforward.png',
-)]
+)
 output_dir = root / 'dist'
 output_dir.mkdir(exist_ok=True)
 
 
+def source_file(package_path):
+    """Find a source file without changing its established extension URL."""
+    path = Path(package_path)
+    groups = {
+        'mv3': src / 'runtime',
+        'scripts': src / 'ui',
+        'bootstrap': src / 'vendor' / 'bootstrap',
+        'd3': src / 'vendor' / 'd3',
+        'fonts': src / 'assets' / 'fonts',
+        'icons': src / 'assets' / 'icons',
+        'images': src / 'assets' / 'images',
+        'sounds': src / 'assets' / 'sounds',
+    }
+    if len(path.parts) > 1:
+        return groups[path.parts[0]].joinpath(*path.parts[1:])
+    if path.suffix == '.html':
+        return src / 'pages' / path
+    if path.name in ('translation.js', 'jstimezone.js', 'tools.js', 'input.css'):
+        return src / 'shared' / path
+    if path.name == 'n_icon.png':
+        return src / 'assets' / 'icons' / path
+    if path.name in ('check.png', 'radio.png', 'radio2.png'):
+        return src / 'assets' / 'images' / path
+    raise ValueError(f'Unmapped package path: {package_path}')
+
+
 def locale_files():
-    for path in sorted((root / '_locales').glob('*/messages.json')):
+    for path in sorted((src / 'locales').glob('*/messages.json')):
         language = path.parent.name
         contents = path.read_text(encoding='utf-8-sig')
         json.loads(contents)
@@ -69,63 +96,66 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
     output = output_dir / f'cool-clock-mv3-{browser}.zip'
     with ZipFile(output, 'w', ZIP_DEFLATED) as archive:
         archive.writestr('manifest.json', json.dumps(configured, ensure_ascii=False, indent=2) + '\n')
-        for path in source + original_assets:
+        for path in runtime_files:
             if browser == 'firefox' and path.name == 'offscreen.html':
                 continue
-            archive.write(path, path.relative_to(root))
+            archive.write(path, Path('mv3') / path.relative_to(runtime))
+        for package_path in original_assets:
+            archive.write(source_file(package_path), package_path)
         catalog = {}
         for locale_path, contents in locale_files():
             language = locale_path.split('/')[1]
             catalog[language] = {key: value['message'] for key, value in json.loads(contents).items()}
         archive.writestr('mv3/locale_catalog.js', 'globalThis.COOL_CLOCK_LOCALES = ' + json.dumps(catalog, ensure_ascii=False) + ';\n')
-        for path in legacy_assets:
-            if path.relative_to(root).as_posix() == 'scripts/timer/css.css':
-                archive.writestr('scripts/timer/css.css', path.read_text(encoding='utf-8-sig').replace('Roboto-Regular.tff', 'Roboto-Regular.ttf'))
+        for package_path in legacy_assets:
+            path = source_file(package_path)
+            if package_path == 'scripts/timer/css.css':
+                archive.writestr(package_path, path.read_text(encoding='utf-8-sig').replace('Roboto-Regular.tff', 'Roboto-Regular.ttf'))
             else:
-                archive.write(path, path.relative_to(root))
-        popup_html = legacy_popup.read_text(encoding='utf-8-sig')
+                archive.write(path, package_path)
+        popup_html = source_file('new_popup2.html').read_text(encoding='utf-8-sig')
         popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', popup_html)
         popup_html = popup_html.replace('<head>', '<head><meta charset="utf-8">', 1)
         popup_html = popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_popup.js" defer></script></head>', 1)
         archive.writestr('new_popup2.html', popup_html)
-        old_popup_html = (root / 'popup.html').read_text(encoding='utf-8-sig')
+        old_popup_html = source_file('popup.html').read_text(encoding='utf-8-sig')
         old_popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', old_popup_html)
         old_popup_html = old_popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_old_popup.js" defer></script></head>', 1)
         archive.writestr('popup.html', old_popup_html)
-        speech_html = (root / 'speech.html').read_text(encoding='utf-8-sig')
+        speech_html = source_file('speech.html').read_text(encoding='utf-8-sig')
         speech_html = re.sub(r'<script\b[^>]*>\s*</script>', '', speech_html)
         speech_html = speech_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_speech.js" defer></script></head>', 1)
         archive.writestr('speech.html', speech_html)
-        archive.write(root / 'flipclock.html', 'flipclock.html')
-        small_calendar_html = (root / 'calendar.html').read_text(encoding='utf-8-sig')
+        archive.write(source_file('flipclock.html'), 'flipclock.html')
+        small_calendar_html = source_file('calendar.html').read_text(encoding='utf-8-sig')
         small_calendar_html = re.sub(r'<script\b[^>]*>\s*</script>', '', small_calendar_html, flags=re.I)
         small_calendar_html = small_calendar_html.replace('</head>', '<script src="/mv3/legacy_small_calendar.js" defer></script></head>', 1)
         archive.writestr('calendar.html', small_calendar_html)
         for page in ('timer.html', 'stopwatch_split.html'):
-            archive.write(root / page, page)
-        translation = (root / 'translation.js').read_text(encoding='utf-8-sig').replace('chrome.extension.getURL', 'chrome.runtime.getURL')
+            archive.write(source_file(page), page)
+        translation = source_file('translation.js').read_text(encoding='utf-8-sig').replace('chrome.extension.getURL', 'chrome.runtime.getURL')
         translation = translation.replace('if(window.Components && Components.getSingleton("Localization")){', 'if(window.Components && typeof Components.getSingleton === "function" && Components.getSingleton("Localization")){')
         archive.writestr('translation.js', translation)
         for page, controller in [('alarm_interface.html', 'alarm_interface'), ('countdown_interface.html', 'countdown_interface')]:
-            html = (root / page).read_text(encoding='utf-8-sig')
+            html = source_file(page).read_text(encoding='utf-8-sig')
             html = re.sub(r'<script\b[^>]*src="/scripts/' + controller + r'/js\.js"[^>]*>\s*</script>', '', html)
             html = html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
             archive.writestr(page, html)
-            code = (root / 'scripts' / controller / 'js.js').read_text(encoding='utf-8-sig')
+            code = source_file(f'scripts/{controller}/js.js').read_text(encoding='utf-8-sig')
             archive.writestr('mv3/original_' + ('alarm' if controller == 'alarm_interface' else 'countdown') + '.js', code)
-        calendar_html = (root / 'calendar_full.html').read_text(encoding='utf-8-sig')
+        calendar_html = source_file('calendar_full.html').read_text(encoding='utf-8-sig')
         calendar_html = re.sub(r'<script\b[^>]*src="/scripts/calendar_full/js\.js"[^>]*>\s*</script>', '', calendar_html)
         calendar_html = calendar_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script><script src="/mv3/legacy_calendar_import.js" defer></script></head>', 1)
         archive.writestr('calendar_full.html', calendar_html)
-        archive.writestr('mv3/original_calendar.js', (root / 'scripts/calendar_full/js.js').read_text(encoding='utf-8-sig'))
-        options_html = (root / 'options_new.html').read_text(encoding='utf-8-sig')
+        archive.writestr('mv3/original_calendar.js', source_file('scripts/calendar_full/js.js').read_text(encoding='utf-8-sig'))
+        options_html = source_file('options_new.html').read_text(encoding='utf-8-sig')
         options_html = re.sub(r'<script\b[^>]*src="/scripts/options/js_new\.js"[^>]*>\s*</script>', '', options_html)
         options_html = options_html.replace('Weather information provided by Yahoo! Weather', 'Weather information provided by Open-Meteo')
         options_html = options_html.replace('This shows the WOEID of the current location.', 'This shows the location ID.')
         options_html = options_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
         archive.writestr('options_new.html', options_html)
-        archive.writestr('mv3/original_options.js', (root / 'scripts/options/js_new.js').read_text(encoding='utf-8-sig'))
-        stats_html = (root / 'statistics.html').read_text(encoding='utf-8-sig')
+        archive.writestr('mv3/original_options.js', source_file('scripts/options/js_new.js').read_text(encoding='utf-8-sig'))
+        stats_html = source_file('statistics.html').read_text(encoding='utf-8-sig')
         stats_html = re.sub(r'<script\b[^>]*>\s*</script>', '', stats_html)
         stats_html = stats_html.replace('</head>', '<script src="/d3/d3.v7.min.js" defer></script><script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_stats.js" defer></script></head>', 1)
         archive.writestr('statistics.html', stats_html)
@@ -133,7 +163,7 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
             ('about.html', 'legacy_about.js'),
             ('update.html', 'legacy_update.js'),
         ):
-            html = (root / page).read_text(encoding='utf-8-sig')
+            html = source_file(page).read_text(encoding='utf-8-sig')
             html = re.sub(r'<script\b[^>]*>\s*</script>', '', html)
             html = html.replace('</head>', f'<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/{replacement}" defer></script></head>', 1)
             archive.writestr(page, html)

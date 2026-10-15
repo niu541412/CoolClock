@@ -181,13 +181,14 @@ var LegacyBackground = {
     if (saved.language) tracked.language = saved.language;
     if (saved.weather) tracked.weather = JSON.stringify({enabled: true, name: saved.weather.name, latitude: saved.weather.latitude, longitude: saved.weather.longitude, woeid: '', unit: saved.weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'});
     if (saved.clockDefinition) tracked.clockDefinition = JSON.stringify(saved.clockDefinition);
+    else localStorage.removeItem('clockDefinition');
     for (const [key, value] of Object.entries(tracked)) localStorage.setItem(key, value);
     const defaults = {
       voice: '{"voiceName":"native","speed":0.7}',
       dateorder: '{"1":"Date","2":"Month","3":"Year"}',
       weather: '{"enabled":false,"woeid":"2459115","name":""}',
       noti_voice: '{"enabled":false,"text":"It is %h %P."}',
-      clockDefinition: JSON.stringify({analog: {width: 19, height: 19, minY: 0.1, hrY: 0.3, minColor: '#A7A7A7', hrColor: '#808080', strokeWidth: 5, flatTip: true, circleBorder: false, circleBorderWidth: 0, circleBorderColor: '#6E6E6E', background: 'transparent', clockBg: 'transparent', notificationBg: true, indicationLines: true}, digital: {width: 19, height: 19, minXY: [8, 32], hrXY: [0, 15], font: 'default', hrFontSize: 18, minFontSize: 18}}),
+      clockDefinition: JSON.stringify({analog: {width: 19, height: 19, minY: 0.1, hrY: 0.3, minColor: '#A7A7A7', hrColor: '#808080', strokeWidth: 5, flatTip: true, circleBorder: false, circleBorderWidth: 0, circleBorderColor: '#6E6E6E', background: 'transparent', clockBg: 'transparent', notificationBg: true, indicationLines: true}, digital: {width: 19, height: 19, minXY: [8, 32], hrXY: [0, 15], font: 'default', hrFontSize: 20, minFontSize: 16}}),
       ringtone: 'default', noti_sound: 'none', ring_loop: 'false',
       use_digit: String(legacyState.settings.digital),
       pm: String(legacyState.settings.hour12),

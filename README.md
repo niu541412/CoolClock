@@ -1,6 +1,6 @@
 # Cool Clock MV3
 
-Manifest V3 port of Derek Leung's Cool Clock. Version 4.1.0 retains the original popup layouts and features, icons, sound, and translations while updating the interface to Bootstrap 5.3.8 and Bootstrap Icons 1.13.2. Page controllers use native JavaScript without jQuery. The full calendar uses native dialogs with local CSS. The statistics page uses bundled D3 v7.9.0. Some interface and icon details differ from the original.
+Manifest V3 port of Derek Leung's Cool Clock. Version 4.1.1 retains the original popup layouts and features, icons, sound, and translations while updating the interface to Bootstrap 5.3.8 and Bootstrap Icons 1.13.2. Page controllers use native JavaScript without jQuery. The full calendar uses native dialogs with local CSS. The statistics page uses bundled D3 v7.9.0. Some interface and icon details differ from the original.
 
 ## Build and install
 
@@ -11,7 +11,23 @@ Run `python3 build_mv3.py`. The resulting archives are:
 
 The Chrome package uses a service worker plus an offscreen document for legacy data import and audio. The Firefox package uses a background event page. Both packages include the original UI resources, original `_locales`, Bootstrap 5 CSS and JavaScript, a local subset of Bootstrap Icons 1.13.2, and D3 with its license.
 
-To publish a new GitHub release, change the version in `manifest.json` and add a matching `Ver. X.Y.Z` entry to `update.html`, then push both changes to `master`. The [release workflow](.github/workflows/release.yml) builds and checks both browser archives, creates the `vX.Y.Z` tag, and attaches both ZIP files to the release. It skips a version that already has a release. The workflow can also be run manually to retry a release.
+## Source layout
+
+The repository keeps `manifest.json`, the build script, and release workflow at its root. Extension sources are grouped under `src/`:
+
+| Directory | Contents | Location in the built extension |
+| --- | --- | --- |
+| `src/pages/` | Popup, settings, calendar, and other HTML pages | Extension root |
+| `src/runtime/` | Background, offscreen, browser adapters, and page controllers | `mv3/` |
+| `src/ui/` | Original page scripts and styles | `scripts/` |
+| `src/shared/` | Shared scripts and input styles | Extension root |
+| `src/assets/` | Icons, images, fonts, and sounds | Their original extension paths |
+| `src/vendor/` | Bundled Bootstrap and D3 with their licenses | `bootstrap/` and `d3/` |
+| `src/locales/` | Translations | `_locales/` |
+
+Edit files in `src/` and run `python3 build_mv3.py`. The build preserves the extension's existing URLs and relative resource paths. Files not selected by the build remain in `src/` for reference and are not packaged.
+
+To publish a new GitHub release, change the version in `manifest.json` and add a matching `Ver. X.Y.Z` entry to `src/pages/update.html`, then push both changes to `master`. The [release workflow](.github/workflows/release.yml) builds and checks both browser archives, creates the `vX.Y.Z` tag, and attaches both ZIP files to the release. It skips a version that already has a release. The workflow can also be run manually to retry a release.
 
 The default popup is the original blue 300 × 500 design. The original 250px popup is also available through the original **Popup Design** setting. Alarms, repeating countdowns, calendar todos, hourly announcements, voice and text commands, address bar `clock` commands, and the main original settings controls are connected to MV3 storage and browser APIs. The original Yahoo weather service has been replaced with Open-Meteo; the location search remains in the original settings page, and clicking the popup weather opens a seven-day forecast. Weather defaults to Celsius, can be switched to Fahrenheit, and shows current humidity when available. Public Google Calendars can be imported through iCal, and private calendars can be imported from an exported `.ics` file.
 
@@ -30,6 +46,6 @@ On an in-place update with the same extension ID, the first run imports alarms, 
 
 ## Publishing
 
-The original repository has no project-level license. Keep written permission from the original author for redistribution of the original code and resources before publishing. The D3 license is included in `d3/D3-LICENSE`; the original icon license is included in `images/icons/License`; the Roboto license is included in `fonts/LICENSE (Roboto).txt`.
+The original repository has no project-level license. Keep written permission from the original author for redistribution of the original code and resources before publishing. The D3 license is included in `src/vendor/d3/D3-LICENSE`; the original icon license is included in `src/assets/images/icons/License`; the Roboto license is included in `src/assets/fonts/LICENSE (Roboto).txt`.
 
-Original resource credits: famfamfam Silk Icons (CC BY 2.5), Material Icons (Apache 2.0), Roboto, Noto Sans, Oswald, Meteocons, and Sound Jay. The Bootstrap 5 license is included in `bootstrap/LICENSE`; the Bootstrap Icons MIT license is included in `bootstrap/icons-LICENSE`.
+Original resource credits: famfamfam Silk Icons (CC BY 2.5), Material Icons (Apache 2.0), Roboto, Noto Sans, Oswald, Meteocons, and Sound Jay. The Bootstrap 5 license is included in `src/vendor/bootstrap/LICENSE`; the Bootstrap Icons MIT license is included in `src/vendor/bootstrap/icons-LICENSE`.

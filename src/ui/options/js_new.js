@@ -481,6 +481,10 @@ function setupSidebar() {
 function setupOptions() {
   document.title = i18n('settings');
   i18n.translate();
+  // Firefox supports only basic extension notifications, so both styles render alike.
+  if (!chrome.offscreen) {
+    $all('.notification-style-only').forEach(item => { item.style.display = 'none'; });
+  }
   $all('gly').forEach(glyph => {
     const replacement = icon(glyph.getAttribute('icon'));
     replacement.className += ' ' + glyph.className;

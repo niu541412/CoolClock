@@ -9,11 +9,11 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))['version']
-LOCALE_FILES = sorted((ROOT / '_locales').glob('*/messages.json'))
+LOCALE_FILES = sorted((ROOT / 'src' / 'locales').glob('*/messages.json'))
 
 
 def changelog_items():
-    page = (ROOT / 'update.html').read_text(encoding='utf-8-sig')
+    page = (ROOT / 'src' / 'pages' / 'update.html').read_text(encoding='utf-8-sig')
     section = re.search(
         r'<h3\b[^>]*>\s*Ver\.\s*' + re.escape(VERSION) + r'\s*</h3>\s*<ul>(.*?)</ul>',
         page, re.IGNORECASE | re.DOTALL,
