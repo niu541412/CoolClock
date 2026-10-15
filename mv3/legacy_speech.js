@@ -83,5 +83,6 @@ document.getElementById('speech').addEventListener('click', () => {
   recognition.start();
   document.getElementById('speech').classList.add('listening');
 });
-printVoice('Voice Control. version 0.1');
+document.title = t('contextVoiceControl') + ' - Cool Clock';
+printVoice(t('contextVoiceControl') + '. version 0.1');
 printVoice('Welcome! Press the button below to begin, or switch to text mode. Say "help" for examples.', true);

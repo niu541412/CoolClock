@@ -2,16 +2,19 @@
 <html>
 	<head>
 		<title trans="stat">Statistics</title>
+		<meta charset="UTF-8">
 		<link rel="icon" type="image/png" href="/icons/16x16.png" />
 		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="/bootstrap/migration.css">
 		<link rel="stylesheet" href="/scripts/statistics/css.css">
-		<script src="/jquery.js"></script>
-		<script src="/bootstrap/bootstrap.min.js"></script>
-		<script src="/d3/d3.v7.min.js"></script>
-		<script src="/scripts/statistics/js.js"></script>
+
+		<script src="/d3/d3.v7.min.js" defer></script>
+		<script src="/mv3/locale_catalog.js" defer></script>
+		<script src="/mv3/i18n.js" defer></script>
+		<script src="/mv3/legacy_stats.js" defer></script>
 	</head>
 	<body>
-		<div class="jumbotron topbar">
+		<div class="p-4 mb-4 rounded-3 topbar">
 			<h2 trans="stat">Statistics</h2>
 		</div>
 		<div class="container">
@@ -19,15 +22,15 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-3 col-xs-3 fieldLabel">Current Time (Local)</div>
-						<div class="col-md-9 col-xs-9" id="currentTime"></div>
+						<div class="col-md-3 col-3 fieldLabel">Current Time (Local)</div>
+						<div class="col-md-9 col-9" id="currentTime"></div>
 					</div>
 				</div>
-				<hr class="visible-xs-block visible-sm-block">
+				<hr class="d-block d-lg-none">
 				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-3 col-xs-3 fieldLabel">Timezone (Local)</div>
-						<div class="col-md-9 col-xs-9" id="timezone">Time</div>
+						<div class="col-md-3 col-3 fieldLabel">Timezone (Local)</div>
+						<div class="col-md-9 col-9" id="timezone">Time</div>
 					</div>
 				</div>
 			</div>
@@ -35,15 +38,15 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-3 col-xs-3 fieldLabel">Uptime</div>
-						<div class="col-md-9 col-xs-9" id="uptime">Time</div>
+						<div class="col-md-3 col-3 fieldLabel">Uptime</div>
+						<div class="col-md-9 col-9" id="uptime">Time</div>
 					</div>
 				</div>
-				<hr class="visible-xs-block visible-sm-block">
+				<hr class="d-block d-lg-none">
 				<div class="col-md-6">
 					<div class="row">
-						<div class="col-md-3 col-xs-3 fieldLabel">Session Start Time (Local)</div>
-						<div class="col-md-9 col-xs-9" id="sessionStartTime">Time</div>
+						<div class="col-md-3 col-3 fieldLabel">Session Start Time (Local)</div>
+						<div class="col-md-9 col-9" id="sessionStartTime">Time</div>
 					</div>
 				</div>
 			</div>

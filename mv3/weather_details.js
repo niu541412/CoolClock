@@ -15,13 +15,19 @@ async function loadWeather() {
   if (!result?.ok) throw Error(result?.error || 'Unable to load weather settings');
   const location = result.data.settings.weather;
   if (!location) throw Error(chinese ? '请先在设置中选择天气地点。' : 'Choose a weather location in Settings.');
+  const fahrenheit = location.unit === 'fahrenheit';
+  const temperature = value => `${Math.round(fahrenheit ? value * 9 / 5 + 32 : value)}°${fahrenheit ? 'F' : 'C'}`;
   document.title = `${location.name} - Cool Clock`;
   document.getElementById('city').textContent = location.name;
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=temperature_2m,relative_humidity_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
   const response = await fetch(url);
   if (!response.ok) throw Error(`Weather request failed (${response.status})`);
   const data = await response.json();
-  document.getElementById('current').textContent = `${chinese ? '现在' : 'Now'}: ${Math.round(data.current.temperature_2m)}°C · ${condition(data.current.weather_code)}`;
+  const humidity = data.current?.relative_humidity_2m;
+  const humidityText = typeof humidity === 'number' && Number.isFinite(humidity) ?
+    ` · ${chinese ? '湿度' : 'Humidity'} ${Math.round(humidity)}%` : '';
+  document.getElementById('current').textContent =
+    `${chinese ? '现在' : 'Now'}: ${temperature(data.current.temperature_2m)} · ${condition(data.current.weather_code)}${humidityText}`;
   const cards = data.daily.time.map((date, index) => {
     const card = document.createElement('div');
     card.className = 'day';
@@ -30,7 +36,7 @@ async function loadWeather() {
     const label = document.createElement('span');
     label.textContent = condition(data.daily.weather_code[index]);
     const range = document.createElement('span');
-    range.textContent = `${Math.round(data.daily.temperature_2m_min[index])}–${Math.round(data.daily.temperature_2m_max[index])}°C`;
+    range.textContent = `${temperature(data.daily.temperature_2m_min[index])}–${temperature(data.daily.temperature_2m_max[index])}`;
     card.append(heading, label, range);
     return card;
   });

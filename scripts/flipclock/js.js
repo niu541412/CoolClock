@@ -1,4 +1,4 @@
-$(function(){
+document.addEventListener("DOMContentLoaded", function(){
 	//AM or PM
 	if(localStorage["pm"]=="true"){
 		var ele=document.getElementsByClassName("apm")[0]
@@ -30,20 +30,20 @@ $(function(){
 	}
 	ctrl();
 	setInterval(ctrl, 1000);
-	$("body").bind("scroll", onscroll);
-	$("body").on("contextmenu", function(){
-		return false;
+	if (onscroll) document.body.addEventListener("scroll", onscroll);
+	document.body.addEventListener("contextmenu", function(event){
+		event.preventDefault();
 	});
 
 	onscroll && onscroll();
 	
 	//events
-	$("input[type='number']").mouseup(function(){
-		location.href = 'flipclock.html?scale='+this.value/100+' '+this.value/100;
-	}).blur(function(){
-		this.focus();
-	}).keydown(function(){
-		return false;
+	document.querySelectorAll("input[type='number']").forEach(input => {
+		input.addEventListener("mouseup", function(){
+			location.href = 'flipclock.html?scale='+this.value/100+' '+this.value/100;
+		});
+		input.addEventListener("blur", function(){ this.focus(); });
+		input.addEventListener("keydown", function(event){ event.preventDefault(); });
 	});
 });
 

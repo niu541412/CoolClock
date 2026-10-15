@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "해당 항목을 표시하지 않음"
    },
+   "contextVoiceControl": {
+      "message": "음성 제어"
+   },
+   "contextCurrentTime": {
+      "message": "현재 시간 삽입"
+   },
    "chat": {
       "message": "채팅 박스"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "{time}에 예정됨"
    },
+   "weatherHumidity": {
+      "message": "습도"
+   },
    "weatherLoading": {
       "message": "날씨 불러오는 중…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "도움말"
+   },
+   "optionsMenu": {
+      "message": "메뉴"
+   },
+   "optionsFormats": {
+      "message": "형식"
+   },
+   "optionsNotifications": {
+      "message": "알림"
+   },
+   "optionsSpeech": {
+      "message": "텍스트 음성 변환"
+   },
+   "optionsExtension": {
+      "message": "확장 프로그램"
+   },
+   "optionsCredits": {
+      "message": "특별한 감사"
+   },
+   "optionsEditAppearance": {
+      "message": "모양 편집"
+   },
+   "optionsColor": {
+      "message": "색상"
+   },
+   "optionsBadgeColor": {
+      "message": "배지 색상"
+   },
+   "optionsNewPopup": {
+      "message": "새로운 팝업 디자인 사용"
+   },
+   "optionsTimeSystem": {
+      "message": "시간 시스템"
+   },
+   "optionsCalendarSystem": {
+      "message": "캘린더 시스템"
+   },
+   "optionsLunar": {
+      "message": "중국 음력 날짜 표시"
+   },
+   "optionsDateOrder": {
+      "message": "날짜 순서"
+   },
+   "optionsDragReorder": {
+      "message": "- 드래그하여 재정렬"
+   },
+   "optionsCustomTimezone": {
+      "message": "맞춤 시간대"
+   },
+   "optionsLocalTimezone": {
+      "message": "귀하의 현지 시간대"
+   },
+   "optionsTimezoneNote": {
+      "message": "참고: 이 설정은 달력에 적용되지 않습니다."
+   },
+   "optionsTestNotification": {
+      "message": "테스트 알림"
+   },
+   "optionsNotificationStyle": {
+      "message": "알림 스타일"
+   },
+   "optionsDefault": {
+      "message": "기본값"
+   },
+   "optionsBackgroundColor": {
+      "message": "배경색"
+   },
+   "optionsCompact": {
+      "message": "콤팩트"
+   },
+   "optionsNotificationDuration": {
+      "message": "알림 표시 시간"
+   },
+   "optionsSystemDuration": {
+      "message": "(시스템이 이 설정을 재정의할 수 있음)"
+   },
+   "optionsCloseManually": {
+      "message": "수동으로 닫기"
+   },
+   "optionsShowWeather": {
+      "message": "날씨 정보 표시"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "화씨(℉) 사용"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Open-Meteo에서 제공하는 날씨 정보)"
+   },
+   "optionsLocation": {
+      "message": "위치"
+   },
+   "optionsNotSet": {
+      "message": "설정되지 않음/사용할 수 없음"
+   },
+   "optionsSearch": {
+      "message": "검색..."
+   },
+   "optionsNotificationSound": {
+      "message": "시간별 알림 소리 활성화"
+   },
+   "optionsRingtone": {
+      "message": "벨소리"
+   },
+   "optionsReadTime": {
+      "message": "시간별 시간 안내와 함께 시간을 읽어보세요."
+   },
+   "optionsSentence": {
+      "message": "문장"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: 시(24시간); %h: 시(12시간); %P: 오전/오후; %M: 분"
+   },
+   "optionsFromComputer": {
+      "message": "컴퓨터에서"
+   },
+   "optionsLoop": {
+      "message": "루핑 활성화"
+   },
+   "optionsPreviewRingtone": {
+      "message": "현재 벨소리 미리보기"
+   },
+   "optionsLoad": {
+      "message": "로드"
+   },
+   "optionsSpeechEngine": {
+      "message": "음성 엔진"
+   },
+   "optionsSpeechIntro": {
+      "message": "음성 제어 및 시간별 알림 문자 음성 변환에 사용하려는 음성 엔진을 선택하세요."
+   },
+   "optionsSpeechInstall": {
+      "message": "설치된 음성이 아래 드롭다운에 나타납니다."
+   },
+   "optionsInstalledVoices": {
+      "message": "설치된 음성 엔진"
+   },
+   "optionsLanguage": {
+      "message": "언어"
+   },
+   "optionsUpdateInterval": {
+      "message": "백그라운드 업데이트 간격"
+   },
+   "optionsKeepAwake": {
+      "message": "활성 알람이나 카운트다운이 있을 때 시스템이 절전 모드로 전환되지 않도록 방지"
+   },
+   "optionsBackgroundRun": {
+      "message": "Google Chrome이 닫혀도 백그라운드에서 Cool Clock을 계속 실행합니다."
+   },
+   "optionsContextMenu": {
+      "message": "상황에 맞는 메뉴 항목 표시"
+   },
+   "optionsTranslationCredits": {
+      "message": "현지화 번역에 기여한 모든 사람"
+   },
+   "optionsMore": {
+      "message": "더보기"
+   },
+   "optionsMiscellaneous": {
+      "message": "기타"
+   },
+   "optionsLunarTip": {
+      "message": "중국 음력 날짜를 표시합니다. 정확도는 브라우저와 운영 체제에 따라 다릅니다."
+   },
+   "optionsTimezoneTip": {
+      "message": "일광 절약 시간제 중에는 현지 시간대가 변경될 수 있습니다."
+   },
+   "optionsTestTip": {
+      "message": "현재 설정을 사용하여 알림을 표시합니다."
+   },
+   "optionsLocationTip": {
+      "message": "현재 위치 ID입니다. 다른 위치를 선택하려면 검색을 사용하세요."
+   },
+   "optionsAudioTip": {
+      "message": "MP3, OGG, WAV 파일만 지원됩니다."
+   },
+   "optionsVoiceTip": {
+      "message": "텍스트 음성 변환 섹션에서 귀하의 언어를 지원하는 음성 엔진을 선택하세요."
+   },
+   "optionsEmpty": {
+      "message": "(비어 있음)"
+   },
+   "optionsContextTip": {
+      "message": "마우스 오른쪽 버튼 클릭 메뉴에 Cool Clock 항목을 표시합니다."
+   },
+   "optionsChooseFile": {
+      "message": "파일을 선택하세요..."
+   },
+   "optionsSearchPlace": {
+      "message": "위치, 우편번호 또는 장소"
+   },
+   "optionsSearchByName": {
+      "message": "이름으로 검색"
+   },
+   "optionsLoading": {
+      "message": "로드 중..."
+   },
+   "optionsNoResult": {
+      "message": "결과 없음"
+   },
+   "optionsSearchError": {
+      "message": "데이터를 가져오는 중에 오류가 발생했습니다."
+   },
+   "optionsImported": {
+      "message": "수입!"
+   },
+   "optionsTestSoundHint": {
+      "message": "테스트 알림을 눌러 소리를 들어보세요."
+   },
+   "optionsSuccess": {
+      "message": "성공!"
+   },
+   "optionsLoaded": {
+      "message": "짐을 실은."
+   },
+   "optionsNotice": {
+      "message": "공지사항"
+   },
+   "optionsNoRingtone": {
+      "message": "벨소리가 설정되지 않았습니다."
+   },
+   "optionsInvalidUrl": {
+      "message": "이 URL은 유효하지 않거나 지원되지 않습니다."
+   },
+   "optionsRetry": {
+      "message": "재시도"
+   },
+   "optionsAdvanced": {
+      "message": "고급"
+   },
+   "optionsAppearanceHint": {
+      "message": "고급 사용자의 경우: 아래 구성을 편집하여 시계를 미세 조정하세요. 너비와 높이는 아이콘 크기(일반적으로 19 × 19dp)와 일치합니다."
+   },
+   "optionsEditAnalog": {
+      "message": "아날로그 시계 모양 편집"
+   },
+   "optionsEditDigital": {
+      "message": "디지털 시계 모양 편집"
+   },
+   "optionsInvalidJson": {
+      "message": "잘못된 JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "유효한 JSON을 입력하세요."
+   },
+   "optionsYear": {
+      "message": "연도"
+   },
+   "optionsMonth": {
+      "message": "월"
+   },
+   "optionsDate": {
+      "message": "일"
+   },
+   "optionsRemoved": {
+      "message": "(삭제됨)"
+   },
+   "optionsUrlTip": {
+      "message": "HTTP 또는 HTTPS URL만 지원됩니다."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Open-Meteo가 제공하는 날씨 정보"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Open-Meteo 지오코딩"
+   },
+   "optionsTweet": {
+      "message": "트윗"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "사운드제이(기본 알람 벨소리)"
+   },
+   "optionsFactLabel": {
+      "message": "사실"
+   },
+   "optionsFact1": {
+      "message": "이 확장 프로그램에는 의도적인 사용자 추적 코드가 포함되어 있지 않습니다."
+   },
+   "optionsFact2": {
+      "message": "Cool Clock에서는 문법에 대한 버그 보고를 피하기 위해 문법을 진지하게 받아들입니다."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock이라는 이름은 제작자가 더 나은 시계를 생각할 수 없었기 때문에 붙여진 이름입니다."
+   },
+   "optionsFact4": {
+      "message": "모든 것에 대한 답은 42가 아닙니다."
+   },
+   "optionsFact5": {
+      "message": "이 진술은 거짓입니다."
+   },
+   "optionsPermissionError": {
+      "message": "브라우저 권한을 제거할 수 없습니다."
+   },
+   "optionsProcessing": {
+      "message": "처리 중..."
+   },
+   "optionsPleaseWait": {
+      "message": "잠시만 기다려주세요..."
    }
 }

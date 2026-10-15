@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Jangan tampilkan item ini"
    },
+   "contextVoiceControl": {
+      "message": "Kontrol Suara"
+   },
+   "contextCurrentTime": {
+      "message": "Sisipkan waktu saat ini"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Dijadwalkan pada {time}"
    },
+   "weatherHumidity": {
+      "message": "Kelembapan"
+   },
    "weatherLoading": {
       "message": "Memuat cuaca…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Bantuan"
+   },
+   "optionsMenu": {
+      "message": "Menu"
+   },
+   "optionsFormats": {
+      "message": "Format"
+   },
+   "optionsNotifications": {
+      "message": "Pemberitahuan"
+   },
+   "optionsSpeech": {
+      "message": "Teks Ke Ucapan"
+   },
+   "optionsExtension": {
+      "message": "Ekstensi"
+   },
+   "optionsCredits": {
+      "message": "Terima kasih khusus"
+   },
+   "optionsEditAppearance": {
+      "message": "Sunting penampilan"
+   },
+   "optionsColor": {
+      "message": "Warna"
+   },
+   "optionsBadgeColor": {
+      "message": "Warna lencana"
+   },
+   "optionsNewPopup": {
+      "message": "Gunakan desain popup baru"
+   },
+   "optionsTimeSystem": {
+      "message": "Sistem Waktu"
+   },
+   "optionsCalendarSystem": {
+      "message": "Sistem Kalender"
+   },
+   "optionsLunar": {
+      "message": "Menampilkan Tanggal Bulan Cina"
+   },
+   "optionsDateOrder": {
+      "message": "Tanggal Pemesanan"
+   },
+   "optionsDragReorder": {
+      "message": "- seret untuk menyusun ulang"
+   },
+   "optionsCustomTimezone": {
+      "message": "Zona Waktu Khusus"
+   },
+   "optionsLocalTimezone": {
+      "message": "zona waktu lokal Anda"
+   },
+   "optionsTimezoneNote": {
+      "message": "Catatan: Pengaturan ini tidak berlaku untuk kalender."
+   },
+   "optionsTestNotification": {
+      "message": "Pemberitahuan Tes"
+   },
+   "optionsNotificationStyle": {
+      "message": "Gaya Pemberitahuan"
+   },
+   "optionsDefault": {
+      "message": "Bawaan"
+   },
+   "optionsBackgroundColor": {
+      "message": "Warna latar belakang"
+   },
+   "optionsCompact": {
+      "message": "Kompak"
+   },
+   "optionsNotificationDuration": {
+      "message": "Waktu Tampilan Notifikasi"
+   },
+   "optionsSystemDuration": {
+      "message": "(Sistem mungkin mengesampingkan pengaturan ini)"
+   },
+   "optionsCloseManually": {
+      "message": "Tutup secara manual"
+   },
+   "optionsShowWeather": {
+      "message": "Menampilkan Informasi Cuaca"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Gunakan Fahrenheit (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Informasi cuaca disediakan oleh Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Lokasi"
+   },
+   "optionsNotSet": {
+      "message": "Tidak disetel/Tidak Tersedia"
+   },
+   "optionsSearch": {
+      "message": "Cari..."
+   },
+   "optionsNotificationSound": {
+      "message": "Aktifkan suara Pengumuman Waktu Setiap Jam"
+   },
+   "optionsRingtone": {
+      "message": "Nada dering"
+   },
+   "optionsReadTime": {
+      "message": "Bacakan waktu beserta pengumuman waktu setiap jamnya"
+   },
+   "optionsSentence": {
+      "message": "Kalimat"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: Jam (24 jam); %h: Jam (12 jam); %P: pagi/malam; %M: Menit"
+   },
+   "optionsFromComputer": {
+      "message": "Dari komputer Anda"
+   },
+   "optionsLoop": {
+      "message": "Aktifkan perulangan"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Pratinjau nada dering saat ini"
+   },
+   "optionsLoad": {
+      "message": "Memuat"
+   },
+   "optionsSpeechEngine": {
+      "message": "Mesin Pidato"
+   },
+   "optionsSpeechIntro": {
+      "message": "Pilih mesin suara yang ingin Anda gunakan dalam kontrol suara dan notifikasi text-to-speech setiap jam."
+   },
+   "optionsSpeechInstall": {
+      "message": "Suara yang terpasang muncul di dropdown di bawah."
+   },
+   "optionsInstalledVoices": {
+      "message": "Mesin suara terpasang"
+   },
+   "optionsLanguage": {
+      "message": "Bahasa"
+   },
+   "optionsUpdateInterval": {
+      "message": "Interval Pembaruan Latar Belakang"
+   },
+   "optionsKeepAwake": {
+      "message": "Cegah sistem dari tidur ketika ada alarm aktif atau hitungan mundur"
+   },
+   "optionsBackgroundRun": {
+      "message": "Lanjutkan menjalankan Cool Clock di latar belakang saat Google Chrome ditutup"
+   },
+   "optionsContextMenu": {
+      "message": "Tampilkan item menu konteks"
+   },
+   "optionsTranslationCredits": {
+      "message": "Setiap orang yang menyumbangkan terjemahan lokal"
+   },
+   "optionsMore": {
+      "message": "Lainnya"
+   },
+   "optionsMiscellaneous": {
+      "message": "Lain-lain"
+   },
+   "optionsLunarTip": {
+      "message": "Menampilkan tanggal lunar Tiongkok. Akurasi tergantung pada browser dan sistem operasi Anda."
+   },
+   "optionsTimezoneTip": {
+      "message": "Zona waktu lokal Anda mungkin berubah selama musim panas."
+   },
+   "optionsTestTip": {
+      "message": "Tampilkan pemberitahuan menggunakan pengaturan saat ini."
+   },
+   "optionsLocationTip": {
+      "message": "Ini adalah ID lokasi saat ini. Gunakan Pencarian untuk memilih lokasi lain."
+   },
+   "optionsAudioTip": {
+      "message": "Hanya file MP3, OGG, atau WAV yang didukung."
+   },
+   "optionsVoiceTip": {
+      "message": "Pilih mesin suara yang mendukung bahasa Anda di bagian Text to Speech."
+   },
+   "optionsEmpty": {
+      "message": "(kosong)"
+   },
+   "optionsContextTip": {
+      "message": "Tampilkan item Jam Keren di menu klik kanan."
+   },
+   "optionsChooseFile": {
+      "message": "Pilih berkas..."
+   },
+   "optionsSearchPlace": {
+      "message": "Lokasi, kode pos, atau tempat"
+   },
+   "optionsSearchByName": {
+      "message": "Cari berdasarkan nama"
+   },
+   "optionsLoading": {
+      "message": "Memuat..."
+   },
+   "optionsNoResult": {
+      "message": "Tidak ada hasil"
+   },
+   "optionsSearchError": {
+      "message": "Terjadi kesalahan saat mengambil data"
+   },
+   "optionsImported": {
+      "message": "Diimpor!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Tekan Notifikasi Tes untuk mendengar suaranya."
+   },
+   "optionsSuccess": {
+      "message": "Kesuksesan!"
+   },
+   "optionsLoaded": {
+      "message": "Sarat."
+   },
+   "optionsNotice": {
+      "message": "Perhatikan"
+   },
+   "optionsNoRingtone": {
+      "message": "Tidak ada nada dering yang disetel."
+   },
+   "optionsInvalidUrl": {
+      "message": "URL ini tidak valid atau tidak didukung."
+   },
+   "optionsRetry": {
+      "message": "Coba lagi"
+   },
+   "optionsAdvanced": {
+      "message": "Lanjutan"
+   },
+   "optionsAppearanceHint": {
+      "message": "Untuk pengguna tingkat lanjut: edit konfigurasi di bawah ini untuk menyempurnakan jam. Lebar dan tinggi sesuai dengan ukuran ikon, biasanya 19×19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Edit tampilan jam analog"
+   },
+   "optionsEditDigital": {
+      "message": "Edit tampilan jam digital"
+   },
+   "optionsInvalidJson": {
+      "message": "JSON tidak valid"
+   },
+   "optionsEnterValidJson": {
+      "message": "Silakan masukkan JSON yang valid."
+   },
+   "optionsYear": {
+      "message": "Tahun"
+   },
+   "optionsMonth": {
+      "message": "Bulan"
+   },
+   "optionsDate": {
+      "message": "Hari"
+   },
+   "optionsRemoved": {
+      "message": "(Dihapus)"
+   },
+   "optionsUrlTip": {
+      "message": "Hanya URL HTTP atau HTTPS yang didukung."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Informasi cuaca didukung oleh Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Geocoding Meteor Terbuka"
+   },
+   "optionsTweet": {
+      "message": "menciak"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (nada dering alarm default)"
+   },
+   "optionsFactLabel": {
+      "message": "Fakta"
+   },
+   "optionsFact1": {
+      "message": "Ekstensi ini tidak mengandung kode pelacakan pengguna yang disengaja."
+   },
+   "optionsFact2": {
+      "message": "Di Cool Clock, kami menangani tata bahasa dengan serius untuk menghindari laporan bug tentang tata bahasa."
+   },
+   "optionsFact3": {
+      "message": "Jam Keren mendapatkan namanya karena penciptanya tidak dapat menemukan jam yang lebih baik."
+   },
+   "optionsFact4": {
+      "message": "Jawaban semuanya bukanlah 42."
+   },
+   "optionsFact5": {
+      "message": "Pernyataan ini salah."
+   },
+   "optionsPermissionError": {
+      "message": "Tidak dapat menghapus izin browser."
+   },
+   "optionsProcessing": {
+      "message": "Memproses..."
+   },
+   "optionsPleaseWait": {
+      "message": "Mohon tunggu sebentar..."
    }
 }

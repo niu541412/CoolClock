@@ -1,403 +1,298 @@
-var timerList = [];
+/* Countdown page controller. Loaded after mv3/legacy_bridge.js receives timer data. */
+const CountdownTimer = LegacyBackground.Components.getSingleton('CountdownTimer');
+const timerList = [];
+const byId = id => document.getElementById(id);
+const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-var Components = chrome.extension.getBackgroundPage().Components;
-var CountdownTimer = Components.getSingleton("CountdownTimer");
-
-$(function(){
-	i18n.translate();
-
-	$("gly").each(function(){
-		$("<span>").addClass("glyphicon glyphicon-" + $(this).attr("icon") + " " +  $(this).attr("class")).insertAfter(this);
-		$(this).remove();
-	});
-
-	$("#add").click(function(){
-		var panel = $("#addpanel");
-		panel.clearQueue().addClass("animate");
-		if(panel.hasClass("shrink")){
-			panel.removeClass("collapsed").delay(300).queue(function(){
-				$(this).removeClass("shrink");
-				$("#h").focus();
-			});
-			$(this).html(gly("minus"));
-		}else{
-			panel.addClass("shrink").delay(300).queue(function(){
-				$(this).addClass("collapsed");
-			});
-			$(this).html(gly("plus"));
-		}
-	});
-
-	$(".input-time > input").blur(function(){
-		if(this.value === "") return;
-		switch(this.id){
-			case "h":
-			if(+this.value > 99) this.value = 99;
-			break;
-			default:
-			if(+this.value > 59) this.value = 59;
-		}
-		if(+this.value < 0) this.value = 0;
-	}).on("input", function(){
-		this.value = this.value.replace(/[^0-9]/g, "").replace(/(\d\d)[0-9]/g, "$1");
-		if(this.value.length == 2) $(this).next().focus().select();
-		$("#set").prop("disabled", (+$("#h").val() + +$("#m").val() + +$("#s").val() === 0));
-	}).on("keydown", function(e){
-		if(e.keyCode == 8 && this.value === ""){
-			$(this).prev().select();
-			e.preventDefault();
-		}
-	}).trigger("input");
-
-	$(".input-time > input, #message").keydown(function(e){
-		if(e.keyCode === 13){
-			$("#set").click();
-			this.blur();
-		}
-	});
-
-	$(".input-color button").click(function(){
-		$(".input-color button").removeClass("active");
-		$(this).addClass("active");
-		$(".input-color").data("value", this.value);
-	});
-	$(".input-color").data("value", "primary");
-
-	$("#repeat").click(function(){
-		var s = $(this).data("value");
-		$(this).data("value", !s).toggleClass("active");
-	}).data("value", false);
-
-	$("#set").click(function(){
-		if(!/^[0-9]+$/.test(""+$("#h").val()+$("#m").val()+$("#s").val())){
-			//chrome.extension.getBackgroundPage().createNoti({title: "Did you just try to break the extension?", message: "Don't do that please."});
-			return false;
-		}
-		var setTime = Date.now(),
-			duration = +$("#h").val()*3600 + +$("#m").val()*60 + +$("#s").val(),
-			endTime = setTime + duration * 1000,
-			msg = $("#message").val(),
-			color = $(".input-color").data("value"),
-			repeat = $("#repeat").data("value");
-
-		/*
-		var settings = JSON.parse(localStorage["countdown"]), data = {
-			start: setTime,
-			end: endTime,
-			repeat: repeat,
-			color: color,
-			message: msg,
-			id: setTime
-		};
-		settings.push(data);
-		localStorage["countdown"] = JSON.stringify(settings);
-		chrome.extension.getBackgroundPage().checkruncd();
-		*/
-		var data = CountdownTimer.create(endTime, {
-			message: msg,
-			color: color,
-			repeat: repeat
-		});
-
-		$("#add").html(gly("plus"));
-		$("#addpanel").addClass("animate swipe");
-		setTimeout(function(){
-			$("#addpanel").removeClass("animate swipe").addClass("shrink collapsed");
-			//timerList.push(new Entry(setTime, data));
-			timerList.push(new Entry(data.id, data));
-		}, 300);
-	});
-
-	$("#removeAll").click(function(){
-		this.blur();
-
-		var confirm = createModal({
-			title: gly("info-sign") + " Are you sure?",
-			content: "This cannot be reverted.",
-			closeBtn: false,
-			backdrop: "static",
-			size: "sm",
-			buttons: [{
-				title: i18n("cancel"),
-				primary: true,
-				onclick: function(){
-					confirm.modal("hide").on('hidden.bs.modal', function(){
-						$(this).remove();
-					});
-				}
-			}, {
-				title: i18n("OK"),
-				onclick: function(){
-					$(".deleteBtn").each(function(i){
-						var self = this;
-						setTimeout(function(){
-							self.click();
-						}, i * 100);
-					});
-					confirm.modal("hide").on('hidden.bs.modal', function(){
-						$(this).remove();
-					});
-				}
-			}]
-		});
-	});
-
-	$("*").on("contextmenu", function(e){
-		return e.target.id === "message";
-	}).on("keydown", function(e){
-		if(e.keyCode == 116){
-			e.preventDefault();
-			return false;
-		}
-	});
-
-	$(window).on("beforeunload", function(){
-		//chrome.extension.getBackgroundPage().Functions.storeWindowSize(window, location);
-		Components.getSingleton("WindowManager").registerOnClose(window);
-	});
-
-	init();
-	update();
-
-
-	if(i18n.lang() == "en"){
-		$("<span>").addClass("plural").text("s").attr({
-			"data-toggle": "tooltip",
-			"data-placement": "bottom",
-			"data-html": "true",
-			"title": "Here at Cool Clock HQ, we treat grammar <i>very</i> seriously."
-		}).appendTo("h1").tooltip();
-	}
-	$("*[data-toggle=tooltip]").tooltip({placement: "auto", delay:{show: 500, hide: 0}, container: "body"});
-});
-
-function gly(icon){
-	return $("<span>").addClass("glyphicon glyphicon-" + icon + " ")[0].outerHTML;
+function glyph(name) {
+  return createBootstrapIcon(name);
 }
 
-function Entry(id, data, init){
-	var block = $("<div>").addClass("block"),
-		content = $("<div>").addClass("bContent").appendTo(block),
-		progressBarWrapper = $("<div>").addClass("progress progress-striped active").appendTo(content),
-		progressBar = $("<div>").addClass("progress-bar").css("width", "100%").attr("role", "progressbar").appendTo(progressBarWrapper),
-		progressBarText = $("<div>").addClass("progress-bar-text").appendTo(progressBarWrapper),
-		btnGroup = $("<div>").addClass("btn-group").before(' ').appendTo(content),
-		deleteBtn = $("<button>").addClass("btn btn-default btn-xs deleteBtn").attr({title: "Delete", type: "button"}).html(gly("trash")).appendTo(btnGroup),
-		repeatBtn = $("<button>").addClass("btn btn-default btn-xs").attr({title: "Toggle Repeat", type: "button"}).html(gly("repeat")).appendTo(btnGroup),
-		message = $("<div>").addClass("message").appendTo(content)
-
-		repeat = data.repeat;
-
-		deleteBtn.click(function(){
-			commands.remove();
-		});
-		repeatBtn.click(function(){
-			repeatBtn.toggleClass("active");
-			commands.setRepeat(!repeat);
-		});
-
-		if(init){
-			block.appendTo("#content");
-		}else{
-			block.insertAfter("#addpanel").addClass("animate shrink");
-			setTimeout(function(){
-				block.removeClass("shrink");
-			},10);
-		}
-
-	var commands = {
-		node: block,
-		id: id,
-		setColor: function(type){
-			var classN = "progress-bar progress-bar-" + type;
-			if(progressBar.attr("class") !== classN){
-				progressBar.attr("class", classN);
-			}
-		},
-		setRemainingTime: function(text, percent){
-			progressBar.css("width", percent + "%");
-			progressBarText.text(text);
-		},
-		setMessage: function(text){ message.text(text); },
-		setRepeat: function(bool){
-			repeat = bool;
-			repeatBtn[bool ? "addClass" : "removeClass"]("active");
-
-			/*
-			var list = JSON.parse(localStorage["countdown"]);
-			for(var i = 0; i < list.length; i++){
-				if(list[i].id == id){
-					list[i].repeat = repeat;
-					data = list[i];
-				}
-			}
-			localStorage["countdown"] = JSON.stringify(list);
-			*/
-			data.set("repeat", bool);
-		},
-		remove: function(internal){
-			/*
-			var list = JSON.parse(localStorage["countdown"]);
-			for(var i = 0; i < list.length; i++){
-				if(list[i].id == id){
-					list.splice(i, 1);
-					break;
-				}
-			}
-			localStorage["countdown"] = JSON.stringify(list);
-			*/
-			if(!internal)	CountdownTimer.remove(id);
-
-			for(var i = 0; i < timerList.length; i++){
-				if(id === timerList[i].id){
-					timerList.splice(i, 1);
-					break;
-				}
-			}
-			block.addClass("animate shrink").delay(300).queue(function(){
-				$(this).addClass("collapsed");
-				setTimeout(function(){
-					block.remove();
-				}, 300);
-			});
-		},
-		update: function(i){
-			var remainingTime = data.end - Date.now();
-			if(remainingTime <= 0 && !data.repeat){
-				timerList.splice(i, 1);
-				this.remove(true);
-				return false;
-			}else if(data.repeat){
-				/*
-				var list = JSON.parse(localStorage["countdown"]);
-				for(var i = 0; i < list.length; i++){
-					if(list[i].id === id){
-						data = list[i];
-						break;
-					}
-				}
-				*/
-				data = CountdownTimer.get(id);
-
-				if(!data){
-					// timer removed
-					this.remove(true);
-					return;
-				}
-			}
-			this.setColor(data.color);
-			this.setRemainingTime("Remaining Time: " + formatTime(Math.ceil(remainingTime/1000)),
-				100-(Date.now() - data.start)/(data.end - data.start)*100);
-			this.setMessage(data.message||"-");
-			if(data.repeat !== repeatBtn.hasClass("active")) repeatBtn[data.repeat ? "addClass" : "removeClass"]("active");
-		}
-	};
-	return commands;
+function countdownModal(options = {}) {
+  const settings = Object.assign({
+    title: '', content: '', backdrop: true, size: 'lg', buttons: [],
+    closeBtn: true, closeBtnText: i18n('close'), onClose() {}
+  }, options);
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('data-bs-backdrop', String(settings.backdrop));
+  const dialog = document.createElement('div');
+  dialog.className = 'modal-dialog modal-' + settings.size;
+  const content = document.createElement('div');
+  content.className = 'modal-content';
+  const header = document.createElement('div');
+  header.className = 'modal-header';
+  const title = document.createElement('h4');
+  title.className = 'modal-title';
+  if (typeof settings.title === 'string') title.textContent = settings.title;
+  else title.append(settings.title);
+  header.append(title);
+  const body = document.createElement('div');
+  body.className = 'modal-body';
+  if (typeof settings.content === 'string') body.textContent = settings.content;
+  else if (settings.content) body.append(settings.content);
+  const footer = document.createElement('div');
+  footer.className = 'modal-footer';
+  for (const entry of settings.buttons) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn btn-' + (entry.primary ? 'primary' : 'outline-secondary');
+    button.textContent = entry.title;
+    button.addEventListener('click', () => entry.onclick.call(modal));
+    footer.append(button);
+  }
+  if (settings.closeBtn) {
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn btn-outline-secondary';
+    close.setAttribute('data-bs-dismiss', 'modal');
+    close.textContent = settings.closeBtnText;
+    footer.append(close);
+  }
+  content.append(header, body, footer);
+  dialog.append(content);
+  modal.append(dialog);
+  modal.addEventListener('hidden.bs.modal', () => {
+    modal.remove();
+    settings.onClose();
+  }, {once: true});
+  document.body.append(modal);
+  showBootstrapModal(modal);
+  return modal;
 }
 
-function init(){
-	/*
-	var list = JSON.parse(localStorage["countdown"]);
-	for(var i = 0; i < list.length; i++){
-		timerList.push(new Entry(list[i].id, list[i], true));
-	}
-	*/
-	var list = CountdownTimer.getAll();
-	for(var i = 0; i < list.length; i++){
-		timerList.push(new Entry(list[i].id, list[i], true));
-	}
-
-	if(timerList.length === 0){
-		setTimeout(function(){
-			$("#add").click();
-		}, 200);
-	}
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor(seconds % 3600 / 60);
+  const remainder = seconds % 60;
+  return (hours ? hours + ':' + String(minutes).padStart(2, '0') : minutes) +
+    ':' + String(remainder).padStart(2, '0');
 }
 
-function update(){
-	for(var i = 0; i < timerList.length; i++){
-		timerList[i].update(i);
-	}
-	$("#count").text(timerList.length)[timerList.length > 0 ? "addClass":"removeClass"]("running");
-	if(timerList.length > 1){
-		$("h1 > span").addClass("shows");
-	}else{
-		$("h1 > span").removeClass("shows");
-	}
-	$("#removeAll").prop("disabled", !timerList.length);
-	setTimeout(update, 300);
+function updateCount() {
+  byId('count').textContent = timerList.length;
+  byId('count').classList.toggle('running', timerList.length > 0);
+  const plural = document.querySelector('h1 > .plural');
+  if (plural) plural.classList.toggle('shows', timerList.length > 1);
+  byId('removeAll').disabled = timerList.length === 0;
 }
 
-function formatTime(sec){
-	var h = (sec/3600)|0,
-		m = (sec%3600/60)|0,
-		s = sec%3600%60;
-	return (h?(h+":"+(m<10?"0":"")):"") + m + ":" + ("0"+s).substr(-2);
+function Entry(data, initial = false) {
+  const block = document.createElement('div');
+  block.className = 'block';
+  const content = document.createElement('div');
+  content.className = 'bContent';
+  const progress = document.createElement('div');
+  progress.className = 'progress progress-striped active';
+  const bar = document.createElement('div');
+  bar.className = 'progress-bar';
+  bar.setAttribute('role', 'progressbar');
+  const remaining = document.createElement('div');
+  remaining.className = 'progress-bar-text';
+  progress.append(bar, remaining);
+  const buttons = document.createElement('div');
+  buttons.className = 'btn-group';
+  const removeButton = document.createElement('button');
+  removeButton.type = 'button';
+  removeButton.className = 'btn btn-outline-secondary btn-sm deleteBtn';
+  removeButton.title = 'Delete';
+  removeButton.append(glyph('trash'));
+  const repeatButton = document.createElement('button');
+  repeatButton.type = 'button';
+  repeatButton.className = 'btn btn-outline-secondary btn-sm';
+  repeatButton.title = 'Toggle Repeat';
+  repeatButton.append(glyph('repeat'));
+  buttons.append(removeButton, repeatButton);
+  const message = document.createElement('div');
+  message.className = 'message';
+  content.append(progress, document.createTextNode(' '), buttons, message);
+  block.append(content);
+  if (initial) byId('content').append(block);
+  else {
+    block.classList.add('animate', 'shrink');
+    byId('addpanel').after(block);
+    setTimeout(() => block.classList.remove('shrink'), 10);
+  }
+
+  let refreshing = false;
+  const commands = {
+    id: data.id,
+    node: block,
+    remove(internal = false) {
+      if (!internal) CountdownTimer.remove(data.id);
+      const index = timerList.indexOf(this);
+      if (index !== -1) timerList.splice(index, 1);
+      updateCount();
+      block.classList.add('animate', 'shrink');
+      setTimeout(() => {
+        block.classList.add('collapsed');
+        setTimeout(() => block.remove(), 300);
+      }, 300);
+    },
+    async refreshExpired() {
+      if (refreshing) return;
+      refreshing = true;
+      try {
+        const response = await legacyApi.runtime.sendMessage({target: 'worker', type: 'get'});
+        if (!response?.ok) return;
+        const current = response.data.countdowns.find(timer => timer.id === data.id);
+        if (current) Object.assign(data, current);
+        else this.remove(true);
+      } catch (error) {
+        console.warn('Cool Clock countdown refresh:', error);
+      } finally {
+        refreshing = false;
+      }
+    },
+    update() {
+      const remainingMs = data.end - Date.now();
+      if (remainingMs <= 0 && !data.repeat) {
+        this.remove(true);
+        return;
+      }
+      if (remainingMs <= 0 && data.repeat) this.refreshExpired();
+      bar.className = 'progress-bar progress-bar-' + data.color;
+      bar.style.width = Math.max(0, Math.min(100, (data.end - Date.now()) / data.duration * 100)) + '%';
+      remaining.textContent = 'Remaining Time: ' + formatTime(Math.max(0, Math.ceil(remainingMs / 1000)));
+      message.textContent = data.message || '-';
+      repeatButton.classList.toggle('active', !!data.repeat);
+    }
+  };
+  removeButton.addEventListener('click', () => commands.remove());
+  repeatButton.addEventListener('click', () => {
+    data.set('repeat', !data.repeat);
+    repeatButton.classList.toggle('active', !!data.repeat);
+  });
+  commands.update();
+  return commands;
 }
 
-function createModal(options){
-	options = $.extend({
-		title: "",
-		content: "",
-		backdrop: true,
-		size: "lg",
-		buttons: [],
-		closeBtn: true,
-		closeBtnText: i18n("close"),
-		onClose: function(){}
-	}, options);
+function setupCountdownPage() {
+  i18n.translate();
+  selectAll('gly').forEach(element => {
+    const replacement = glyph(element.getAttribute('icon'));
+    replacement.className += ' ' + element.className;
+    element.replaceWith(replacement);
+  });
+  byId('add').addEventListener('click', function() {
+    const panel = byId('addpanel');
+    panel.classList.add('animate');
+    if (panel.classList.contains('shrink')) {
+      panel.classList.remove('collapsed');
+      setTimeout(() => {
+        panel.classList.remove('shrink');
+        byId('h').focus();
+      }, 300);
+      this.replaceChildren(glyph('minus'));
+    } else {
+      panel.classList.add('shrink');
+      setTimeout(() => panel.classList.add('collapsed'), 300);
+      this.replaceChildren(glyph('plus'));
+    }
+  });
+  const timeInputs = [byId('h'), byId('m'), byId('s')];
+  const refreshSet = () => {
+    byId('set').disabled = timeInputs.reduce((sum, input) => sum + Number(input.value || 0), 0) === 0;
+  };
+  timeInputs.forEach((input, index) => {
+    input.addEventListener('blur', () => {
+      if (input.value) input.value = String(Math.min(index === 0 ? 99 : 59, Number(input.value)));
+    });
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/[^0-9]/g, '').slice(0, 2);
+      if (input.value.length === 2 && timeInputs[index + 1]) {
+        timeInputs[index + 1].focus();
+        timeInputs[index + 1].select();
+      }
+      refreshSet();
+    });
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Backspace' && !input.value && timeInputs[index - 1]) {
+        timeInputs[index - 1].select();
+        event.preventDefault();
+      }
+    });
+  });
+  [...timeInputs, byId('message')].forEach(input => input.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && !byId('set').disabled) {
+      byId('set').click();
+      input.blur();
+    }
+  }));
 
-	var modal = $("<div>").attr({
-			"class": "modal fade",
-			"role": "dialog"
-		}).attr("data-backdrop", options.backdrop),
-		dialog = $("<div>").attr({
-			"class": "modal-dialog modal-" + options.size
-		}).appendTo(modal),
-		content = $("<div>").attr({
-			"class": "modal-content"
-		}).appendTo(dialog),
-		header = $("<div>").attr({
-			"class": "modal-header"
-		}).appendTo(content),
-		h4 = $("<h4>").attr({
-			"class": "modal-title"
-		}).html(options.title).appendTo(header),
-		body = $("<div>").attr({
-			"class": "modal-body"
-		}).appendTo(content),
-		footer = $("<div>").attr({
-			"class": "modal-footer"
-		}).appendTo(content);
+  selectAll('.input-color button').forEach(button => button.addEventListener('click', function() {
+    selectAll('.input-color button').forEach(item => item.classList.toggle('active', item === this));
+  }));
+  byId('repeat').addEventListener('click', function() {
+    this.classList.toggle('active');
+    this.dataset.value = String(this.classList.contains('active'));
+  });
+  byId('set').addEventListener('click', () => {
+    const duration = Number(byId('h').value || 0) * 3600 +
+      Number(byId('m').value || 0) * 60 + Number(byId('s').value || 0);
+    if (!Number.isInteger(duration) || duration < 1) return;
+    const color = document.querySelector('.input-color button.active')?.value || 'primary';
+    const data = CountdownTimer.create(Date.now() + duration * 1000, {
+      message: byId('message').value,
+      color, repeat: byId('repeat').classList.contains('active')
+    });
+    byId('add').replaceChildren(glyph('plus'));
+    const panel = byId('addpanel');
+    panel.classList.add('animate', 'swipe');
+    setTimeout(() => {
+      panel.classList.remove('animate', 'swipe');
+      panel.classList.add('shrink', 'collapsed');
+      timerList.push(new Entry(data));
+      updateCount();
+    }, 300);
+  });
+  byId('removeAll').addEventListener('click', function() {
+    this.blur();
+    const title = document.createElement('span');
+    title.append(glyph('info-sign'), ' Are you sure?');
+    const modal = countdownModal({
+      title, content: 'This cannot be reverted.', closeBtn: false, backdrop: 'static', size: 'sm',
+      buttons: [
+        {title: i18n('cancel'), primary: true, onclick() { hideBootstrapModal(modal); }},
+        {title: i18n('OK'), onclick() {
+          timerList.slice().forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
+          hideBootstrapModal(modal);
+        }}
+      ]
+    });
+  });
+  document.addEventListener('contextmenu', event => {
+    if (event.target.id !== 'message') event.preventDefault();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'F5') event.preventDefault();
+  });
+  window.addEventListener('beforeunload', () =>
+    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window));
 
-		if(typeof(options.content) === "string"){
-			body.html(options.content);
-		}else{
-			body.append(options.content);
-		}
-
-		if(options.closeBtn){
-			$("<button>")
-				.addClass("btn btn-default")
-				.attr("data-dismiss", "modal")
-				.html(options.closeBtnText)
-				.appendTo(footer);
-		}
-		$.each(options.buttons, function(){
-			var entry = this;
-			$("<button>")
-				.addClass("btn btn-" + (this.primary ? "primary" : "default"))
-				.html(this.title)
-				.appendTo(footer)
-				.click(function(){
-					entry.onclick.call(modal);
-				});
-		});
-
-	modal.appendTo("body").modal().on("hidden.bs.modal", function(){
-		modal.remove();
-		options.onClose();
-	});
-
-	return modal;
+  restoreLegacyCountdownPreset();
+  refreshSet();
+  CountdownTimer.getAll().forEach(data => timerList.push(new Entry(data, true)));
+  updateCount();
+  if (!timerList.length) setTimeout(() => byId('add').click(), 200);
+  if (i18n.lang() === 'en') {
+    const plural = document.createElement('span');
+    plural.className = 'plural';
+    plural.setAttribute('data-bs-toggle', 'tooltip');
+    plural.setAttribute('data-bs-placement', 'bottom');
+    plural.setAttribute('data-bs-html', 'true');
+    plural.title = 'Here at Cool Clock HQ, we treat grammar <i>very</i> seriously.';
+    plural.textContent = 's';
+    document.querySelector('h1').append(plural);
+  }
+  initBootstrapTooltip(selectAll('[data-bs-toggle="tooltip"]'), {
+    placement: 'auto', delay: {show: 500, hide: 0}, container: 'body'
+  });
+  setInterval(() => {
+    timerList.slice().forEach(entry => entry.update());
+    updateCount();
+  }, 300);
 }
+
+setupCountdownPage();

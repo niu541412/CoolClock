@@ -179,7 +179,7 @@ var LegacyBackground = {
       keepawake: String(saved.keepAwake ?? true),
     };
     if (saved.language) tracked.language = saved.language;
-    if (saved.weather) tracked.weather = JSON.stringify({enabled: true, name: saved.weather.name, latitude: saved.weather.latitude, longitude: saved.weather.longitude, woeid: ''});
+    if (saved.weather) tracked.weather = JSON.stringify({enabled: true, name: saved.weather.name, latitude: saved.weather.latitude, longitude: saved.weather.longitude, woeid: '', unit: saved.weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'});
     if (saved.clockDefinition) tracked.clockDefinition = JSON.stringify(saved.clockDefinition);
     for (const [key, value] of Object.entries(tracked)) localStorage.setItem(key, value);
     const defaults = {
@@ -225,10 +225,13 @@ function restoreLegacyCountdownPreset() {
   document.getElementById('s').value = seconds % 60;
   document.getElementById('message').value = preset.text || '';
   document.getElementById('set').disabled = seconds <= 0;
-  $('#repeat').data('value', !!preset.repeat).toggleClass('active', !!preset.repeat);
+  const repeat = document.getElementById('repeat');
+  repeat.dataset.value = String(!!preset.repeat);
+  repeat.classList.toggle('active', !!preset.repeat);
   if (preset.color) {
-    $('.input-color').data('value', preset.color);
-    $('.input-color button').removeClass('active').filter((_, button) => button.value === preset.color).addClass('active');
+    document.querySelectorAll('.input-color button').forEach(button => {
+      button.classList.toggle('active', button.value === preset.color);
+    });
   }
 }
 
@@ -236,7 +239,7 @@ function syncLegacyOption(key) {
   const voice = (() => { try { return JSON.parse(localStorage.noti_voice || '{}'); } catch { return {}; } })();
   const definition = (() => { try { return JSON.parse(localStorage.clockDefinition || '{}'); } catch { return {}; } })();
   const weather = (() => { try { return JSON.parse(localStorage.weather || '{}'); } catch { return {}; } })();
-  sendLegacy('settings', {
+  return sendLegacy('settings', {
     hour12: localStorage.pm === 'true', digital: localStorage.use_digit !== 'false',
     ringtone: localStorage.ringtone, ringLoop: localStorage.ring_loop === 'true',
     hourlyEnabled: localStorage.shownotification !== 'false',
@@ -258,6 +261,7 @@ function syncLegacyOption(key) {
     keepAwake: localStorage.keepawake !== 'false',
     language: localStorage.language || legacyApi.i18n.getUILanguage(),
     weather: weather.enabled && Number.isFinite(weather.latitude) && Number.isFinite(weather.longitude) ?
-      {name: weather.name || '', latitude: weather.latitude, longitude: weather.longitude} : null
+      {name: weather.name || '', latitude: weather.latitude, longitude: weather.longitude,
+        unit: weather.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'} : null
   });
 }

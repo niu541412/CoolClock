@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Ezeket a tételeket ne mutassa"
    },
+   "contextVoiceControl": {
+      "message": "Hangvezérlés"
+   },
+   "contextCurrentTime": {
+      "message": "Aktuális idő beszúrása"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Ütemezve ekkorra: {time}"
    },
+   "weatherHumidity": {
+      "message": "Páratartalom"
+   },
    "weatherLoading": {
       "message": "Időjárás betöltése…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Segítség"
+   },
+   "optionsMenu": {
+      "message": "Menü"
+   },
+   "optionsFormats": {
+      "message": "Formátumok"
+   },
+   "optionsNotifications": {
+      "message": "Értesítések"
+   },
+   "optionsSpeech": {
+      "message": "Szöveg beszédre"
+   },
+   "optionsExtension": {
+      "message": "Bővítmény"
+   },
+   "optionsCredits": {
+      "message": "Külön köszönet"
+   },
+   "optionsEditAppearance": {
+      "message": "Megjelenés szerkesztése"
+   },
+   "optionsColor": {
+      "message": "Szín"
+   },
+   "optionsBadgeColor": {
+      "message": "Jelvény színe"
+   },
+   "optionsNewPopup": {
+      "message": "Használjon új felugró ablakot"
+   },
+   "optionsTimeSystem": {
+      "message": "Időrendszer"
+   },
+   "optionsCalendarSystem": {
+      "message": "Naptár rendszer"
+   },
+   "optionsLunar": {
+      "message": "Jelenítse meg a kínai holddátumot"
+   },
+   "optionsDateOrder": {
+      "message": "Dátum Rendelés"
+   },
+   "optionsDragReorder": {
+      "message": "- húzza át az átrendezéshez"
+   },
+   "optionsCustomTimezone": {
+      "message": "Egyéni időzóna"
+   },
+   "optionsLocalTimezone": {
+      "message": "a helyi időzóna"
+   },
+   "optionsTimezoneNote": {
+      "message": "Megjegyzés: Ez a beállítás nem vonatkozik a naptárra."
+   },
+   "optionsTestNotification": {
+      "message": "Teszt értesítés"
+   },
+   "optionsNotificationStyle": {
+      "message": "Értesítési stílus"
+   },
+   "optionsDefault": {
+      "message": "Alapértelmezett"
+   },
+   "optionsBackgroundColor": {
+      "message": "Háttérszín"
+   },
+   "optionsCompact": {
+      "message": "Kompakt"
+   },
+   "optionsNotificationDuration": {
+      "message": "Értesítés megjelenítési ideje"
+   },
+   "optionsSystemDuration": {
+      "message": "(A rendszer felülírhatja ezt a beállítást)"
+   },
+   "optionsCloseManually": {
+      "message": "Zárja be manuálisan"
+   },
+   "optionsShowWeather": {
+      "message": "Időjárási információk megjelenítése"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Fahrenheit (℉) használata"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Az időjárási információkat az Open-Meteo szolgáltatta)"
+   },
+   "optionsLocation": {
+      "message": "Helyszín"
+   },
+   "optionsNotSet": {
+      "message": "Nincs beállítva/ Nem elérhető"
+   },
+   "optionsSearch": {
+      "message": "Keresés..."
+   },
+   "optionsNotificationSound": {
+      "message": "Óránkénti bejelentés hang engedélyezése"
+   },
+   "optionsRingtone": {
+      "message": "Csengőhang"
+   },
+   "optionsReadTime": {
+      "message": "Olvassa el az időt az óránkénti időbejelentéssel együtt"
+   },
+   "optionsSentence": {
+      "message": "Mondat"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: óra (24 óra); %h: óra (12 óra); %P: am/pm; %M: Perc"
+   },
+   "optionsFromComputer": {
+      "message": "A számítógépéről"
+   },
+   "optionsLoop": {
+      "message": "Hurkolás engedélyezése"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Az aktuális csengőhang előnézete"
+   },
+   "optionsLoad": {
+      "message": "Betöltés"
+   },
+   "optionsSpeechEngine": {
+      "message": "Beszédmotor"
+   },
+   "optionsSpeechIntro": {
+      "message": "Válassza ki azt a hangmotort, amelyet szívesebben szeretne használni a hangvezérléshez és az óránkénti értesítések szövegfelolvasásához."
+   },
+   "optionsSpeechInstall": {
+      "message": "A telepített hangok az alábbi legördülő listában jelennek meg."
+   },
+   "optionsInstalledVoices": {
+      "message": "Telepített hangmotorok"
+   },
+   "optionsLanguage": {
+      "message": "Nyelv"
+   },
+   "optionsUpdateInterval": {
+      "message": "Háttérfrissítési időköz"
+   },
+   "optionsKeepAwake": {
+      "message": "Megakadályozza a rendszer alvó állapotát, amikor aktív riasztások vagy visszaszámlálások vannak"
+   },
+   "optionsBackgroundRun": {
+      "message": "Ha a Google Chrome be van zárva, továbbra is futtassa a Cool Clockot a háttérben"
+   },
+   "optionsContextMenu": {
+      "message": "Helyi menüelemek megjelenítése"
+   },
+   "optionsTranslationCredits": {
+      "message": "Mindenki, aki hozzájárult, honosította a fordításokat"
+   },
+   "optionsMore": {
+      "message": "Továbbiak"
+   },
+   "optionsMiscellaneous": {
+      "message": "Vegyes"
+   },
+   "optionsLunarTip": {
+      "message": "Kínai holddátum megjelenítése. A pontosság a böngészőtől és az operációs rendszertől függ."
+   },
+   "optionsTimezoneTip": {
+      "message": "A helyi időzóna változhat a nyári időszámítás során."
+   },
+   "optionsTestTip": {
+      "message": "Értesítés megjelenítése az aktuális beállításokkal."
+   },
+   "optionsLocationTip": {
+      "message": "Ez az aktuális helyazonosító. A Keresés segítségével válasszon másik helyet."
+   },
+   "optionsAudioTip": {
+      "message": "Csak MP3, OGG vagy WAV fájlok támogatottak."
+   },
+   "optionsVoiceTip": {
+      "message": "Válasszon ki egy hangmotort, amely támogatja az Ön nyelvét a Text to Speech részben."
+   },
+   "optionsEmpty": {
+      "message": "(üres)"
+   },
+   "optionsContextTip": {
+      "message": "A Cool Clock elemeinek megjelenítése a jobb egérgombos menüben."
+   },
+   "optionsChooseFile": {
+      "message": "Válasszon egy fájlt..."
+   },
+   "optionsSearchPlace": {
+      "message": "Hely, irányítószám vagy hely"
+   },
+   "optionsSearchByName": {
+      "message": "Keresés név szerint"
+   },
+   "optionsLoading": {
+      "message": "Betöltés..."
+   },
+   "optionsNoResult": {
+      "message": "Nincs eredmény"
+   },
+   "optionsSearchError": {
+      "message": "Hiba az adatok lekérésekor"
+   },
+   "optionsImported": {
+      "message": "Importált!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Nyomja meg az Értesítés tesztelése gombot a hang meghallgatásához."
+   },
+   "optionsSuccess": {
+      "message": "Siker!"
+   },
+   "optionsLoaded": {
+      "message": "Töltött."
+   },
+   "optionsNotice": {
+      "message": "Megjegyzés"
+   },
+   "optionsNoRingtone": {
+      "message": "Nincs csengőhang beállítva."
+   },
+   "optionsInvalidUrl": {
+      "message": "Ez az URL érvénytelen vagy nem támogatott."
+   },
+   "optionsRetry": {
+      "message": "Próbálja újra"
+   },
+   "optionsAdvanced": {
+      "message": "Haladó"
+   },
+   "optionsAppearanceHint": {
+      "message": "Haladó felhasználóknak: módosítsa az alábbi konfigurációt az óra finomhangolásához. A szélesség és magasság megegyezik az ikon méretével, általában 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Az analóg óra megjelenésének szerkesztése"
+   },
+   "optionsEditDigital": {
+      "message": "A digitális óra megjelenésének szerkesztése"
+   },
+   "optionsInvalidJson": {
+      "message": "Érvénytelen JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "Adjon meg érvényes JSON-t."
+   },
+   "optionsYear": {
+      "message": "év"
+   },
+   "optionsMonth": {
+      "message": "hónap"
+   },
+   "optionsDate": {
+      "message": "nap"
+   },
+   "optionsRemoved": {
+      "message": "(Eltávolítva)"
+   },
+   "optionsUrlTip": {
+      "message": "Csak a HTTP vagy HTTPS URL-ek támogatottak."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Az időjárási információkat az Open-Meteo szolgáltatja"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Open-Meteo geokódolás"
+   },
+   "optionsTweet": {
+      "message": "Tweet"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (alapértelmezett riasztási csengőhang)"
+   },
+   "optionsFactLabel": {
+      "message": "Tény"
+   },
+   "optionsFact1": {
+      "message": "Ez a bővítmény nem tartalmaz szándékos felhasználói követőkódot."
+   },
+   "optionsFact2": {
+      "message": "A Cool Clocknál komolyan vesszük a nyelvtant, hogy elkerüljük a nyelvtannal kapcsolatos hibajelentéseket."
+   },
+   "optionsFact3": {
+      "message": "A Cool Clock azért kapta a nevét, mert készítője nem tudott ennél jobbat kitalálni."
+   },
+   "optionsFact4": {
+      "message": "A válasz nem mindenre a 42."
+   },
+   "optionsFact5": {
+      "message": "Ez az állítás hamis."
+   },
+   "optionsPermissionError": {
+      "message": "Nem sikerült eltávolítani a böngésző engedélyét."
+   },
+   "optionsProcessing": {
+      "message": "Feldolgozás..."
+   },
+   "optionsPleaseWait": {
+      "message": "Kérem, várjon egy kicsit..."
    }
 }

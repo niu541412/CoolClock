@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "隱藏這個右鍵表單"
    },
+   "contextVoiceControl": {
+      "message": "語音控制"
+   },
+   "contextCurrentTime": {
+      "message": "插入目前時間"
+   },
    "chat": {
       "message": "聊天室"
    },
@@ -278,6 +284,9 @@
    "scheduledFor": {
       "message": "設定時間：{time}"
    },
+   "weatherHumidity": {
+      "message": "濕度"
+   },
    "weatherLoading": {
       "message": "正在載入天氣…"
    },
@@ -289,5 +298,305 @@
    },
    "dismissLabel": {
       "message": "關閉"
+   },
+   "optionsMenu": {
+      "message": "選單"
+   },
+   "optionsFormats": {
+      "message": "格式"
+   },
+   "optionsNotifications": {
+      "message": "通知"
+   },
+   "optionsSpeech": {
+      "message": "語音朗讀"
+   },
+   "optionsExtension": {
+      "message": "擴充功能設定"
+   },
+   "optionsCredits": {
+      "message": "特別鳴謝"
+   },
+   "optionsEditAppearance": {
+      "message": "編輯外觀"
+   },
+   "optionsColor": {
+      "message": "顏色"
+   },
+   "optionsBadgeColor": {
+      "message": "徽章顏色"
+   },
+   "optionsNewPopup": {
+      "message": "使用新版彈出視窗"
+   },
+   "optionsTimeSystem": {
+      "message": "時間格式"
+   },
+   "optionsCalendarSystem": {
+      "message": "日曆格式"
+   },
+   "optionsLunar": {
+      "message": "顯示農曆日期"
+   },
+   "optionsDateOrder": {
+      "message": "日期順序"
+   },
+   "optionsDragReorder": {
+      "message": "— 拖曳以重新排序"
+   },
+   "optionsCustomTimezone": {
+      "message": "自訂時區"
+   },
+   "optionsLocalTimezone": {
+      "message": "本地時區"
+   },
+   "optionsTimezoneNote": {
+      "message": "注意：此設定不適用於日曆。"
+   },
+   "optionsTestNotification": {
+      "message": "測試通知"
+   },
+   "optionsNotificationStyle": {
+      "message": "通知樣式"
+   },
+   "optionsDefault": {
+      "message": "預設"
+   },
+   "optionsBackgroundColor": {
+      "message": "背景顏色"
+   },
+   "optionsCompact": {
+      "message": "精簡"
+   },
+   "optionsNotificationDuration": {
+      "message": "通知顯示時間"
+   },
+   "optionsSystemDuration": {
+      "message": "（系統可能會覆蓋此設定）"
+   },
+   "optionsCloseManually": {
+      "message": "手動關閉"
+   },
+   "optionsShowWeather": {
+      "message": "顯示天氣資訊"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "使用華氏度（℉）"
+   },
+   "optionsWeatherProvider": {
+      "message": "（天氣資訊由 Open-Meteo 提供）"
+   },
+   "optionsLocation": {
+      "message": "位置"
+   },
+   "optionsNotSet": {
+      "message": "未設定或無法使用"
+   },
+   "optionsSearch": {
+      "message": "搜尋…"
+   },
+   "optionsNotificationSound": {
+      "message": "啟用整點報時音效"
+   },
+   "optionsRingtone": {
+      "message": "鈴聲"
+   },
+   "optionsReadTime": {
+      "message": "整點報時時朗讀時間"
+   },
+   "optionsSentence": {
+      "message": "朗讀內容"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H：小時（24 小時制）；%h：小時（12 小時制）；%P：上午/下午；%M：分鐘"
+   },
+   "optionsFromComputer": {
+      "message": "從電腦選擇"
+   },
+   "optionsLoop": {
+      "message": "循環播放"
+   },
+   "optionsPreviewRingtone": {
+      "message": "試聽目前鈴聲"
+   },
+   "optionsLoad": {
+      "message": "載入"
+   },
+   "optionsSpeechEngine": {
+      "message": "語音引擎"
+   },
+   "optionsSpeechIntro": {
+      "message": "選擇用於語音控制及整點報時的語音引擎。"
+   },
+   "optionsSpeechInstall": {
+      "message": "已安裝的語音會顯示在下方清單中。"
+   },
+   "optionsInstalledVoices": {
+      "message": "已安裝的語音引擎"
+   },
+   "optionsLanguage": {
+      "message": "語言"
+   },
+   "optionsUpdateInterval": {
+      "message": "背景更新間隔"
+   },
+   "optionsKeepAwake": {
+      "message": "有鬧鐘或倒數計時執行時防止系統休眠"
+   },
+   "optionsBackgroundRun": {
+      "message": "關閉瀏覽器後繼續在背景執行有型時鐘"
+   },
+   "optionsContextMenu": {
+      "message": "顯示右鍵選單項目"
+   },
+   "optionsTranslationCredits": {
+      "message": "所有參與翻譯的貢獻者"
+   },
+   "optionsMore": {
+      "message": "更多"
+   },
+   "optionsMiscellaneous": {
+      "message": "其他"
+   },
+   "optionsLunarTip": {
+      "message": "顯示農曆日期。準確性取決於瀏覽器和作業系統。"
+   },
+   "optionsTimezoneTip": {
+      "message": "實施日光節約時間的地區，本地時區可能會改變。"
+   },
+   "optionsTestTip": {
+      "message": "使用目前設定顯示一則通知。"
+   },
+   "optionsLocationTip": {
+      "message": "這裡顯示目前位置的 ID。使用「搜尋」選擇其他位置。"
+   },
+   "optionsAudioTip": {
+      "message": "僅支援 MP3、OGG 或 WAV 檔案。"
+   },
+   "optionsVoiceTip": {
+      "message": "請在「語音朗讀」中選擇支援目前語言的語音引擎。"
+   },
+   "optionsEmpty": {
+      "message": "（空）"
+   },
+   "optionsContextTip": {
+      "message": "在右鍵選單中顯示有型時鐘的項目。"
+   },
+   "optionsChooseFile": {
+      "message": "選擇檔案…"
+   },
+   "optionsSearchPlace": {
+      "message": "位置、郵遞區號或地名"
+   },
+   "optionsSearchByName": {
+      "message": "依名稱搜尋"
+   },
+   "optionsLoading": {
+      "message": "載入中…"
+   },
+   "optionsNoResult": {
+      "message": "沒有結果"
+   },
+   "optionsSearchError": {
+      "message": "取得資料失敗"
+   },
+   "optionsImported": {
+      "message": "匯入成功！"
+   },
+   "optionsTestSoundHint": {
+      "message": "按「測試通知」試聽音效。"
+   },
+   "optionsSuccess": {
+      "message": "成功！"
+   },
+   "optionsLoaded": {
+      "message": "已載入。"
+   },
+   "optionsNotice": {
+      "message": "提示"
+   },
+   "optionsNoRingtone": {
+      "message": "尚未設定鈴聲。"
+   },
+   "optionsInvalidUrl": {
+      "message": "網址無效或不受支援。"
+   },
+   "optionsRetry": {
+      "message": "重試"
+   },
+   "optionsAdvanced": {
+      "message": "進階"
+   },
+   "optionsAppearanceHint": {
+      "message": "進階設定：編輯下方設定以微調時鐘。寬度和高度對應圖示尺寸，通常為 19 × 19 dp。"
+   },
+   "optionsEditAnalog": {
+      "message": "編輯指針時鐘外觀"
+   },
+   "optionsEditDigital": {
+      "message": "編輯數字時鐘外觀"
+   },
+   "optionsInvalidJson": {
+      "message": "JSON 無效"
+   },
+   "optionsEnterValidJson": {
+      "message": "請輸入有效的 JSON。"
+   },
+   "optionsYear": {
+      "message": "年"
+   },
+   "optionsMonth": {
+      "message": "月"
+   },
+   "optionsDate": {
+      "message": "日"
+   },
+   "optionsRemoved": {
+      "message": "（已移除）"
+   },
+   "optionsUrlTip": {
+      "message": "僅支援 HTTP 或 HTTPS 網址。"
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "天氣資訊由 Open-Meteo 提供"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Open-Meteo 地理編碼"
+   },
+   "optionsTweet": {
+      "message": "發推文"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay（預設鬧鐘鈴聲）"
+   },
+   "optionsFactLabel": {
+      "message": "趣聞"
+   },
+   "optionsFact1": {
+      "message": "本擴充功能沒有刻意加入使用者追蹤程式碼。"
+   },
+   "optionsFact2": {
+      "message": "有型時鐘很重視文法，以免收到文法錯誤回報。"
+   },
+   "optionsFact3": {
+      "message": "有型時鐘的名字，是因為作者想不出更好的名字。"
+   },
+   "optionsFact4": {
+      "message": "萬物的答案不是 42。"
+   },
+   "optionsFact5": {
+      "message": "這句話是假的。"
+   },
+   "optionsPermissionError": {
+      "message": "無法移除瀏覽器權限。"
+   },
+   "optionsProcessing": {
+      "message": "正在處理…"
+   },
+   "optionsPleaseWait": {
+      "message": "請稍候…"
    }
 }

@@ -6,6 +6,7 @@ const PREFIX = 'coolclock:';
 const DEFAULT_STATE = {alarms: [], countdowns: [], stopwatch: {elapsed: 0, started: null}, todos: {}, settings: {hour12: true, digital: true, timezoneEnabled: false, timezone: null, keepAwake: true, badge: false, icon: true, badgeStatic: false, badgeColor: '#428bca', clockColor: '#000000', clockDefinition: null, popupVersion: '1', contextMenuEnabled: true, sound: true, ringtone: 'default', ringLoop: false, hourlyEnabled: true, hourlyDuration: 7, hourlyVoice: false, hourlyVoiceText: 'It is %h %P.', hourlySound: 'none', hourlyStyle: 'default', hourlyBgColor: '#0772a1', hourlyManualClose: false, weather: null, timerPresetSaved: false, timerPreset: {seconds: 300, repeat: false, text: '', color: 'primary'}}};
 let work = Promise.resolve();
 let offscreenOpening;
+let iconFontPromise;
 
 function enqueue(task) {
   const result = work.then(task);
@@ -143,14 +144,14 @@ async function rebuildContextMenus(settings) {
   create('open-countdown', t('countdown'));
   create('open-stopwatch', t('timer'));
   create('open-calendar', t('calendar'));
-  create('open-voice', 'Voice Control...');
+  create('open-voice', t('contextVoiceControl') + '...');
   create('icon-digital', t('digital'), action, {type: 'radio', checked: settings.digital !== false});
   create('icon-analog', t('analog'), action, {type: 'radio', checked: settings.digital === false});
   create('open-options', t('settings'));
   create('open-update', t('whatsnew'));
   create('open-about', t('about'));
   create('hide-menu', t('ctxhide'));
-  create('insert-time', 'Get current time...', ['editable']);
+  create('insert-time', t('contextCurrentTime') + '...', ['editable']);
   await Promise.all(pending);
 }
 
@@ -181,6 +182,23 @@ async function reconcile(data) {
   await updateBadge(data);
 }
 
+function loadIconFont() {
+  if (!iconFontPromise) {
+    iconFontPromise = (async () => {
+      const fontSet = globalThis.fonts || globalThis.document?.fonts;
+      if (typeof FontFace !== 'function' || !fontSet) return 'sans-serif';
+      const font = new FontFace('CoolClockIconDigits', `url("${ext.runtime.getURL('fonts/Roboto-Medium.ttf')}")`);
+      await font.load();
+      fontSet.add(font);
+      return '"CoolClockIconDigits", sans-serif';
+    })().catch(error => {
+      console.warn('Cool Clock: unable to load icon font', error);
+      return 'sans-serif';
+    });
+  }
+  return iconFontPromise;
+}
+
 async function updateBadge(data) {
   const now = clockNow(data.settings);
   const settings = data.settings;
@@ -199,12 +217,13 @@ async function updateBadge(data) {
   }
   const definition = (settings.clockDefinition || {})[settings.digital ? 'digital' : 'analog'] || {};
   if (settings.digital) {
+    const iconFont = await loadIconFont();
     context.fillStyle = settings.clockColor || '#000000';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.hrFontSize) || 18))}px sans-serif`;
+    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.hrFontSize) || 18))}px ${iconFont}`;
     context.fillText(String(hour).padStart(2, '0'), 16, 10, 32);
-    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.minFontSize) || 18))}px sans-serif`;
+    context.font = `bold ${Math.max(8, Math.min(30, Number(definition.minFontSize) || 18))}px ${iconFont}`;
     context.fillText(String(now.getMinutes()).padStart(2, '0'), 16, 25, 32);
   } else {
     const center = 16;

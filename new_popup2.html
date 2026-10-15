@@ -3,9 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="scripts/new_popup2/css.css">
 
-		<script src="jquery.js"></script>
 		<script type="text/javascript" charset="utf-8" src="translation.js"></script>
-		<script src="scripts/new_popup2/js.js"></script>
 	</head>
 	<body>
 		<background-shapes id="background"></background-shapes>
@@ -20,13 +18,13 @@
 				<app-list-item id="countdown-status" trans="countdown">Countdown</app-list-item>
 				<app-list-item id="stopwatch-status" trans="timer">Stopwatch</app-list-item>
 				<app-list-item id="calendar-status" trans="calendar">Calendar</app-list-item>
-				<app-list-item id="app-more" center>More</app-list-item>
+				<app-list-item id="app-more" center trans="optionsMore">More</app-list-item>
 			</app-list>
 		</div>
 		<div id="bottom-sheet-wrapper" class="hidden">
 			<div id="bottom-sheet-backdrop"></div>
 			<dl id="bottom-sheet-list">
-				<dt>Miscellaneous</dt>
+				<dt trans="optionsMiscellaneous">Miscellaneous</dt>
 				<dd id="action-statistics">
 					<img class="bottom-sheet-icon" src="/images/icons/timeline_24dp.png">
 					<span class="bottom-sheet-text" trans="stat">Statistics</span>
@@ -41,13 +39,13 @@
 				</dd>
 				<dd id="action-forum">
 					<img class="bottom-sheet-icon" src="/images/icons/forum_24dp.png">
-					<span class="bottom-sheet-text" trans="forum">
+					<span class="bottom-sheet-text" trans="forum">Forum</span>
 				</dd>
 				<dd id="action-about">
 					<img class="bottom-sheet-icon" src="/images/icons/info_24dp.png">
 					<span class="bottom-sheet-text" trans="about">About</span>
 				</dd>
-			</ul>
+			</dl>
 		</div>
 	</body>
 
@@ -72,6 +70,7 @@
 				line-height: 64px;
 				position: relative;
 				margin: 0;
+				white-space: nowrap;
 			}
 			#hours-minutes[data-pm-label]::after{
 				content: attr(data-pm-label);
@@ -138,7 +137,7 @@
 		<style>
 			#content{
 				margin: 0;
-				font-size: 24px;
+				font-size: 22px;
 			}
 		</style>
 

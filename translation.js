@@ -27,7 +27,7 @@ var languages=[
 		"ko",
 		"ca",
 		"nb",
-		"ar",
+		"fa",
 		"el",
 		"hu",
 		"vi",
@@ -69,6 +69,25 @@ function processLanguageCode(code){
 	return chrome.i18n.getUILanguage();
 }
 
+var localeMessages = {};
+
+function loadLocaleMessages(language){
+	if(Object.prototype.hasOwnProperty.call(localeMessages, language)) return localeMessages[language];
+	var xhr = new XMLHttpRequest();
+	try{
+		xhr.open("GET", chrome.runtime.getURL("/_locales/" + language.replace(/\-/g, "_") + "/messages.json"), false);
+		xhr.send();
+		if(xhr.status === 200 || xhr.status === 0){
+			localeMessages[language] = JSON.parse(xhr.responseText);
+			return localeMessages[language];
+		}
+	}catch(error){
+		console.warn("Could not load locale", language, error);
+	}
+	localeMessages[language] = {};
+	return localeMessages[language];
+}
+
 function i18n(key,lang){
 	if(window.Components && Components.getSingleton("Localization")){
 		if(lang){
@@ -78,49 +97,10 @@ function i18n(key,lang){
 		}	
 	}
 
-	// fallback to old code
-	var querylang = localStorage["language"],
-		text = "";
-
-	if(typeof(lang) != "undefined"){
-		querylang = lang;
-	}
-
-	var xhr = new XMLHttpRequest();	
-	xhr.open("GET", chrome.extension.getURL("/_locales/"+querylang.replace(/\-/g,"_")+"/messages.json"), false);
-	xhr.onreadystatechange = function(){
-		if(this.readyState == 4){
-			var translations = JSON.parse(this.responseText.replace(/\/\*.+\*\//g, ""));
-			if(!(translations[key]) || translations[key]["message"] == ""){
-				//Test if there is translation for this word
-				try{
-					//If no, Use English
-					if(querylang != "en"){
-						text = i18n(key,"en");
-					}else{
-						text = "ERROR"
-					}
-				}catch(err){
-					//English does not have this word also. (error)
-					text = "ERROR"
-				}
-			}else{
-				text = translations[key]["message"]
-			}
-		}
-	};
-	
-	try{
-		//Test if there is translation for this language
-		xhr.send();
-	}catch(err){
-		if(err.code == 101){
-			//If no, use English
-			text = i18n(key,"en");
-		}
-	}
-
-	return text;
+	var querylang = typeof lang === "undefined" ? localStorage["language"] || "en" : lang;
+	var entry = loadLocaleMessages(querylang)[key];
+	if(entry && entry.message) return entry.message;
+	return querylang === "en" ? key : i18n(key, "en");
 }
 
 i18n.lang = function(){
@@ -149,10 +129,9 @@ i18n.customString = function(obj, date){
 }
 
 i18n.translate = function(ctx){
-	var $ = $ || chrome.extension.getBackgroundPage().$,
-		ctx = ctx || document;
-	$("*[trans]", ctx).each(function(){
-		var value = $(this).attr("trans");
+	ctx = ctx || document;
+	ctx.querySelectorAll("*[trans]").forEach(function(node){
+		var value = node.getAttribute("trans");
 		if(value.indexOf(":")!==-1){
 			var ns = value.split(":");
 			switch(ns[0]){
@@ -167,15 +146,14 @@ i18n.translate = function(ctx){
 					value = Intl.DateTimeFormat(i18n.lang(), {weekday: "long"}).format(date);
 					break;
 			}
-			this.innerHTML = value;
+			node.innerHTML = value;
 
 		}else{
-			this.innerHTML = i18n($(this).attr("trans"));
+			node.innerHTML = i18n(node.getAttribute("trans"));
 		}
 	});
 
-	$("body *", ctx).each(function(){
-		var node = this;
+	ctx.querySelectorAll("body *").forEach(function(node){
 		[].forEach.call(node.attributes, function(attr){
 			var value = attr.nodeValue;
 			if(/%[^%]+%/.test(value)){
@@ -199,7 +177,7 @@ i18n.translate = function(ctx){
 						value = value.replace(/%[^%]+%/, i18n(txt));
 					}
 				}
-				$(node).attr(attr.nodeName, value);
+				node.setAttribute(attr.nodeName, value);
 			}
 		});
 	});

@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "Een extensie boordevol handige tijdfuncties... en het mooiste is: hij is echt COOL." /*"De eerste extentie dat een digitale en een analoge klok in de hoofdbalk van de Chrome browser plaatst en daarbij een uursignaal kan weergeven met een melding op het scherm."*/
+      "message": "Een extensie boordevol handige tijdfuncties... en het mooiste is: hij is echt COOL."
    },
    "extName": {
       "message": "Cool Klok"
@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Deze items niet weergeven"
    },
+   "contextVoiceControl": {
+      "message": "Spraakbesturing"
+   },
+   "contextCurrentTime": {
+      "message": "Huidige tijd invoegen"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Gepland voor {time}"
    },
+   "weatherHumidity": {
+      "message": "Luchtvochtigheid"
+   },
    "weatherLoading": {
       "message": "Weer laden…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Hulp"
+   },
+   "optionsMenu": {
+      "message": "Menu"
+   },
+   "optionsFormats": {
+      "message": "Formaten"
+   },
+   "optionsNotifications": {
+      "message": "Meldingen"
+   },
+   "optionsSpeech": {
+      "message": "Tekst naar spraak"
+   },
+   "optionsExtension": {
+      "message": "Extensie"
+   },
+   "optionsCredits": {
+      "message": "Speciale dank"
+   },
+   "optionsEditAppearance": {
+      "message": "Uiterlijk bewerken"
+   },
+   "optionsColor": {
+      "message": "Kleur"
+   },
+   "optionsBadgeColor": {
+      "message": "Badgekleur"
+   },
+   "optionsNewPopup": {
+      "message": "Gebruik een nieuw pop-upontwerp"
+   },
+   "optionsTimeSystem": {
+      "message": "Tijdsysteem"
+   },
+   "optionsCalendarSystem": {
+      "message": "Kalendersysteem"
+   },
+   "optionsLunar": {
+      "message": "Chinese maandatum weergeven"
+   },
+   "optionsDateOrder": {
+      "message": "Datumvolgorde"
+   },
+   "optionsDragReorder": {
+      "message": "- sleep om opnieuw te ordenen"
+   },
+   "optionsCustomTimezone": {
+      "message": "Aangepaste tijdzone"
+   },
+   "optionsLocalTimezone": {
+      "message": "uw lokale tijdzone"
+   },
+   "optionsTimezoneNote": {
+      "message": "Let op: Deze instelling is niet van toepassing op de kalender."
+   },
+   "optionsTestNotification": {
+      "message": "Testmelding"
+   },
+   "optionsNotificationStyle": {
+      "message": "Meldingsstijl"
+   },
+   "optionsDefault": {
+      "message": "Standaard"
+   },
+   "optionsBackgroundColor": {
+      "message": "Achtergrondkleur"
+   },
+   "optionsCompact": {
+      "message": "Compact"
+   },
+   "optionsNotificationDuration": {
+      "message": "Weergavetijd melding"
+   },
+   "optionsSystemDuration": {
+      "message": "(Het systeem kan deze instelling overschrijven)"
+   },
+   "optionsCloseManually": {
+      "message": "Handmatig sluiten"
+   },
+   "optionsShowWeather": {
+      "message": "Weerinformatie weergeven"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Fahrenheit (℉) gebruiken"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Weerinformatie verstrekt door Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Locatie"
+   },
+   "optionsNotSet": {
+      "message": "Niet ingesteld/niet beschikbaar"
+   },
+   "optionsSearch": {
+      "message": "Zoeken..."
+   },
+   "optionsNotificationSound": {
+      "message": "Schakel het geluid van de uuraankondiging in"
+   },
+   "optionsRingtone": {
+      "message": "Beltoon"
+   },
+   "optionsReadTime": {
+      "message": "Lees de tijd af samen met de uuraanduiding"
+   },
+   "optionsSentence": {
+      "message": "Zin"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: Uur (24-uursnotatie); %h: Uur (12-uursnotatie); %P: vm/nm; %M: Minuut"
+   },
+   "optionsFromComputer": {
+      "message": "Vanaf uw computer"
+   },
+   "optionsLoop": {
+      "message": "Schakel looping in"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Bekijk een voorbeeld van de huidige beltoon"
+   },
+   "optionsLoad": {
+      "message": "Laden"
+   },
+   "optionsSpeechEngine": {
+      "message": "Spraakmotor"
+   },
+   "optionsSpeechIntro": {
+      "message": "Kies de stemengine die u het liefst gebruikt voor stembediening en tekst-naar-spraakmeldingen per uur."
+   },
+   "optionsSpeechInstall": {
+      "message": "Geïnstalleerde stemmen verschijnen in de vervolgkeuzelijst hieronder."
+   },
+   "optionsInstalledVoices": {
+      "message": "Geïnstalleerde stemmotoren"
+   },
+   "optionsLanguage": {
+      "message": "Taal"
+   },
+   "optionsUpdateInterval": {
+      "message": "Achtergrondupdate-interval"
+   },
+   "optionsKeepAwake": {
+      "message": "Voorkom dat het systeem in de slaapstand gaat als er actieve alarmen of aftellingen zijn"
+   },
+   "optionsBackgroundRun": {
+      "message": "Blijf Cool Clock op de achtergrond uitvoeren wanneer Google Chrome is gesloten"
+   },
+   "optionsContextMenu": {
+      "message": "Contextmenu-items tonen"
+   },
+   "optionsTranslationCredits": {
+      "message": "Iedereen die gelokaliseerde vertalingen heeft bijgedragen"
+   },
+   "optionsMore": {
+      "message": "Meer"
+   },
+   "optionsMiscellaneous": {
+      "message": "Diversen"
+   },
+   "optionsLunarTip": {
+      "message": "Geef een Chinese maandatum weer. De nauwkeurigheid is afhankelijk van uw browser en besturingssysteem."
+   },
+   "optionsTimezoneTip": {
+      "message": "Uw lokale tijdzone kan tijdens de zomertijd veranderen."
+   },
+   "optionsTestTip": {
+      "message": "Toon een melding met de huidige instellingen."
+   },
+   "optionsLocationTip": {
+      "message": "Dit is de huidige locatie-ID. Gebruik Zoeken om een ​​andere locatie te kiezen."
+   },
+   "optionsAudioTip": {
+      "message": "Alleen MP3-, OGG- of WAV-bestanden worden ondersteund."
+   },
+   "optionsVoiceTip": {
+      "message": "Selecteer een stemengine die uw taal ondersteunt in het gedeelte Tekst-naar-spraak."
+   },
+   "optionsEmpty": {
+      "message": "(leeg)"
+   },
+   "optionsContextTip": {
+      "message": "Toon Cool Clock-items in het rechtermuisknopmenu."
+   },
+   "optionsChooseFile": {
+      "message": "Kies een bestand..."
+   },
+   "optionsSearchPlace": {
+      "message": "Locatie, postcode of plaats"
+   },
+   "optionsSearchByName": {
+      "message": "Zoek op naam"
+   },
+   "optionsLoading": {
+      "message": "Laden..."
+   },
+   "optionsNoResult": {
+      "message": "Geen resultaten"
+   },
+   "optionsSearchError": {
+      "message": "Fout bij het ophalen van gegevens"
+   },
+   "optionsImported": {
+      "message": "Geïmporteerd!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Druk op Melding testen om het geluid te horen."
+   },
+   "optionsSuccess": {
+      "message": "Succes!"
+   },
+   "optionsLoaded": {
+      "message": "Geladen."
+   },
+   "optionsNotice": {
+      "message": "Let op"
+   },
+   "optionsNoRingtone": {
+      "message": "Er is geen beltoon ingesteld."
+   },
+   "optionsInvalidUrl": {
+      "message": "Deze URL is ongeldig of wordt niet ondersteund."
+   },
+   "optionsRetry": {
+      "message": "Opnieuw proberen"
+   },
+   "optionsAdvanced": {
+      "message": "Geavanceerd"
+   },
+   "optionsAppearanceHint": {
+      "message": "Voor gevorderde gebruikers: bewerk de onderstaande configuratie om de klok nauwkeurig af te stellen. De breedte en hoogte komen overeen met de pictogramgrootte, normaal gesproken 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Bewerk het uiterlijk van de analoge klok"
+   },
+   "optionsEditDigital": {
+      "message": "Bewerk het uiterlijk van de digitale klok"
+   },
+   "optionsInvalidJson": {
+      "message": "Ongeldige JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "Voer een geldige JSON in."
+   },
+   "optionsYear": {
+      "message": "Jaar"
+   },
+   "optionsMonth": {
+      "message": "Maand"
+   },
+   "optionsDate": {
+      "message": "Dag"
+   },
+   "optionsRemoved": {
+      "message": "(Verwijderd)"
+   },
+   "optionsUrlTip": {
+      "message": "Alleen HTTP- of HTTPS-URL's worden ondersteund."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Weerinformatie mogelijk gemaakt door Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Open-Meteo-geocodering"
+   },
+   "optionsTweet": {
+      "message": "Tweeten"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (standaard alarmbeltoon)"
+   },
+   "optionsFactLabel": {
+      "message": "Feit"
+   },
+   "optionsFact1": {
+      "message": "Deze extensie bevat geen opzettelijke gebruikerstrackingcode."
+   },
+   "optionsFact2": {
+      "message": "Bij Cool Clock nemen we grammatica serieus om bugrapporten over grammatica te voorkomen."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock kreeg zijn naam omdat de maker geen betere kon bedenken."
+   },
+   "optionsFact4": {
+      "message": "Het antwoord op alles is niet 42."
+   },
+   "optionsFact5": {
+      "message": "Deze verklaring is onjuist."
+   },
+   "optionsPermissionError": {
+      "message": "Kan browsertoestemming niet verwijderen."
+   },
+   "optionsProcessing": {
+      "message": "Verwerken..."
+   },
+   "optionsPleaseWait": {
+      "message": "Een moment geduld a.u.b...."
    }
 }

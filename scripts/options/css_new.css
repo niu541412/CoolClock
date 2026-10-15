@@ -17,6 +17,63 @@ body{
 	padding: 8px;
 }
 
+/* Match the compact Bootstrap 3 controls used by the original settings page. */
+#content .btn, .modal .btn {
+	font-size: 13px;
+	line-height: 1.42857143;
+	padding: 6px 12px;
+}
+#content .btn-sm, .modal .btn-sm {
+	font-size: 12px;
+	line-height: 1.5;
+	padding: 5px 10px;
+}
+#content .form-control, .modal .form-control {
+	font-size: 13px;
+	line-height: 1.42857143;
+	min-height: 34px;
+	padding: 6px 12px;
+}
+#content .form-control-sm, .modal .form-control-sm {
+	font-size: 12px;
+	line-height: 1.5;
+	min-height: 30px;
+	padding: 5px 10px;
+}
+#content .form-inline .form-group {
+	display: inline-block;
+	vertical-align: middle;
+}
+#content .form-inline .form-group > .form-control {
+	display: inline-block;
+	width: auto;
+}
+#content input[type="color"].form-control,
+#content .form-inline .form-group > input[type="color"].form-control {
+	width: 50px;
+	height: 30px;
+	min-height: 30px;
+	padding: 2px;
+	vertical-align: middle;
+}
+#content #noti_voice_text {
+	width: 100%;
+}
+#content .dropdown-menu {
+	font-size: 13px;
+}
+.modal .input-group-addon {
+	display: flex;
+	align-items: center;
+	padding: 6px 12px;
+	font-size: 13px;
+	color: #555;
+	background: #eee;
+	border: 1px solid #ccc;
+	border-radius: 4px 0 0 4px;
+	white-space: nowrap;
+}
+
 h1{
 	font-size: 32px;
 	font-family: Arial, 微軟正黑體, 微軟雅黑, Simhei, 新細明體;
@@ -58,7 +115,7 @@ h1{
 	font-style: normal;
 }
 
-span[data-toggle=tooltip]:not(.no-underline){
+span[data-bs-toggle=tooltip]:not(.no-underline){
 	border-bottom: 1px dotted gray;
 }
 
@@ -78,11 +135,8 @@ span[data-toggle=tooltip]:not(.no-underline){
 }
 
 #sidebar{
-	/*position: fixed;
-	width: 170px;*/
 	width: 100%;
 	padding-top: 77px;
-	-webkit-transition: all 0.2s ease-in-out;
 }
 #sidebar a{
 	-webkit-transition: background 0.1s ease-in-out;
@@ -90,6 +144,12 @@ span[data-toggle=tooltip]:not(.no-underline){
 
 #sidebar_footer, #sidebar_share{
 	padding-bottom: 20px;
+}
+#sidebar_footer{
+	font-size: 12px;
+}
+#sidebar_footer > a{
+	white-space: nowrap;
 }
 #sidebar_footer > a:not(:last-child)::after{
 	content: ' ‧ ';
@@ -102,11 +162,8 @@ span[data-toggle=tooltip]:not(.no-underline){
 }
 
 #content{
-	/*margin-left: 170px;
-	padding-top: 77px;
-	padding-left: 8px;*/
+	max-width: 850px;
 	padding-bottom: 0.5px;
-	-webkit-transition: all 0.2s ease-in-out;
 }
 
 #spacer{
@@ -125,12 +182,16 @@ span[data-toggle=tooltip]:not(.no-underline){
 }
 
 @media (min-width: 768px) {
+	h1{
+		margin-left: max(16px, calc(50vw - 533px));
+	}
 	#sidebar{
 		position: fixed;
-		width: 180px;
+		left: max(8px, calc(50vw - 533px));
+		width: 200px;
 	}
 	#content{
-		margin-left: 180px;
+		margin-left: max(216px, calc(50vw - 325px));
 		padding-top: 77px;
 		padding-left: 8px;
 	}
@@ -139,15 +200,6 @@ span[data-toggle=tooltip]:not(.no-underline){
 	}
 	#facts{
 		opacity: 1 ;
-	}
-}
-
-@media (min-width: 960px) {
-	#sidebar{
-		width: 300px;
-	}
-	#content{
-		margin-left: 300px;
 	}
 }
 

@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Nezobrazovat tyto položky"
    },
+   "contextVoiceControl": {
+      "message": "Hlasové ovládání"
+   },
+   "contextCurrentTime": {
+      "message": "Vložit aktuální čas"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Naplánováno na {time}"
    },
+   "weatherHumidity": {
+      "message": "Vlhkost"
+   },
    "weatherLoading": {
       "message": "Načítání počasí…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Nápověda"
+   },
+   "optionsMenu": {
+      "message": "Menu"
+   },
+   "optionsFormats": {
+      "message": "Formáty"
+   },
+   "optionsNotifications": {
+      "message": "Oznámení"
+   },
+   "optionsSpeech": {
+      "message": "Převod textu na řeč"
+   },
+   "optionsExtension": {
+      "message": "Rozšíření"
+   },
+   "optionsCredits": {
+      "message": "Zvláštní poděkování"
+   },
+   "optionsEditAppearance": {
+      "message": "Upravit vzhled"
+   },
+   "optionsColor": {
+      "message": "Barva"
+   },
+   "optionsBadgeColor": {
+      "message": "Barva odznaku"
+   },
+   "optionsNewPopup": {
+      "message": "Použijte nový design vyskakovacího okna"
+   },
+   "optionsTimeSystem": {
+      "message": "Časový systém"
+   },
+   "optionsCalendarSystem": {
+      "message": "Kalendářní systém"
+   },
+   "optionsLunar": {
+      "message": "Zobrazení čínského lunárního data"
+   },
+   "optionsDateOrder": {
+      "message": "Datum objednávky"
+   },
+   "optionsDragReorder": {
+      "message": "- přetažením změníte pořadí"
+   },
+   "optionsCustomTimezone": {
+      "message": "Vlastní časové pásmo"
+   },
+   "optionsLocalTimezone": {
+      "message": "vaše místní časové pásmo"
+   },
+   "optionsTimezoneNote": {
+      "message": "Poznámka: Toto nastavení se nevztahuje na kalendář."
+   },
+   "optionsTestNotification": {
+      "message": "Oznámení o testu"
+   },
+   "optionsNotificationStyle": {
+      "message": "Styl oznámení"
+   },
+   "optionsDefault": {
+      "message": "Výchozí"
+   },
+   "optionsBackgroundColor": {
+      "message": "Barva pozadí"
+   },
+   "optionsCompact": {
+      "message": "Kompaktní"
+   },
+   "optionsNotificationDuration": {
+      "message": "Doba zobrazení oznámení"
+   },
+   "optionsSystemDuration": {
+      "message": "(Systém může toto nastavení přepsat)"
+   },
+   "optionsCloseManually": {
+      "message": "Zavřete ručně"
+   },
+   "optionsShowWeather": {
+      "message": "Zobrazení informací o počasí"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Používat stupně Fahrenheita (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Informace o počasí poskytl Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Umístění"
+   },
+   "optionsNotSet": {
+      "message": "Nenastaveno/ Nedostupné"
+   },
+   "optionsSearch": {
+      "message": "Hledat..."
+   },
+   "optionsNotificationSound": {
+      "message": "Povolit zvuk hodinového oznámení"
+   },
+   "optionsRingtone": {
+      "message": "Vyzváněcí tón"
+   },
+   "optionsReadTime": {
+      "message": "Přečtěte si čas spolu s hodinovým oznámením o čase"
+   },
+   "optionsSentence": {
+      "message": "Věta"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: hodina (24 hodin); %h: hodina (12 hodin); %P: dopoledne/odpoledne; %M: Minuta"
+   },
+   "optionsFromComputer": {
+      "message": "Z vašeho počítače"
+   },
+   "optionsLoop": {
+      "message": "Povolit opakování"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Náhled aktuálního vyzvánění"
+   },
+   "optionsLoad": {
+      "message": "Načíst"
+   },
+   "optionsSpeechEngine": {
+      "message": "Řečový engine"
+   },
+   "optionsSpeechIntro": {
+      "message": "Vyberte si hlasový modul, který chcete používat pro hlasové ovládání a hodinové oznámení převodu textu na řeč."
+   },
+   "optionsSpeechInstall": {
+      "message": "Nainstalované hlasy se zobrazí v rozevíracím seznamu níže."
+   },
+   "optionsInstalledVoices": {
+      "message": "Instalované hlasové motory"
+   },
+   "optionsLanguage": {
+      "message": "Jazyk"
+   },
+   "optionsUpdateInterval": {
+      "message": "Interval aktualizace na pozadí"
+   },
+   "optionsKeepAwake": {
+      "message": "Zabraňte spánku systému, když jsou aktivní alarmy nebo odpočítávání"
+   },
+   "optionsBackgroundRun": {
+      "message": "Po zavření prohlížeče Google Chrome nadále spouštějte Cool Clock na pozadí"
+   },
+   "optionsContextMenu": {
+      "message": "Zobrazit položky kontextové nabídky"
+   },
+   "optionsTranslationCredits": {
+      "message": "Všichni, kdo přispěli k lokalizovaným překladům"
+   },
+   "optionsMore": {
+      "message": "Více"
+   },
+   "optionsMiscellaneous": {
+      "message": "Různé"
+   },
+   "optionsLunarTip": {
+      "message": "Zobrazte čínské lunární datum. Přesnost závisí na vašem prohlížeči a operačním systému."
+   },
+   "optionsTimezoneTip": {
+      "message": "Vaše místní časové pásmo se může během letního času změnit."
+   },
+   "optionsTestTip": {
+      "message": "Zobrazit upozornění pomocí aktuálního nastavení."
+   },
+   "optionsLocationTip": {
+      "message": "Toto je aktuální ID umístění. Pomocí vyhledávání vyberte jiné místo."
+   },
+   "optionsAudioTip": {
+      "message": "Podporovány jsou pouze soubory MP3, OGG nebo WAV."
+   },
+   "optionsVoiceTip": {
+      "message": "V části Text to Speech vyberte hlasový modul, který podporuje váš jazyk."
+   },
+   "optionsEmpty": {
+      "message": "(prázdný)"
+   },
+   "optionsContextTip": {
+      "message": "Zobrazit položky Cool Clock v nabídce po kliknutí pravým tlačítkem."
+   },
+   "optionsChooseFile": {
+      "message": "Vyberte soubor..."
+   },
+   "optionsSearchPlace": {
+      "message": "Místo, PSČ nebo místo"
+   },
+   "optionsSearchByName": {
+      "message": "Hledat podle jména"
+   },
+   "optionsLoading": {
+      "message": "Načítání..."
+   },
+   "optionsNoResult": {
+      "message": "Žádné výsledky"
+   },
+   "optionsSearchError": {
+      "message": "Při načítání dat došlo k chybě"
+   },
+   "optionsImported": {
+      "message": "Importováno!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Stisknutím tlačítka Test Notification uslyšíte zvuk."
+   },
+   "optionsSuccess": {
+      "message": "Úspěch!"
+   },
+   "optionsLoaded": {
+      "message": "Nabito."
+   },
+   "optionsNotice": {
+      "message": "Všimněte si"
+   },
+   "optionsNoRingtone": {
+      "message": "Nebyl nastaven žádný vyzváněcí tón."
+   },
+   "optionsInvalidUrl": {
+      "message": "Tato adresa URL je neplatná nebo není podporována."
+   },
+   "optionsRetry": {
+      "message": "Zkuste to znovu"
+   },
+   "optionsAdvanced": {
+      "message": "Pokročilé"
+   },
+   "optionsAppearanceHint": {
+      "message": "Pro pokročilé uživatele: upravte konfiguraci níže, abyste doladili hodiny. Šířka a výška odpovídají velikosti ikony, obvykle 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Upravit vzhled analogových hodin"
+   },
+   "optionsEditDigital": {
+      "message": "Upravit vzhled digitálních hodin"
+   },
+   "optionsInvalidJson": {
+      "message": "Neplatný JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "Zadejte prosím platný JSON."
+   },
+   "optionsYear": {
+      "message": "rok"
+   },
+   "optionsMonth": {
+      "message": "měsíc"
+   },
+   "optionsDate": {
+      "message": "den"
+   },
+   "optionsRemoved": {
+      "message": "(odstraněno)"
+   },
+   "optionsUrlTip": {
+      "message": "Podporovány jsou pouze adresy URL HTTP nebo HTTPS."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Informace o počasí poháněné Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Open-Meteo geokódování"
+   },
+   "optionsTweet": {
+      "message": "Tweetujte"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (výchozí vyzváněcí tón budíku)"
+   },
+   "optionsFactLabel": {
+      "message": "Fakt"
+   },
+   "optionsFact1": {
+      "message": "Toto rozšíření neobsahuje záměrný kód sledování uživatelů."
+   },
+   "optionsFact2": {
+      "message": "Ve společnosti Cool Clock bereme gramatiku vážně, abychom se vyhnuli hlášení chyb v gramatice."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock dostal své jméno, protože jeho tvůrce nemohl vymyslet lepší."
+   },
+   "optionsFact4": {
+      "message": "Odpověď na všechno není 42."
+   },
+   "optionsFact5": {
+      "message": "Toto tvrzení je nepravdivé."
+   },
+   "optionsPermissionError": {
+      "message": "Oprávnění prohlížeče se nepodařilo odebrat."
+   },
+   "optionsProcessing": {
+      "message": "Zpracovává se..."
+   },
+   "optionsPleaseWait": {
+      "message": "Počkejte prosím chvíli..."
    }
 }

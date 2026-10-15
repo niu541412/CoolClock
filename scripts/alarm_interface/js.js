@@ -1,617 +1,390 @@
-var Components = chrome.extension.getBackgroundPage().Components,
-	AlarmClock = Components.getSingleton("AlarmClock");
+/* Alarm page controller. Loaded after mv3/legacy_bridge.js receives alarm data. */
+const AlarmClock = LegacyBackground.Components.getSingleton('AlarmClock');
+const alarmList = [];
+const byId = id => document.getElementById(id);
+const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-var alarmList = [];
-
-alarmList.push = function(){
-	Array.prototype.push.apply(this, arguments);
-	this.update();
-
-};
-alarmList.splice = function(){
-	Array.prototype.splice.apply(this, arguments);
-	this.update();
-};
-
-alarmList.update = function(){
-	$("#count").text(alarmList.length)[alarmList.length ? "addClass" : "removeClass"]("running");
-	$("#removeAll").prop("disabled", !alarmList.length);
-};
-
-$(function(){
-	i18n.translate();
-
-	$("gly").each(function(){
-		$("<span>").addClass("glyphicon glyphicon-" + $(this).attr("icon") + " " +  $(this).attr("class")).insertAfter(this);
-		$(this).remove();
-	});
-
-	$("*[data-toggle=tooltip]").each(function(){
-		var placement = $(this).attr("data-placement");
-		$(this).tooltip({placement: placement ? placement : "auto", delay:{show: 500, hide: 0}, container: "body"});
-	});
-
-	$("*").on("contextmenu", function(e){
-		if(e.target.tagName !== "INPUT" || e.target.type !== "text"){
-			e.preventDefault();
-		}
-		e.stopPropagation();
-	});
-
-	$("#add").click(function(){
-		var config = $("#configure");
-		this.innerHTML = gly(config.hasClass("collapsed")?($("#h").focus(),"minus"):"plus");
-		config.toggleClass("collapsed");
-	});
-
-	$(".input-time > input").blur(function(){
-		if(this.value === "") return;
-		switch(this.id){
-			case "h":
-			if(+this.value > 24) this.value = 24;
-			break;
-			default:
-			if(+this.value > 59) this.value = 59;
-		}
-		if(+this.value < 0) this.value = 0;
-		if(this.value.length === 1) this.value = "0" + this.value;
-	}).on("input", function(){
-		this.value = this.value.replace(/[^0-9]/g, "").replace(/(\d\d)[0-9]/g, "$1");
-		if(this.value.length == 2 || (this.id === "h" && +this.value > 2)) $(this).next().focus().select();
-		$("#set").prop("disabled", ($("#h").val() === "" || $("#m").val() === ""));
-	}).on("keydown", function(e){
-		if(e.keyCode == 8 && this.value === ""){
-			$(this).prev().select();
-			e.preventDefault();
-		}
-	}).trigger("input");
-
-	$(".input-time > input, #message").keydown(function(e){
-		if(e.keyCode === 13 && $(this).parents("#configure").length){
-			if($("#set:not(:disabled)").click().length){
-				this.blur();
-			}
-		}
-	});
-
-	$("#daily").click(function(){
-		$("#weekdays label").each(function(){
-			if(!$(this).find("input").prop("checked")){
-				this.click();
-			}
-		});
-	});
-
-	$("#set").click(function(){
-		var setHour = +$("#h").val(),
-			setMin = +$("#m").val(),
-			setWkDays = [],
-			setMsg = $("#message").val()
-			//id = Date.now();
-
-		$("#weekdays input").each(function(i){
-			if(this.checked) setWkDays.push(i);
-		});
-
-		/*
-		modifyEntry(id, function(list){
-			list.push({
-				hour: setHour,
-				min: setMin,
-				type: setWkDays.length ? "s" : "o",
-				rang: false,
-				day: setWkDays,
-				text: setMsg,
-				id: id,
-				off: false
-			});
-		});
-
-		alarmList.push(new Entry(id, {
-			hour: setHour,
-			min: setMin,
-			day: setWkDays,
-			text: setMsg,
-			off: false
-		}));
-		*/
-		var alarm = AlarmClock.create(setHour, setMin, {
-			type: setWkDays.length ? "s" : "o",
-			day: setWkDays,
-			text: setMsg,
-			off: false
-		});
-		alarmList.push(new Entry(alarm.id, alarm));
-
-		$("#add").click();
-		$("#configure *").blur();
-	});
-
-	$("#removeAll").click(function(){
-		this.blur();
-
-		var confirm = createModal({
-			title: gly("info-sign") + " Are you sure?",
-			content: "This cannot be reverted.",
-			closeBtn: false,
-			backdrop: "static",
-			size: "sm",
-			buttons: [{
-				title: i18n("cancel"),
-				primary: true,
-				onclick: function(){
-					confirm.modal("hide").on('hidden.bs.modal', function(){
-						$(this).remove();
-					});
-				}
-			}, {
-				title: i18n("OK"),
-				onclick: function(){
-					$.each(alarmList, function(i){
-						var self = this;
-						setTimeout(function(){
-							self.remove();
-						}, i * 100);
-					});
-					confirm.modal("hide").on('hidden.bs.modal', function(){
-						$(this).remove();
-					});
-				}
-			}]
-		});
-	});
-
-	$(window).on("beforeunload", function(){
-		//chrome.extension.getBackgroundPage().Functions.storeWindowSize(window, location);
-		Components.getSingleton("WindowManager").registerOnClose(window);
-	});
-
-	init();
-});
-
-
-
-function gly(icon){
-	return $("<span>").addClass("glyphicon glyphicon-" + icon + " ")[0].outerHTML;
+function glyph(name) {
+  return createBootstrapIcon(name);
 }
 
-function Entry(id, data, init){
-	var block = $("<div>").addClass("block"),
-		bContent = $("<div>").addClass("bContent").appendTo(block),
-		controls = $("<div>").addClass("controls").appendTo(bContent),
-		editCheckmarkDiv = $("<div>").addClass("editCheckmark").appendTo(bContent),
-		editCheckmark = $("<span>").attr({"data-toggle": "tooltip", title: "Done", "data-placement": "right"}).html(gly("ok")).appendTo(editCheckmarkDiv).tooltip({container: bContent, delay: {show: 300}}),
-		deleteBtn = $("<span>").attr({"data-toggle": "tooltip", title: "Delete", "data-placement": "right"}).html(gly("trash")).appendTo(controls).tooltip({container: bContent, delay: {show: 300}}),
-		editBtn = $("<span>").attr({"data-toggle": "tooltip", title: "Edit", "data-placement": "right"}).html(gly("pencil")).appendTo(controls).tooltip({container: bContent, delay: {show: 300}}),
-		enableBtn = $("<span>").attr({"data-toggle": "tooltip", title: "Toggle on/off", "data-placement": "right"}).html(gly("off")).appendTo(controls).tooltip({container: bContent, delay: {show: 300}}),
-		wrapper = $("<div>").addClass("wrapper").appendTo(bContent),
-		leftPanel = $("<div>").addClass("left-panel").appendTo(wrapper),
-		time = $("<div>").addClass("time").appendTo(leftPanel),
-		weekdays = $("<ul>").addClass("weekdays").appendTo(leftPanel),
-		rightPanel = $("<div>").addClass("right-panel").appendTo(wrapper),
-		msgTitle = $("<div>").addClass("record-title").text("Message").appendTo(rightPanel),
-		message = $("<div>").addClass("message").appendTo(rightPanel);
-
-		if(init){
-			block.appendTo("#record");
-		}else{
-			block.prependTo("#record").addClass("animate collapsed shrink").delay(10).queue(function(){
-				$(this).removeClass("collapsed");
-			});
-			setTimeout(function(){
-				block.removeClass("shrink");
-			},310);
-		}
-
-	var editting = false;
-
-	var commands = {
-		node: block,
-		id: id,
-		setTime: function(hr, min){
-			time.text(("0" + hr).slice(-2)+":"+("0" + min).slice(-2));
-			return this;
-		},
-		setMode: function(dayBool){
-			block.removeClass("day night").addClass(dayBool ? "day" : "night");
-			return this;
-		},
-		setMessage: function(msgStr){
-			message.text(msgStr||"-");
-			return this;
-		},
-		setWkdays: function(list){
-			weekdays.empty();
-			if(typeof list === "string"){
-				$("<li>").text(list).addClass("active").appendTo(weekdays);
-			}else if(Array.isArray(list)){
-				for(var i = 0; i < 7; i++){
-					$("<li>").text("SMTWTFS".split("")[i]).addClass(list.indexOf(i) > -1 ? "active": "").appendTo(weekdays);
-				}
-			}
-			return this;
-		},
-		setOff: function(offBool){
-			block[offBool?"addClass":"removeClass"]("off");
-			return this;
-		},
-		remove: function(){
-			/*
-			modifyEntry(id, function(list, i){
-				list.splice(i, 1);
-			});
-			*/
-			AlarmClock.remove(id);
-
-			block.addClass("animate shrink");
-			setTimeout(function(){
-				block.addClass("collapsed");
-				setTimeout(function(){
-					block.remove();
-				}, 300);
-			}, 300);
-			for(var i = 0; i < alarmList.length; i++){
-				if(alarmList[i].id === id){
-					alarmList.splice(i, 1);
-					break;
-				}
-			}
-		},
-		toggleEdit: function(){
-			editting = !editting;
-			if(editting){
-				chrome.extension.getBackgroundPage().createNoti({
-					title: "Click on the part you wish to edit.",
-					message: "When done, click the checkmark to finish."
-				},{ time: 7000});
-			}
-			block.toggleClass("edit");
-		},
-		update: function(){
-			this
-				.setTime(data.hour, data.min)
-				.setMode(data.hour < 18 && data.hour >= 6)
-				.setMessage(data.text)
-				.setWkdays((data.type==="o"||!data.day.length)?"Once":(data.type==="d"?[0,1,2,3,4,5,6]:data.day))
-				.setOff(data.off);
-		}
-	};
-	commands.update();
-
-	deleteBtn.click(commands.remove);
-	enableBtn.click(function(){
-		/*
-		modifyEntry(id, function(){
-			this.off = !this.off;
-			commands.setOff(this.off);
-		});
-		*/
-		data.set("off", !data.off);
-		commands.setOff(data.off);
-	});
-	editBtn.click(commands.toggleEdit);
-	editCheckmark.click(function(){
-		commands.toggleEdit();
-	});
-
-	time.click(function(){
-		if(editting){
-			var content = $("<div>"),
-				label = $("#h").parent().prev().clone().appendTo(content),
-				time = $("#h").parent().clone(true).css({"text-align": "center"}).appendTo(content);
-
-			$([label, time]).find("*").removeAttr("id");
-
-			var h = time.find("input").eq(0).val(data.hour),
-				m = time.find("input").eq(1).val(data.min);
-
-			time.find("input").trigger("blur");
-
-			var modal = createModal({
-				title: "Editing",
-				content: content,
-				closeBtn: false,
-				buttons: [{
-					title: "Apply Edit",
-					primary: true,
-					onclick: function(){
-						if(h.val() !== "" && m.val() !== ""){
-							/*
-							data = modifyEntry(id, function(){
-								this.hour = +h.val();
-								this.min = +m.val();
-							});
-							*/
-							data.set({
-								hour: +h.val(),
-								min: +m.val()
-							});
-							commands.update();
-							modal.modal("hide");
-						}
-					}
-				},{
-					title: "Finish Edit",
-					primary: true,
-					onclick: function(){
-						if(h.val() !== "" && m.val() !== ""){
-							/*
-							data = modifyEntry(id, function(){
-								this.hour = +h.val();
-								this.min = +m.val();
-							});
-							*/
-							data.set({
-								hour: +h.val(),
-								min: +m.val()
-							});
-							commands.update();
-							modal.modal("hide");
-							modal.on("hidden.bs.modal", commands.toggleEdit);
-						}
-					}
-				},{
-					title: i18n("cancel"),
-					onclick: function(){
-						modal.modal("hide");
-					}
-				}],
-				onShown: function(){
-					time.find("input").eq(0).focus();
-				}
-			});
-		}
-	});
-	message.click(function(){
-		if(editting){
-			var content = $("<div>"),
-				label = $("#message").parent().prev().clone().appendTo(content),
-				msg = $("#message").parent().clone().css({"text-align": "center"}).appendTo(content);
-
-			$([label, msg]).find("*").removeAttr("id");
-
-			msg.find("input").val(data.text);
-
-			var modal = createModal({
-				title: "Editing",
-				content: content,
-				closeBtn: false,
-				buttons: [{
-					title: "Apply Edit",
-					primary: true,
-					onclick: function(){
-						/*
-						data = modifyEntry(id, function(){
-							this.text = msg.find("input").val();
-						});
-						*/
-						data.set("text", msg.find("input").val());
-						commands.update();
-						modal.modal("hide");
-					}
-				},{
-					title: "Finish Edit",
-					primary: true,
-					onclick: function(){
-						/*
-						data = modifyEntry(id, function(){
-							this.text = msg.find("input").val();
-						});
-						*/
-						data.set("text", msg.find("input").val());
-						commands.update();
-						modal.modal("hide");
-						modal.on("hidden.bs.modal", commands.toggleEdit);
-					}
-				},{
-					title: i18n("cancel"),
-					onclick: function(){
-						modal.modal("hide");
-					}
-				}],
-				onShown: function(){
-					msg.find("input").focus();
-				}
-			});
-		}
-	});
-	weekdays.click(function(){
-		if(editting){
-			var content = $("<div>"),
-				label = $("#weekdays").parent().prev().clone().appendTo(content),
-				wkd = $("#weekdays").parent().clone().css({"text-align": "center"}).appendTo(content);
-
-			$([label, wkd]).find("*").removeAttr("id");
-			label.find("button").click(function(){
-				wkd.find("label").each(function(){
-					if(!$(this).find("input").prop("checked")){
-						this.click();
-					}
-				});
-			});
-
-			var modal = createModal({
-				title: "Editing",
-				content: content,
-				closeBtn: false,
-				buttons: [{
-					title: "Apply Edit",
-					primary: true,
-					onclick: function(){
-						/*
-						data = modifyEntry(id, function(){
-							var setWkDays = [];
-							wkd.find("input").each(function(i){
-								if(this.checked) setWkDays.push(i);
-							});
-							this.day = setWkDays;
-							this.type = setWkDays.length ? "s" : "o";
-						});
-						*/
-						var setWkDays = [];
-						wkd.find("input").each(function(i){
-							if(this.checked) setWkDays.push(i);
-						});
-						data.set({
-							day: setWkDays,
-							type: setWkDays.length ? "s" : "o"
-						});
-						commands.update();
-						modal.modal("hide");
-					}
-				},{
-					title: "Finish Edit",
-					primary: true,
-					onclick: function(){
-						/*
-						data = modifyEntry(id, function(){
-							var setWkDays = [];
-							wkd.find("input").each(function(i){
-								if(this.checked) setWkDays.push(i);
-							});
-							this.day = setWkDays;
-							this.type = setWkDays.length ? "s" : "o";
-						});
-						*/
-						var setWkDays = [];
-						wkd.find("input").each(function(i){
-							if(this.checked) setWkDays.push(i);
-						});
-						data.set({
-							day: setWkDays,
-							type: setWkDays.length ? "s" : "o"
-						});
-						commands.update();
-						modal.modal("hide");
-						modal.on("hidden.bs.modal", commands.toggleEdit);
-					}
-				},{
-					title: i18n("cancel"),
-					onclick: function(){
-						modal.modal("hide");
-					}
-				}],
-				onShown: function(){
-					$.each(data.day, function(){
-						wkd.find("label").eq(this).click();
-					});
-				}
-			});
-		}
-	});
-
-	return commands;
+function refreshCount() {
+  byId('count').textContent = alarmList.length;
+  byId('count').classList.toggle('running', alarmList.length > 0);
+  byId('removeAll').disabled = alarmList.length === 0;
 }
 
-function createModal(options){
-	options = $.extend({
-		title: "",
-		content: "",
-		backdrop: true,
-		size: "lg",
-		buttons: [],
-		closeBtn: true,
-		closeBtnText: i18n("close"),
-		onClose: function(){},
-		onShow: function(){},
-		onShown: function(){}
-	}, options);
-
-	var modal = $("<div>").attr({
-			"class": "modal fade",
-			"role": "dialog"
-		}).attr("data-backdrop", options.backdrop),
-		dialog = $("<div>").attr({
-			"class": "modal-dialog modal-" + options.size
-		}).appendTo(modal),
-		content = $("<div>").attr({
-			"class": "modal-content"
-		}).appendTo(dialog),
-		header = $("<div>").attr({
-			"class": "modal-header"
-		}).appendTo(content),
-		h4 = $("<h4>").attr({
-			"class": "modal-title"
-		}).html(options.title).appendTo(header),
-		body = $("<div>").attr({
-			"class": "modal-body"
-		}).appendTo(content),
-		footer = $("<div>").attr({
-			"class": "modal-footer"
-		}).appendTo(content);
-
-		if(typeof(options.content) === "string"){
-			body.html(options.content);
-		}else{
-			body.append(options.content);
-		}
-
-		if(options.closeBtn){
-			$("<button>")
-				.addClass("btn btn-default")
-				.attr("data-dismiss", "modal")
-				.html(options.closeBtnText)
-				.appendTo(footer);
-		}
-		$.each(options.buttons, function(){
-			var entry = this;
-			$("<button>")
-				.addClass("btn btn-" + (this.primary ? "primary" : "default"))
-				.html(this.title)
-				.appendTo(footer)
-				.click(function(){
-					entry.onclick.call(modal);
-				});
-		});
-
-	modal.appendTo("body").modal().on("hidden.bs.modal", function(){
-		modal.remove();
-		options.onClose();
-	}).on("show.bs.modal", function(){
-		options.onShown();
-	}).on("shown.bs.modal", function(){
-		options.onShown();
-	});
-
-	return modal;
-}
-createModal = function(options){
-	return chrome.extension.getBackgroundPage().Functions.createModal(options, window);
+function createModal(options = {}) {
+  const settings = Object.assign({
+    title: '', content: '', backdrop: true, size: 'lg', buttons: [],
+    closeBtn: true, closeBtnText: i18n('close'), onClose() {}, onShown() {}
+  }, options);
+  const modal = document.createElement('div');
+  modal.className = 'modal fade';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('data-bs-backdrop', String(settings.backdrop));
+  const dialog = document.createElement('div');
+  dialog.className = 'modal-dialog modal-' + settings.size;
+  const content = document.createElement('div');
+  content.className = 'modal-content';
+  const header = document.createElement('div');
+  header.className = 'modal-header';
+  const title = document.createElement('h4');
+  title.className = 'modal-title';
+  if (typeof settings.title === 'string') title.textContent = settings.title;
+  else title.append(settings.title);
+  header.append(title);
+  const body = document.createElement('div');
+  body.className = 'modal-body';
+  if (typeof settings.content === 'string') body.textContent = settings.content;
+  else if (settings.content) body.append(settings.content);
+  const footer = document.createElement('div');
+  footer.className = 'modal-footer';
+  for (const entry of settings.buttons) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn btn-' + (entry.primary ? 'primary' : 'outline-secondary');
+    button.textContent = entry.title;
+    button.addEventListener('click', () => entry.onclick.call(modal));
+    footer.append(button);
+  }
+  if (settings.closeBtn) {
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'btn btn-outline-secondary';
+    close.setAttribute('data-bs-dismiss', 'modal');
+    close.textContent = settings.closeBtnText;
+    footer.append(close);
+  }
+  content.append(header, body, footer);
+  dialog.append(content);
+  modal.append(dialog);
+  modal.addEventListener('shown.bs.modal', settings.onShown, {once: true});
+  modal.addEventListener('hidden.bs.modal', () => {
+    modal.remove();
+    settings.onClose();
+  }, {once: true});
+  document.body.append(modal);
+  showBootstrapModal(modal);
+  return modal;
 }
 
-/*
-function modifyEntry(id, callback){
-	var list = JSON.parse(localStorage["alarm"]);
-	if(!list.length){
-		callback.call(undefined, list, -1);
-	}else{
-		for(var i = 0; i < list.length;i++){
-			if(list[i].id === id){
-				callback.call(list[i], list, i);
-				break;
-			}else if(i == list.length - 1){
-				callback.call(undefined, list, -1);
-				break;
-			}
-		}
-	}
-	localStorage["alarm"] = JSON.stringify(list);
-	for(var i = 0; i < list.length;i++){
-		if(list[i].id === id){
-			return list[i];
-		}
-	}
-}*/
-
-function init(){
-	// var list = JSON.parse(localStorage["alarm"]);
-	var list = Components.getSingleton("AlarmClock").getAll();
-	for(var i = 0; i < list.length; i++){
-		alarmList.push(new Entry(list[i].id, list[i], true));
-	}
-	if(!list.length || location.hash === "#set"){
-		location.hash = "";
-		$("#add").click();
-		$("#hour").focus();
-	}
+function createControl(parent, name, title, container) {
+  const button = document.createElement('span');
+  button.setAttribute('data-bs-toggle', 'tooltip');
+  button.setAttribute('data-bs-placement', 'right');
+  button.title = title;
+  button.append(glyph(name));
+  parent.append(button);
+  initBootstrapTooltip(button, {container, delay: {show: 300}});
+  return button;
 }
+
+function editContent(source) {
+  const group = source.parentElement.cloneNode(true);
+  const label = source.parentElement.previousElementSibling.cloneNode(true);
+  [group, label].forEach(node => {
+    node.removeAttribute('id');
+    selectAll('[id]', node).forEach(child => child.removeAttribute('id'));
+  });
+  group.style.textAlign = 'center';
+  const content = document.createElement('div');
+  content.append(label, group);
+  return {content, group, label};
+}
+
+function timeValue(input, maximum) {
+  input.value = input.value.replace(/[^0-9]/g, '').slice(0, 2);
+  if (input.value === '') return;
+  input.value = String(Math.min(maximum, Number(input.value))).padStart(2, '0');
+}
+
+function updateSetButton() {
+  byId('set').disabled = !byId('h').value || !byId('m').value;
+}
+
+function bindTimeInputs(inputs, setButton) {
+  inputs.forEach((input, index) => {
+    input.addEventListener('blur', () => timeValue(input, index === 0 ? 24 : 59));
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/[^0-9]/g, '').slice(0, 2);
+      if ((input.value.length === 2 || (index === 0 && Number(input.value) > 2)) && inputs[index + 1]) {
+        inputs[index + 1].focus();
+        inputs[index + 1].select();
+      }
+      if (setButton) updateSetButton();
+    });
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Backspace' && !input.value && inputs[index - 1]) {
+        inputs[index - 1].select();
+        event.preventDefault();
+      }
+    });
+  });
+  if (setButton) updateSetButton();
+}
+
+function bindWeekdays(root) {
+  root.addEventListener('change', event => {
+    if (event.target.matches('input[type="checkbox"]')) {
+      event.target.closest('label').classList.toggle('active', event.target.checked);
+    }
+  });
+}
+
+function selectEveryDay(root) {
+  selectAll('label input', root).forEach(input => {
+    if (!input.checked) {
+      input.checked = true;
+      input.dispatchEvent(new Event('change', {bubbles: true}));
+    }
+  });
+}
+
+function openEditModal(content, save, focus, finish) {
+  const modal = createModal({
+    title: 'Editing',
+    content,
+    closeBtn: false,
+    buttons: [
+      {title: 'Apply Edit', primary: true, onclick() {
+        if (save()) hideBootstrapModal(modal);
+      }},
+      {title: 'Finish Edit', primary: true, onclick() {
+        if (save()) {
+          if (finish) modal.addEventListener('hidden.bs.modal', finish, {once: true});
+          hideBootstrapModal(modal);
+        }
+      }},
+      {title: i18n('cancel'), onclick() { hideBootstrapModal(modal); }}
+    ],
+    onShown: focus
+  });
+}
+
+function Entry(data, initial = false) {
+  const block = document.createElement('div');
+  block.className = 'block';
+  const body = document.createElement('div');
+  body.className = 'bContent';
+  const controls = document.createElement('div');
+  controls.className = 'controls';
+  const editCheckmarkDiv = document.createElement('div');
+  editCheckmarkDiv.className = 'editCheckmark';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'wrapper';
+  const leftPanel = document.createElement('div');
+  leftPanel.className = 'left-panel';
+  const rightPanel = document.createElement('div');
+  rightPanel.className = 'right-panel';
+  const time = document.createElement('div');
+  time.className = 'time';
+  const weekdays = document.createElement('ul');
+  weekdays.className = 'weekdays';
+  const messageTitle = document.createElement('div');
+  messageTitle.className = 'record-title';
+  messageTitle.textContent = 'Message';
+  const message = document.createElement('div');
+  message.className = 'message';
+
+  const deleteButton = createControl(controls, 'trash', 'Delete', body);
+  const editButton = createControl(controls, 'pencil', 'Edit', body);
+  const enableButton = createControl(controls, 'off', 'Toggle on/off', body);
+  const finishButton = createControl(editCheckmarkDiv, 'ok', 'Done', body);
+  leftPanel.append(time, weekdays);
+  rightPanel.append(messageTitle, message);
+  wrapper.append(leftPanel, rightPanel);
+  body.append(controls, editCheckmarkDiv, wrapper);
+  block.append(body);
+  if (initial) byId('record').append(block);
+  else {
+    block.classList.add('animate', 'collapsed', 'shrink');
+    byId('record').prepend(block);
+    setTimeout(() => block.classList.remove('collapsed'), 10);
+    setTimeout(() => block.classList.remove('shrink'), 310);
+  }
+
+  let editing = false;
+  const commands = {
+    id: data.id,
+    node: block,
+    update() {
+      time.textContent = String(data.hour).padStart(2, '0') + ':' + String(data.min).padStart(2, '0');
+      block.classList.toggle('day', data.hour >= 6 && data.hour < 18);
+      block.classList.toggle('night', data.hour < 6 || data.hour >= 18);
+      message.textContent = data.text || '-';
+      weekdays.replaceChildren();
+      if (data.type === 'o' || !data.day.length) {
+        const item = document.createElement('li');
+        item.className = 'active';
+        item.textContent = 'Once';
+        weekdays.append(item);
+      } else {
+        const days = data.type === 'd' ? [0, 1, 2, 3, 4, 5, 6] : data.day;
+        Array.from('SMTWTFS').forEach((letter, index) => {
+          const item = document.createElement('li');
+          item.textContent = letter;
+          item.classList.toggle('active', days.includes(index));
+          weekdays.append(item);
+        });
+      }
+      block.classList.toggle('off', !!data.off);
+      return this;
+    },
+    remove() {
+      AlarmClock.remove(data.id);
+      block.classList.add('animate', 'shrink');
+      setTimeout(() => {
+        block.classList.add('collapsed');
+        setTimeout(() => {
+          disposeBootstrapTooltips(block);
+          block.remove();
+        }, 300);
+      }, 300);
+      const index = alarmList.indexOf(this);
+      if (index !== -1) alarmList.splice(index, 1);
+      refreshCount();
+    },
+    toggleEdit() {
+      editing = !editing;
+      block.classList.toggle('edit', editing);
+      if (editing) LegacyBackground.createNoti({
+        title: 'Click on the part you wish to edit.',
+        message: 'When done, click the checkmark to finish.'
+      });
+    }
+  };
+  commands.update();
+
+  deleteButton.addEventListener('click', () => commands.remove());
+  enableButton.addEventListener('click', () => {
+    data.set('off', !data.off);
+    commands.update();
+  });
+  editButton.addEventListener('click', () => commands.toggleEdit());
+  finishButton.addEventListener('click', () => commands.toggleEdit());
+
+  time.addEventListener('click', () => {
+    if (!editing) return;
+    const {content, group} = editContent(byId('h'));
+    const inputs = selectAll('input', group);
+    inputs[0].value = data.hour;
+    inputs[1].value = data.min;
+    bindTimeInputs(inputs, false);
+    inputs[0].dispatchEvent(new Event('blur'));
+    inputs[1].dispatchEvent(new Event('blur'));
+    openEditModal(content, () => {
+      if (!inputs[0].value || !inputs[1].value) return false;
+      data.set({hour: Number(inputs[0].value), min: Number(inputs[1].value)});
+      commands.update();
+      return true;
+    }, () => inputs[0].focus(), () => commands.toggleEdit());
+  });
+
+  message.addEventListener('click', () => {
+    if (!editing) return;
+    const {content, group} = editContent(byId('message'));
+    const input = group.querySelector('input');
+    input.value = data.text || '';
+    openEditModal(content, () => {
+      data.set('text', input.value);
+      commands.update();
+      return true;
+    }, () => input.focus(), () => commands.toggleEdit());
+  });
+
+  weekdays.addEventListener('click', () => {
+    if (!editing) return;
+    const {content, group, label} = editContent(byId('weekdays'));
+    const dayGroup = group.querySelector('.btn-group');
+    bindWeekdays(dayGroup);
+    const inputs = selectAll('input', dayGroup);
+    inputs.forEach((input, index) => {
+      input.checked = data.day.includes(index);
+      input.closest('label').classList.toggle('active', input.checked);
+    });
+    const daily = label.querySelector('button');
+    if (daily) daily.addEventListener('click', () => selectEveryDay(dayGroup));
+    openEditModal(content, () => {
+      const days = inputs.flatMap((input, index) => input.checked ? [index] : []);
+      data.set({day: days, type: days.length ? 's' : 'o'});
+      commands.update();
+      return true;
+    }, () => inputs[0].focus(), () => commands.toggleEdit());
+  });
+
+  return commands;
+}
+
+function setupAlarmPage() {
+  i18n.translate();
+  selectAll('gly').forEach(element => {
+    const replacement = glyph(element.getAttribute('icon'));
+    replacement.className += ' ' + element.className;
+    element.replaceWith(replacement);
+  });
+  selectAll('[data-bs-toggle="tooltip"]').forEach(element => {
+    initBootstrapTooltip(element, {
+      placement: element.getAttribute('data-bs-placement') || 'auto',
+      delay: {show: 500, hide: 0}, container: 'body'
+    });
+  });
+  document.addEventListener('contextmenu', event => {
+    if (!event.target.matches('input[type="text"]')) event.preventDefault();
+  });
+
+  byId('add').addEventListener('click', function() {
+    const configure = byId('configure');
+    const opening = configure.classList.contains('collapsed');
+    this.replaceChildren(glyph(opening ? 'minus' : 'plus'));
+    configure.classList.toggle('collapsed');
+    if (opening) byId('h').focus();
+  });
+  bindTimeInputs([byId('h'), byId('m')], true);
+  selectAll('.input-time > input, #message').forEach(input => {
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && !byId('set').disabled) {
+        byId('set').click();
+        input.blur();
+      }
+    });
+  });
+  bindWeekdays(byId('weekdays'));
+  byId('daily').addEventListener('click', () => selectEveryDay(byId('weekdays')));
+  byId('set').addEventListener('click', () => {
+    const days = selectAll('#weekdays input').flatMap((input, index) => input.checked ? [index] : []);
+    const alarm = AlarmClock.create(Number(byId('h').value), Number(byId('m').value), {
+      type: days.length ? 's' : 'o', day: days, text: byId('message').value, off: false
+    });
+    alarmList.push(new Entry(alarm));
+    refreshCount();
+    byId('add').click();
+    byId('configure').querySelectorAll('input').forEach(input => input.blur());
+  });
+  byId('removeAll').addEventListener('click', function() {
+    this.blur();
+    const title = document.createElement('span');
+    title.append(glyph('info-sign'), ' Are you sure?');
+    const modal = createModal({
+      title, content: 'This cannot be reverted.', closeBtn: false, backdrop: 'static', size: 'sm',
+      buttons: [
+        {title: i18n('cancel'), primary: true, onclick() { hideBootstrapModal(modal); }},
+        {title: i18n('OK'), onclick() {
+          alarmList.slice().forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
+          hideBootstrapModal(modal);
+        }}
+      ]
+    });
+  });
+  window.addEventListener('beforeunload', () =>
+    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window));
+
+  AlarmClock.getAll().forEach(alarm => alarmList.push(new Entry(alarm, true)));
+  refreshCount();
+  if (!alarmList.length || location.hash === '#set') {
+    if (location.hash === '#set') history.replaceState(null, '', location.pathname);
+    byId('add').click();
+  }
+}
+
+setupAlarmPage();

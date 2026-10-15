@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "Una extensió plena de funcions útils relacionades amb el temps... i, sobretot, molt COOL." /*"La primera extensió que té el rellotge digital + analògic a la barra d'eines del Chrome + avís horari en una notificació a l'escriptori."*/
+      "message": "Una extensió plena de funcions útils relacionades amb el temps... i, sobretot, molt COOL."
    },
    "extName": {
       "message": "Cool Clock"
@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "No mostris aquests elements"
    },
+   "contextVoiceControl": {
+      "message": "Control per veu"
+   },
+   "contextCurrentTime": {
+      "message": "Insereix l’hora actual"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Programat per a les {time}"
    },
+   "weatherHumidity": {
+      "message": "Humitat"
+   },
    "weatherLoading": {
       "message": "S'està carregant el temps…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Ajuda"
+   },
+   "optionsMenu": {
+      "message": "Menú"
+   },
+   "optionsFormats": {
+      "message": "Formats"
+   },
+   "optionsNotifications": {
+      "message": "Notificacions"
+   },
+   "optionsSpeech": {
+      "message": "Text a veu"
+   },
+   "optionsExtension": {
+      "message": "Extensió"
+   },
+   "optionsCredits": {
+      "message": "Agraïments especials"
+   },
+   "optionsEditAppearance": {
+      "message": "Edita l'aparença"
+   },
+   "optionsColor": {
+      "message": "Color"
+   },
+   "optionsBadgeColor": {
+      "message": "Color de la placa"
+   },
+   "optionsNewPopup": {
+      "message": "Utilitzeu un nou disseny emergent"
+   },
+   "optionsTimeSystem": {
+      "message": "Sistema de temps"
+   },
+   "optionsCalendarSystem": {
+      "message": "Sistema de calendari"
+   },
+   "optionsLunar": {
+      "message": "Mostra la data lunar xinesa"
+   },
+   "optionsDateOrder": {
+      "message": "Data Comanda"
+   },
+   "optionsDragReorder": {
+      "message": "- arrossegueu per reordenar"
+   },
+   "optionsCustomTimezone": {
+      "message": "Zona horària personalitzada"
+   },
+   "optionsLocalTimezone": {
+      "message": "la teva zona horària local"
+   },
+   "optionsTimezoneNote": {
+      "message": "Nota: aquesta configuració no s'aplica al calendari."
+   },
+   "optionsTestNotification": {
+      "message": "Notificació de prova"
+   },
+   "optionsNotificationStyle": {
+      "message": "Estil de notificació"
+   },
+   "optionsDefault": {
+      "message": "Per defecte"
+   },
+   "optionsBackgroundColor": {
+      "message": "Color de fons"
+   },
+   "optionsCompact": {
+      "message": "Compacte"
+   },
+   "optionsNotificationDuration": {
+      "message": "Hora de visualització de la notificació"
+   },
+   "optionsSystemDuration": {
+      "message": "(El sistema pot substituir aquesta configuració)"
+   },
+   "optionsCloseManually": {
+      "message": "Tanqueu manualment"
+   },
+   "optionsShowWeather": {
+      "message": "Mostra informació meteorològica"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Utilitza Fahrenheit (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Informació meteorològica proporcionada per Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Ubicació"
+   },
+   "optionsNotSet": {
+      "message": "No establert/No disponible"
+   },
+   "optionsSearch": {
+      "message": "Cerca..."
+   },
+   "optionsNotificationSound": {
+      "message": "Activa el so de l'anunci horari"
+   },
+   "optionsRingtone": {
+      "message": "To de trucada"
+   },
+   "optionsReadTime": {
+      "message": "Llegeix l'hora juntament amb l'anunci de l'hora"
+   },
+   "optionsSentence": {
+      "message": "Sentència"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: Hora (24 hores); %h: Hora (12 hores); %P: am/pm; %M: Minut"
+   },
+   "optionsFromComputer": {
+      "message": "Des del teu ordinador"
+   },
+   "optionsLoop": {
+      "message": "Activa el bucle"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Previsualitza el to de trucada actual"
+   },
+   "optionsLoad": {
+      "message": "Carrega"
+   },
+   "optionsSpeechEngine": {
+      "message": "Motor de parla"
+   },
+   "optionsSpeechIntro": {
+      "message": "Trieu el motor de veu que preferiu utilitzar per al control de veu i la conversió de text a veu de notificacions per hora."
+   },
+   "optionsSpeechInstall": {
+      "message": "Les veus instal·lades apareixen al menú desplegable de sota."
+   },
+   "optionsInstalledVoices": {
+      "message": "Motors de veu instal·lats"
+   },
+   "optionsLanguage": {
+      "message": "Llengua"
+   },
+   "optionsUpdateInterval": {
+      "message": "Interval d'actualització de fons"
+   },
+   "optionsKeepAwake": {
+      "message": "Eviteu que el sistema dormi quan hi hagi alarmes actives o comptes enrere"
+   },
+   "optionsBackgroundRun": {
+      "message": "Continueu executant Cool Clock en segon pla quan Google Chrome estigui tancat"
+   },
+   "optionsContextMenu": {
+      "message": "Mostra els elements del menú contextual"
+   },
+   "optionsTranslationCredits": {
+      "message": "Tothom que ha contribuït amb traduccions localitzades"
+   },
+   "optionsMore": {
+      "message": "Més"
+   },
+   "optionsMiscellaneous": {
+      "message": "Diversos"
+   },
+   "optionsLunarTip": {
+      "message": "Mostra una data lunar xinesa. La precisió depèn del vostre navegador i sistema operatiu."
+   },
+   "optionsTimezoneTip": {
+      "message": "La vostra zona horària local pot canviar durant l'horari d'estiu."
+   },
+   "optionsTestTip": {
+      "message": "Mostra una notificació amb la configuració actual."
+   },
+   "optionsLocationTip": {
+      "message": "Aquest és l'identificador de la ubicació actual. Utilitzeu Cerca per triar una altra ubicació."
+   },
+   "optionsAudioTip": {
+      "message": "Només s'admeten fitxers MP3, OGG o WAV."
+   },
+   "optionsVoiceTip": {
+      "message": "Seleccioneu un motor de veu que admeti el vostre idioma a la secció Text to Speech."
+   },
+   "optionsEmpty": {
+      "message": "(buit)"
+   },
+   "optionsContextTip": {
+      "message": "Mostra els elements del rellotge fresc al menú del botó dret."
+   },
+   "optionsChooseFile": {
+      "message": "Tria un fitxer..."
+   },
+   "optionsSearchPlace": {
+      "message": "Ubicació, codi postal o lloc"
+   },
+   "optionsSearchByName": {
+      "message": "Cerca per nom"
+   },
+   "optionsLoading": {
+      "message": "Carregant..."
+   },
+   "optionsNoResult": {
+      "message": "Sense resultats"
+   },
+   "optionsSearchError": {
+      "message": "S'ha produït un error en obtenir les dades"
+   },
+   "optionsImported": {
+      "message": "Importat!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Premeu la notificació de prova per escoltar el so."
+   },
+   "optionsSuccess": {
+      "message": "Èxit!"
+   },
+   "optionsLoaded": {
+      "message": "Carregat."
+   },
+   "optionsNotice": {
+      "message": "Avís"
+   },
+   "optionsNoRingtone": {
+      "message": "No s'ha establert cap to de trucada."
+   },
+   "optionsInvalidUrl": {
+      "message": "Aquest URL no és vàlid o no és compatible."
+   },
+   "optionsRetry": {
+      "message": "Torna-ho a provar"
+   },
+   "optionsAdvanced": {
+      "message": "Avançat"
+   },
+   "optionsAppearanceHint": {
+      "message": "Per a usuaris avançats: editeu la configuració següent per ajustar el rellotge. L'amplada i l'alçada coincideixen amb la mida de la icona, normalment 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Editeu l'aparença del rellotge analògic"
+   },
+   "optionsEditDigital": {
+      "message": "Editeu l'aparença del rellotge digital"
+   },
+   "optionsInvalidJson": {
+      "message": "JSON no vàlid"
+   },
+   "optionsEnterValidJson": {
+      "message": "Introduïu un JSON vàlid."
+   },
+   "optionsYear": {
+      "message": "Any"
+   },
+   "optionsMonth": {
+      "message": "Mes"
+   },
+   "optionsDate": {
+      "message": "Dia"
+   },
+   "optionsRemoved": {
+      "message": "(Eliminat)"
+   },
+   "optionsUrlTip": {
+      "message": "Només s'admeten URL HTTP o HTTPS."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Informació meteorològica impulsada per Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Geocodificació Open-Meteo"
+   },
+   "optionsTweet": {
+      "message": "Tuitejar"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (ton de trucada d'alarma predeterminat)"
+   },
+   "optionsFactLabel": {
+      "message": "Fet"
+   },
+   "optionsFact1": {
+      "message": "Aquesta extensió no conté codi de seguiment d'usuari intencionat."
+   },
+   "optionsFact2": {
+      "message": "A Cool Clock, ens prenem seriosament la gramàtica per evitar informes d'errors sobre la gramàtica."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock va rebre el seu nom perquè el seu creador no podia pensar en un de millor."
+   },
+   "optionsFact4": {
+      "message": "La resposta a tot no és 42."
+   },
+   "optionsFact5": {
+      "message": "Aquesta afirmació és falsa."
+   },
+   "optionsPermissionError": {
+      "message": "No s'ha pogut eliminar el permís del navegador."
+   },
+   "optionsProcessing": {
+      "message": "S'està processant..."
+   },
+   "optionsPleaseWait": {
+      "message": "Si us plau, espereu un moment..."
    }
 }

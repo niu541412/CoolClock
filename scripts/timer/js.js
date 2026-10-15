@@ -1,17 +1,17 @@
-﻿jQuery(loadin);
+﻿document.addEventListener("DOMContentLoaded", loadin);
 
 var paused=false
 var time=0
 var status
 
 
-function $(ele){
+function byId(ele){
   return document.getElementById(ele);
 }
-function $c(ele){
+function firstByClass(ele){
   return document.getElementsByClassName(ele)[0];
 }
-function $t(ele){
+function firstByTag(ele){
   return document.getElementsByTagName(ele)[0];
 }
 
@@ -27,7 +27,7 @@ function resize_window() {
   //var frame_height=window.outerHeight-window.innerHeight
   var frame_height=30
   //height=height+frame_height
-  height=$("page").offsetHeight+frame_height+8
+  height=byId("page").offsetHeight+frame_height+8
 
   console.log("Window height resized to "+height+"px.")
 
@@ -46,8 +46,8 @@ function move_window(){
 function start_count(){
   localStorage["timer_timestamp"]=Number(new Date())
   localStorage["timer_ori_timestamp"]=Number(new Date())
-  $c("setting").classList.add("hide");
-  $c("counting").classList.remove("hide");
+  firstByClass("setting").classList.add("hide");
+  firstByClass("counting").classList.remove("hide");
   
   cal_time();
 
@@ -66,7 +66,7 @@ function cal_time(valueonly){
     return false
   }
 
-  var ele=$("p_time")
+  var ele=byId("p_time")
   var t=localStorage["timer_timestamp"]
   var d=Number(new Date())
   if(valueonly){
@@ -87,9 +87,9 @@ function cal_time(valueonly){
 function stop_count(){
   localStorage["timer_paused_timestamp"]=Number(new Date())
   window.paused=true;
-  //$("c_button_stop").classList.add("hide");
-  $("c_running").classList.add("hide");
-  $("c_stopped").classList.remove("hide");
+  //byId("c_button_stop").classList.add("hide");
+  byId("c_running").classList.add("hide");
+  byId("c_stopped").classList.remove("hide");
 
   window.status="paused"
 }
@@ -110,9 +110,9 @@ function continue_count(once){
   localStorage["timer_timestamp"]=((d-parseInt(localStorage["timer_paused_timestamp"],10))+parseInt(localStorage["timer_timestamp"],10))
   localStorage.removeItem("timer_paused_timestamp");
   window.paused=false;
-  //$("c_button_stop").classList.remove("hide");
-  $("c_running").classList.remove("hide");
-  $("c_stopped").classList.add("hide");
+  //byId("c_button_stop").classList.remove("hide");
+  byId("c_running").classList.remove("hide");
+  byId("c_stopped").classList.add("hide");
 
   cal_time();
 }
@@ -149,68 +149,58 @@ save_split.view.opened=false;
 //Load in
 function loadin(){
 	if(location.hash == "#noti"){
-		jQuery("html").attr("id", "noti");
-		jQuery("#stay").attr("checked", true);
-		jQuery(".option>*:eq(0)").nextAll("br").replaceWith(" ");
+		document.documentElement.id = "noti";
+		byId("stay").checked = true;
+		document.querySelectorAll(".option > br").forEach(br => br.replaceWith(" "));
 		setTimeout(function(){
 			window.scrollTo(5,5);
 		},1);
 	}
 	
 	//events
-	jQuery(window).bind("resize", resize_window);
-	jQuery(window).bind("beforeunload", quit);
-	jQuery("body").on("contextmenu", function(){
+	window.addEventListener("resize", resize_window);
+	window.addEventListener("beforeunload", quit);
+	document.body.addEventListener("contextmenu", function(event){
+		event.preventDefault();
 		document.body.style.cursor="not-allowed";
 		setTimeout(function(){
 			document.body.style.cursor="default";
 		},300)
-		return false;
 	});
 
   //Setting page
-  $("s_button_start").addEventListener("click",start_count,false);
-  $("s_button_close").addEventListener("click",(function(){window.close()}),false);
+  byId("s_button_start").addEventListener("click",start_count,false);
+  byId("s_button_close").addEventListener("click",(function(){window.close()}),false);
 
   //Counting page
-  $("c_button_stop").addEventListener("click",stop_count,false);
-  $("c_button_split").addEventListener("click",save_split,false);
-  $("c_button_viewsplit").addEventListener("click",save_split.view,false);
-  $("c_button_continue").addEventListener("click",continue_count,false);
-  $("c_button_restart").addEventListener("click",restart_count,false);
-  $("c_button_close").addEventListener("click",(function(){window.close()}),false);
-  $("o_units").addEventListener("change", function(){
+  byId("c_button_stop").addEventListener("click",stop_count,false);
+  byId("c_button_split").addEventListener("click",save_split,false);
+  byId("c_button_viewsplit").addEventListener("click",save_split.view,false);
+  byId("c_button_continue").addEventListener("click",continue_count,false);
+  byId("c_button_restart").addEventListener("click",restart_count,false);
+  byId("c_button_close").addEventListener("click",(function(){window.close()}),false);
+  byId("o_units").addEventListener("change", function(){
 	localStorage['timer_units'] = this.checked;
 	window.units = this.checked;
   });
-	jQuery("#stay").change(function(){
-    /*
-		if(this.checked){
-			webkitNotifications.createHTMLNotification("/timer.html#noti").show();
-			window.close();
-		}else{
-			chrome.extension.getBackgroundPage().timer();
-			window.close();
-		}*/
-	});
-	jQuery("#stay").attr("disabled", true);
+	byId("stay").disabled = true;
 
   //Note
-  $c("n_close").addEventListener("click",(function(){$c("note").classList.add("hide");resize_window()}),false);
+  firstByClass("n_close").addEventListener("click",(function(){firstByClass("note").classList.add("hide");resize_window()}),false);
 
   window.status="setting"
 
   if(localStorage["timer_timestamp"]!=null){
     window.status="counting"
 
-    $c("setting").classList.add("hide");
-    $c("counting").classList.remove("hide");
+    firstByClass("setting").classList.add("hide");
+    firstByClass("counting").classList.remove("hide");
       if(localStorage["timer_paused_timestamp"]!=null){
         window.paused=true;
-        //$("c_button_stop").classList.add("hide");
-        $("c_running").classList.add("hide");
-        $("c_stopped").classList.remove("hide");
-        $("p_time").innerHTML=format(localStorage["timer_quit_msg"])
+        //byId("c_button_stop").classList.add("hide");
+        byId("c_running").classList.add("hide");
+        byId("c_stopped").classList.remove("hide");
+        byId("p_time").innerHTML=format(localStorage["timer_quit_msg"])
         window.time=parseInt(localStorage["timer_quit_msg"],10);
 
         window.status="paused"
@@ -218,8 +208,8 @@ function loadin(){
     cal_time();
     resize_window();
   }else{
-    $c("setting").classList.remove("hide");
-    $c("counting").classList.add("hide");
+    firstByClass("setting").classList.remove("hide");
+    firstByClass("counting").classList.add("hide");
   }
 
 
@@ -252,8 +242,8 @@ function loadin(){
 
 //Restore settings
 function restore(){
-  $("o_units").checked = (localStorage['timer_units'] == true);
-  window.units = $("o_units").checked
+  byId("o_units").checked = (localStorage['timer_units'] == true);
+  window.units = byId("o_units").checked
 
 }
 
@@ -314,20 +304,20 @@ function status_writer(){
 
   if(s=="setting"){
     document.title=t+b
-    $t("h2").innerHTML=t
+    firstByTag("h2").innerHTML=t
   }else if(s=="counting"){
     document.title=t+" - Running"+b
-    $t("h2").innerHTML=t+" - Running"
+    firstByTag("h2").innerHTML=t+" - Running"
   }else if(s=="paused"){
     document.title=t+" - Paused"+b
-    $t("h2").innerHTML=t+" - Paused"
+    firstByTag("h2").innerHTML=t+" - Paused"
   }else{
     document.title=t+b
-    $t("h2").innerHTML=t
+    firstByTag("h2").innerHTML=t
   }
 
-  $("c_starttime").innerHTML=new Date(parseInt(localStorage["timer_ori_timestamp"]));
-  $("c_starttime").setAttribute("title",new Date(parseInt(localStorage["timer_ori_timestamp"])));
+  byId("c_starttime").innerHTML=new Date(parseInt(localStorage["timer_ori_timestamp"]));
+  byId("c_starttime").setAttribute("title",new Date(parseInt(localStorage["timer_ori_timestamp"])));
 
 }
 

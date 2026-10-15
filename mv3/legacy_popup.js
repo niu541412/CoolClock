@@ -23,15 +23,16 @@ class BackgroundShapes extends HTMLElement {
   connectedCallback() {
     const root = templateFor(this, 'background-shapes');
     const canvas = document.createElement('canvas');
-    canvas.width = 300;
+    const popupWidth = document.body.clientWidth;
+    canvas.width = popupWidth;
     canvas.height = 500;
     root.append(canvas);
     const ctx = canvas.getContext('2d');
-    const points = Array.from({length: 50}, () => ({x: Math.random() * 300, y: Math.random() * 500, radius: Math.random() * 20, alpha: Math.random() * 0.05, dy: Math.random() * 0.25 - 0.125}));
+    const points = Array.from({length: 50}, () => ({x: Math.random() * popupWidth, y: Math.random() * 500, radius: Math.random() * 20, alpha: Math.random() * 0.05, dy: Math.random() * 0.25 - 0.125}));
     let previous;
     const draw = timestamp => {
       if (!this.isConnected) return;
-      ctx.clearRect(0, 0, 300, 500);
+      ctx.clearRect(0, 0, popupWidth, 500);
       for (const point of points) {
         ctx.fillStyle = `rgba(255,255,255,${point.alpha})`;
         ctx.beginPath();
@@ -39,7 +40,7 @@ class BackgroundShapes extends HTMLElement {
         ctx.fill();
         point.x += ((timestamp - (previous ?? timestamp)) / (1000 / 60)) * (point.radius / 50);
         point.y += ((timestamp - (previous ?? timestamp)) / (1000 / 60)) * point.dy;
-        if (point.x > 300 + point.radius * 2) point.x = -point.radius * 2;
+        if (point.x > popupWidth + point.radius * 2) point.x = -point.radius * 2;
       }
       previous = timestamp;
       requestAnimationFrame(draw);
@@ -93,15 +94,21 @@ class TitleWeather extends HTMLElement {
     if (!location) return;
     root.getElementById('loading-status').textContent = t('weatherLoading');
     try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=temperature_2m,weather_code`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(location.latitude)}&longitude=${encodeURIComponent(location.longitude)}&current=temperature_2m,relative_humidity_2m,weather_code`;
       const response = await fetch(url);
       if (!response.ok) throw Error(String(response.status));
       const data = await response.json();
       const celsius = Number(data.current?.temperature_2m);
       if (!Number.isFinite(celsius)) throw Error('Weather data unavailable');
       const descriptions = {0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Cloudy', 45: 'Fog', 48: 'Fog', 51: 'Drizzle', 53: 'Drizzle', 55: 'Drizzle', 56: 'Freezing drizzle', 57: 'Freezing drizzle', 61: 'Rain', 63: 'Rain', 65: 'Heavy rain', 66: 'Freezing rain', 67: 'Freezing rain', 71: 'Snow', 73: 'Snow', 75: 'Heavy snow', 77: 'Snow grains', 80: 'Rain showers', 81: 'Rain showers', 82: 'Heavy rain showers', 85: 'Snow showers', 86: 'Snow showers', 95: 'Thunderstorm', 96: 'Thunderstorm', 99: 'Thunderstorm'};
+      const temperature = location.unit === 'fahrenheit' ?
+        `${Math.round(celsius * 9 / 5 + 32)}°F` : `${Math.round(celsius)}°C`;
+      const humidity = data.current?.relative_humidity_2m;
+      const humidityText = typeof humidity === 'number' && Number.isFinite(humidity) ?
+        ` · ${t('weatherHumidity')} ${Math.round(humidity)}%` : '';
       root.getElementById('city').textContent = location.name;
-      root.getElementById('condition').textContent = `${Math.round(celsius * 9 / 5 + 32)}°F/ ${Math.round(celsius)}°C, ${descriptions[data.current.weather_code] || 'Weather'}`;
+      root.getElementById('condition').textContent =
+        `${temperature}, ${descriptions[data.current.weather_code] || 'Weather'}${humidityText}`;
       wrapper.classList.add('loaded', 'success');
       this.onclick = () => popupApi.tabs.create({url: popupApi.runtime.getURL('mv3/weather_details.html')});
     } catch {

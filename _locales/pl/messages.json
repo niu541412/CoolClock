@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Nie pokazuj tych elementów"
    },
+   "contextVoiceControl": {
+      "message": "Sterowanie głosowe"
+   },
+   "contextCurrentTime": {
+      "message": "Wstaw bieżący czas"
+   },
    "chat": {
       "message": "Chat box"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Zaplanowano na {time}"
    },
+   "weatherHumidity": {
+      "message": "Wilgotność"
+   },
    "weatherLoading": {
       "message": "Wczytywanie pogody…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Pomoc"
+   },
+   "optionsMenu": {
+      "message": "Menu"
+   },
+   "optionsFormats": {
+      "message": "Formaty"
+   },
+   "optionsNotifications": {
+      "message": "Powiadomienia"
+   },
+   "optionsSpeech": {
+      "message": "Tekst na mowę"
+   },
+   "optionsExtension": {
+      "message": "Rozszerzenie"
+   },
+   "optionsCredits": {
+      "message": "Specjalne podziękowania"
+   },
+   "optionsEditAppearance": {
+      "message": "Edytuj wygląd"
+   },
+   "optionsColor": {
+      "message": "Kolor"
+   },
+   "optionsBadgeColor": {
+      "message": "Kolor odznaki"
+   },
+   "optionsNewPopup": {
+      "message": "Użyj nowego projektu wyskakującego okienka"
+   },
+   "optionsTimeSystem": {
+      "message": "System czasu"
+   },
+   "optionsCalendarSystem": {
+      "message": "System kalendarza"
+   },
+   "optionsLunar": {
+      "message": "Wyświetl chińską datę księżycową"
+   },
+   "optionsDateOrder": {
+      "message": "Zamówienie daty"
+   },
+   "optionsDragReorder": {
+      "message": "- przeciągnij, aby zmienić kolejność"
+   },
+   "optionsCustomTimezone": {
+      "message": "Niestandardowa strefa czasowa"
+   },
+   "optionsLocalTimezone": {
+      "message": "lokalną strefę czasową"
+   },
+   "optionsTimezoneNote": {
+      "message": "Uwaga: to ustawienie nie dotyczy kalendarza."
+   },
+   "optionsTestNotification": {
+      "message": "Powiadomienie testowe"
+   },
+   "optionsNotificationStyle": {
+      "message": "Styl powiadomień"
+   },
+   "optionsDefault": {
+      "message": "Domyślne"
+   },
+   "optionsBackgroundColor": {
+      "message": "Kolor tła"
+   },
+   "optionsCompact": {
+      "message": "Kompaktowy"
+   },
+   "optionsNotificationDuration": {
+      "message": "Czas wyświetlania powiadomienia"
+   },
+   "optionsSystemDuration": {
+      "message": "(System może zastąpić to ustawienie)"
+   },
+   "optionsCloseManually": {
+      "message": "Zamknij ręcznie"
+   },
+   "optionsShowWeather": {
+      "message": "Wyświetl informacje o pogodzie"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Używaj stopni Fahrenheita (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Informacje o pogodzie dostarczone przez Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Lokalizacja"
+   },
+   "optionsNotSet": {
+      "message": "Nie ustawiono/niedostępne"
+   },
+   "optionsSearch": {
+      "message": "Szukaj..."
+   },
+   "optionsNotificationSound": {
+      "message": "Włącz dźwięk powiadomienia o godzinie godzinowej"
+   },
+   "optionsRingtone": {
+      "message": "Dzwonek"
+   },
+   "optionsReadTime": {
+      "message": "Odczytaj godzinę wraz z komunikatem godzinowym"
+   },
+   "optionsSentence": {
+      "message": "Zdanie"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: godzina (24 godziny); %h: godzina (12 godzin); %P: rano/po południu; %M: Minuta"
+   },
+   "optionsFromComputer": {
+      "message": "Z Twojego komputera"
+   },
+   "optionsLoop": {
+      "message": "Włącz pętlę"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Podgląd bieżącego dzwonka"
+   },
+   "optionsLoad": {
+      "message": "Załaduj"
+   },
+   "optionsSpeechEngine": {
+      "message": "Silnik mowy"
+   },
+   "optionsSpeechIntro": {
+      "message": "Wybierz silnik głosowy, którego wolisz używać do sterowania głosowego i cogodzinnego przetwarzania tekstu na mowę."
+   },
+   "optionsSpeechInstall": {
+      "message": "Zainstalowane głosy pojawią się na liście rozwijanej poniżej."
+   },
+   "optionsInstalledVoices": {
+      "message": "Zainstalowane silniki głosowe"
+   },
+   "optionsLanguage": {
+      "message": "Język"
+   },
+   "optionsUpdateInterval": {
+      "message": "Interwał aktualizacji w tle"
+   },
+   "optionsKeepAwake": {
+      "message": "Zapobiegaj uśpieniu systemu, gdy istnieją aktywne alarmy lub odliczania"
+   },
+   "optionsBackgroundRun": {
+      "message": "Kontynuuj uruchamianie Cool Clock w tle, gdy przeglądarka Google Chrome jest zamknięta"
+   },
+   "optionsContextMenu": {
+      "message": "Pokaż elementy menu kontekstowego"
+   },
+   "optionsTranslationCredits": {
+      "message": "Wszyscy, którzy przyczynili się do zlokalizowanych tłumaczeń"
+   },
+   "optionsMore": {
+      "message": "Więcej"
+   },
+   "optionsMiscellaneous": {
+      "message": "Różne"
+   },
+   "optionsLunarTip": {
+      "message": "Wyświetl chińską datę księżycową. Dokładność zależy od przeglądarki i systemu operacyjnego."
+   },
+   "optionsTimezoneTip": {
+      "message": "Twoja lokalna strefa czasowa może ulec zmianie w czasie letnim."
+   },
+   "optionsTestTip": {
+      "message": "Pokaż powiadomienie przy użyciu bieżących ustawień."
+   },
+   "optionsLocationTip": {
+      "message": "To jest bieżący identyfikator lokalizacji. Użyj opcji Szukaj, aby wybrać inną lokalizację."
+   },
+   "optionsAudioTip": {
+      "message": "Obsługiwane są tylko pliki MP3, OGG i WAV."
+   },
+   "optionsVoiceTip": {
+      "message": "W sekcji Tekst na mowę wybierz silnik głosowy obsługujący Twój język."
+   },
+   "optionsEmpty": {
+      "message": "(pusty)"
+   },
+   "optionsContextTip": {
+      "message": "Pokaż elementy Cool Clock w menu wyświetlanym po kliknięciu prawym przyciskiem myszy."
+   },
+   "optionsChooseFile": {
+      "message": "Wybierz plik..."
+   },
+   "optionsSearchPlace": {
+      "message": "Lokalizacja, kod pocztowy lub miejsce"
+   },
+   "optionsSearchByName": {
+      "message": "Szukaj według nazwy"
+   },
+   "optionsLoading": {
+      "message": "Ładowanie..."
+   },
+   "optionsNoResult": {
+      "message": "Brak wyników"
+   },
+   "optionsSearchError": {
+      "message": "Błąd podczas pobierania danych"
+   },
+   "optionsImported": {
+      "message": "Importowane!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Naciśnij Powiadomienie testowe, aby usłyszeć dźwięk."
+   },
+   "optionsSuccess": {
+      "message": "Sukces!"
+   },
+   "optionsLoaded": {
+      "message": "Załadowany."
+   },
+   "optionsNotice": {
+      "message": "Uwaga"
+   },
+   "optionsNoRingtone": {
+      "message": "Nie ustawiono żadnego dzwonka."
+   },
+   "optionsInvalidUrl": {
+      "message": "Ten adres URL jest nieprawidłowy lub nieobsługiwany."
+   },
+   "optionsRetry": {
+      "message": "Spróbuj ponownie"
+   },
+   "optionsAdvanced": {
+      "message": "Zaawansowane"
+   },
+   "optionsAppearanceHint": {
+      "message": "Dla zaawansowanych użytkowników: edytuj poniższą konfigurację, aby dostroić zegar. Szerokość i wysokość odpowiadają rozmiarowi ikony, zwykle 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Edytuj wygląd zegara analogowego"
+   },
+   "optionsEditDigital": {
+      "message": "Edytuj wygląd zegara cyfrowego"
+   },
+   "optionsInvalidJson": {
+      "message": "Nieprawidłowy JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "Proszę wprowadzić prawidłowy JSON."
+   },
+   "optionsYear": {
+      "message": "Rok"
+   },
+   "optionsMonth": {
+      "message": "Miesiąc"
+   },
+   "optionsDate": {
+      "message": "Dzień"
+   },
+   "optionsRemoved": {
+      "message": "(Usunięte)"
+   },
+   "optionsUrlTip": {
+      "message": "Obsługiwane są tylko adresy URL HTTP lub HTTPS."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Informacje o pogodzie obsługiwane przez Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Geokodowanie Open-Meteo"
+   },
+   "optionsTweet": {
+      "message": "Tweetnij"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (domyślny dzwonek alarmu)"
+   },
+   "optionsFactLabel": {
+      "message": "Fakt"
+   },
+   "optionsFact1": {
+      "message": "To rozszerzenie nie zawiera zamierzonego kodu śledzenia użytkownika."
+   },
+   "optionsFact2": {
+      "message": "W Cool Clock poważnie podchodzimy do gramatyki, aby uniknąć raportów o błędach dotyczących gramatyki."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock otrzymał swoją nazwę, ponieważ jego twórca nie mógł wymyślić lepszej."
+   },
+   "optionsFact4": {
+      "message": "Odpowiedź na wszystko nie brzmi 42."
+   },
+   "optionsFact5": {
+      "message": "To stwierdzenie jest fałszywe."
+   },
+   "optionsPermissionError": {
+      "message": "Nie można usunąć uprawnień przeglądarki."
+   },
+   "optionsProcessing": {
+      "message": "Przetwarzanie..."
+   },
+   "optionsPleaseWait": {
+      "message": "Proszę poczekać chwilę..."
    }
 }

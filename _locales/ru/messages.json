@@ -1,6 +1,6 @@
 ﻿{
    "extDes": {
-      "message": "Расширение с множеством полезных функций для работы со временем... и самое главное — оно действительно классное!" /*"Первое расширение, имеющее в своём арсенале как цифровые, так и аналоговые часы, отображающиеся на вашей панели. Также имеется возможность отображать оповещения на рабочем столе."*/
+      "message": "Расширение с множеством полезных функций для работы со временем... и самое главное — оно действительно классное!"
    },
    "extName": {
       "message": "Cool часы"
@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "Не показывать эти пункты"
    },
+   "contextVoiceControl": {
+      "message": "Голосовое управление"
+   },
+   "contextCurrentTime": {
+      "message": "Вставить текущее время"
+   },
    "chat": {
       "message": "чате"
    },
@@ -275,6 +281,9 @@
    "scheduledFor": {
       "message": "Запланировано на {time}"
    },
+   "weatherHumidity": {
+      "message": "Влажность"
+   },
    "weatherLoading": {
       "message": "Загрузка погоды…"
    },
@@ -289,5 +298,305 @@
    },
    "help": {
       "message": "Помощь"
+   },
+   "optionsMenu": {
+      "message": "Меню"
+   },
+   "optionsFormats": {
+      "message": "Форматы"
+   },
+   "optionsNotifications": {
+      "message": "Уведомления"
+   },
+   "optionsSpeech": {
+      "message": "Текст в речь"
+   },
+   "optionsExtension": {
+      "message": "Расширение"
+   },
+   "optionsCredits": {
+      "message": "Особая благодарность"
+   },
+   "optionsEditAppearance": {
+      "message": "Изменить внешний вид"
+   },
+   "optionsColor": {
+      "message": "Цвет"
+   },
+   "optionsBadgeColor": {
+      "message": "Цвет значка"
+   },
+   "optionsNewPopup": {
+      "message": "Используйте новый дизайн всплывающего окна"
+   },
+   "optionsTimeSystem": {
+      "message": "Система времени"
+   },
+   "optionsCalendarSystem": {
+      "message": "Календарная система"
+   },
+   "optionsLunar": {
+      "message": "Отображение китайской лунной даты"
+   },
+   "optionsDateOrder": {
+      "message": "Порядок дат"
+   },
+   "optionsDragReorder": {
+      "message": "- перетащите, чтобы изменить порядок"
+   },
+   "optionsCustomTimezone": {
+      "message": "Пользовательский часовой пояс"
+   },
+   "optionsLocalTimezone": {
+      "message": "ваш местный часовой пояс"
+   },
+   "optionsTimezoneNote": {
+      "message": "Примечание. Этот параметр не применяется к календарю."
+   },
+   "optionsTestNotification": {
+      "message": "Тестовое уведомление"
+   },
+   "optionsNotificationStyle": {
+      "message": "Стиль уведомлений"
+   },
+   "optionsDefault": {
+      "message": "По умолчанию"
+   },
+   "optionsBackgroundColor": {
+      "message": "Цвет фона"
+   },
+   "optionsCompact": {
+      "message": "Компактный"
+   },
+   "optionsNotificationDuration": {
+      "message": "Время отображения уведомлений"
+   },
+   "optionsSystemDuration": {
+      "message": "(Система может переопределить этот параметр)"
+   },
+   "optionsCloseManually": {
+      "message": "Закрыть вручную"
+   },
+   "optionsShowWeather": {
+      "message": "Отображение информации о погоде"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Использовать градусы Фаренгейта (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Информация о погоде предоставлена Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Расположение"
+   },
+   "optionsNotSet": {
+      "message": "Не установлено/недоступно"
+   },
+   "optionsSearch": {
+      "message": "Искать..."
+   },
+   "optionsNotificationSound": {
+      "message": "Включить звук ежечасного объявления времени"
+   },
+   "optionsRingtone": {
+      "message": "Рингтон"
+   },
+   "optionsReadTime": {
+      "message": "Зачитайте время вместе с почасовым объявлением времени."
+   },
+   "optionsSentence": {
+      "message": "Приговор"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: Час (24 часа); %h: Час (12 часов); %P: утро/вечер; %M: минута"
+   },
+   "optionsFromComputer": {
+      "message": "С вашего компьютера"
+   },
+   "optionsLoop": {
+      "message": "Включить циклическое воспроизведение"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Предварительный просмотр текущего рингтона"
+   },
+   "optionsLoad": {
+      "message": "Загрузить"
+   },
+   "optionsSpeechEngine": {
+      "message": "Речевой двигатель"
+   },
+   "optionsSpeechIntro": {
+      "message": "Выберите голосовой движок, который вы предпочитаете использовать для голосового управления и ежечасного преобразования текста в речь."
+   },
+   "optionsSpeechInstall": {
+      "message": "Установленные голоса отображаются в раскрывающемся списке ниже."
+   },
+   "optionsInstalledVoices": {
+      "message": "Установлены голосовые движки"
+   },
+   "optionsLanguage": {
+      "message": "Язык"
+   },
+   "optionsUpdateInterval": {
+      "message": "Интервал фонового обновления"
+   },
+   "optionsKeepAwake": {
+      "message": "Предотвратить переход системы в спящий режим при наличии активных сигналов тревоги или обратного отсчета"
+   },
+   "optionsBackgroundRun": {
+      "message": "Продолжайте запускать Cool Clock в фоновом режиме, когда Google Chrome закрыт."
+   },
+   "optionsContextMenu": {
+      "message": "Показать пункты контекстного меню"
+   },
+   "optionsTranslationCredits": {
+      "message": "Все, кто внес вклад в локализованные переводы"
+   },
+   "optionsMore": {
+      "message": "Ещё"
+   },
+   "optionsMiscellaneous": {
+      "message": "Разное"
+   },
+   "optionsLunarTip": {
+      "message": "Отображение китайской лунной даты. Точность зависит от вашего браузера и операционной системы."
+   },
+   "optionsTimezoneTip": {
+      "message": "Ваш местный часовой пояс может измениться во время перехода на летнее время."
+   },
+   "optionsTestTip": {
+      "message": "Показать уведомление, используя текущие настройки."
+   },
+   "optionsLocationTip": {
+      "message": "Это текущий идентификатор местоположения. Используйте поиск, чтобы выбрать другое местоположение."
+   },
+   "optionsAudioTip": {
+      "message": "Поддерживаются только файлы MP3, OGG или WAV."
+   },
+   "optionsVoiceTip": {
+      "message": "В разделе «Преобразование текста в речь» выберите голосовой движок, поддерживающий ваш язык."
+   },
+   "optionsEmpty": {
+      "message": "(пусто)"
+   },
+   "optionsContextTip": {
+      "message": "Показывать элементы Cool Clock в контекстном меню."
+   },
+   "optionsChooseFile": {
+      "message": "Выберите файл..."
+   },
+   "optionsSearchPlace": {
+      "message": "Местоположение, почтовый индекс или место"
+   },
+   "optionsSearchByName": {
+      "message": "Поиск по имени"
+   },
+   "optionsLoading": {
+      "message": "Загрузка..."
+   },
+   "optionsNoResult": {
+      "message": "Нет результатов"
+   },
+   "optionsSearchError": {
+      "message": "Ошибка получения данных."
+   },
+   "optionsImported": {
+      "message": "Импортировано!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Нажмите «Тестовое уведомление», чтобы услышать звук."
+   },
+   "optionsSuccess": {
+      "message": "Успех!"
+   },
+   "optionsLoaded": {
+      "message": "Загружено."
+   },
+   "optionsNotice": {
+      "message": "Уведомление"
+   },
+   "optionsNoRingtone": {
+      "message": "Мелодия звонка не установлена."
+   },
+   "optionsInvalidUrl": {
+      "message": "Этот URL-адрес недействителен или не поддерживается."
+   },
+   "optionsRetry": {
+      "message": "Повторить попытку"
+   },
+   "optionsAdvanced": {
+      "message": "Расширенный"
+   },
+   "optionsAppearanceHint": {
+      "message": "Для опытных пользователей: отредактируйте конфигурацию ниже, чтобы точно настроить часы. Ширина и высота соответствуют размеру значка, обычно 19 × 19 пикселей."
+   },
+   "optionsEditAnalog": {
+      "message": "Редактировать внешний вид аналоговых часов"
+   },
+   "optionsEditDigital": {
+      "message": "Редактировать внешний вид цифровых часов"
+   },
+   "optionsInvalidJson": {
+      "message": "Неверный JSON"
+   },
+   "optionsEnterValidJson": {
+      "message": "Пожалуйста, введите действительный JSON."
+   },
+   "optionsYear": {
+      "message": "Год"
+   },
+   "optionsMonth": {
+      "message": "Месяц"
+   },
+   "optionsDate": {
+      "message": "День"
+   },
+   "optionsRemoved": {
+      "message": "(Удалено)"
+   },
+   "optionsUrlTip": {
+      "message": "Поддерживаются только URL-адреса HTTP или HTTPS."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Информация о погоде предоставлена Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Геокодирование Open-Meteo"
+   },
+   "optionsTweet": {
+      "message": "Твитнуть"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (мелодия будильника по умолчанию)"
+   },
+   "optionsFactLabel": {
+      "message": "Факт"
+   },
+   "optionsFact1": {
+      "message": "Это расширение не содержит преднамеренного кода отслеживания пользователей."
+   },
+   "optionsFact2": {
+      "message": "В Cool Clock мы серьезно относимся к грамматике, чтобы избежать сообщений об ошибках в грамматике."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock получили свое название потому, что их создатель не мог придумать лучшего."
+   },
+   "optionsFact4": {
+      "message": "Ответ на все вопросы — не 42."
+   },
+   "optionsFact5": {
+      "message": "Это утверждение неверно."
+   },
+   "optionsPermissionError": {
+      "message": "Не удалось удалить разрешение браузера."
+   },
+   "optionsProcessing": {
+      "message": "Обработка..."
+   },
+   "optionsPleaseWait": {
+      "message": "Пожалуйста, подождите немного..."
    }
 }

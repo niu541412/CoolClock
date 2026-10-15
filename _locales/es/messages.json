@@ -254,6 +254,12 @@
    "ctxhide": {
       "message": "No mostrar esto"
    },
+   "contextVoiceControl": {
+      "message": "Control por voz"
+   },
+   "contextCurrentTime": {
+      "message": "Insertar la hora actual"
+   },
    "chat": {
       "message": "Chat"
    },
@@ -278,6 +284,9 @@
    "scheduledFor": {
       "message": "Programado para las {time}"
    },
+   "weatherHumidity": {
+      "message": "Humedad"
+   },
    "weatherLoading": {
       "message": "Cargando el tiempo…"
    },
@@ -289,5 +298,305 @@
    },
    "dismissLabel": {
       "message": "Cerrar"
+   },
+   "optionsMenu": {
+      "message": "Menú"
+   },
+   "optionsFormats": {
+      "message": "Formatos"
+   },
+   "optionsNotifications": {
+      "message": "Notificaciones"
+   },
+   "optionsSpeech": {
+      "message": "Texto a voz"
+   },
+   "optionsExtension": {
+      "message": "Extensión"
+   },
+   "optionsCredits": {
+      "message": "Agradecimientos especiales"
+   },
+   "optionsEditAppearance": {
+      "message": "Editar apariencia"
+   },
+   "optionsColor": {
+      "message": "Color"
+   },
+   "optionsBadgeColor": {
+      "message": "Color de la insignia"
+   },
+   "optionsNewPopup": {
+      "message": "Usar nuevo diseño de ventana emergente"
+   },
+   "optionsTimeSystem": {
+      "message": "Sistema de tiempo"
+   },
+   "optionsCalendarSystem": {
+      "message": "Sistema de calendario"
+   },
+   "optionsLunar": {
+      "message": "Mostrar fecha lunar china"
+   },
+   "optionsDateOrder": {
+      "message": "Orden de fecha"
+   },
+   "optionsDragReorder": {
+      "message": "- arrastrar para reordenar"
+   },
+   "optionsCustomTimezone": {
+      "message": "Zona horaria personalizada"
+   },
+   "optionsLocalTimezone": {
+      "message": "tu zona horaria local"
+   },
+   "optionsTimezoneNote": {
+      "message": "Nota: Esta configuración no se aplica al calendario."
+   },
+   "optionsTestNotification": {
+      "message": "Notificación de prueba"
+   },
+   "optionsNotificationStyle": {
+      "message": "Estilo de notificación"
+   },
+   "optionsDefault": {
+      "message": "Predeterminado"
+   },
+   "optionsBackgroundColor": {
+      "message": "Color de fondo"
+   },
+   "optionsCompact": {
+      "message": "Compacto"
+   },
+   "optionsNotificationDuration": {
+      "message": "Tiempo de visualización de notificación"
+   },
+   "optionsSystemDuration": {
+      "message": "(El sistema podría anular esta configuración)"
+   },
+   "optionsCloseManually": {
+      "message": "Cerrar manualmente"
+   },
+   "optionsShowWeather": {
+      "message": "Mostrar información meteorológica"
+   },
+   "optionsWeatherFahrenheit": {
+      "message": "Usar Fahrenheit (℉)"
+   },
+   "optionsWeatherProvider": {
+      "message": "(Información meteorológica proporcionada por Open-Meteo)"
+   },
+   "optionsLocation": {
+      "message": "Ubicación"
+   },
+   "optionsNotSet": {
+      "message": "No configurado/ No disponible"
+   },
+   "optionsSearch": {
+      "message": "Buscar..."
+   },
+   "optionsNotificationSound": {
+      "message": "Habilitar el sonido del anuncio horario cada hora"
+   },
+   "optionsRingtone": {
+      "message": "Tono de llamada"
+   },
+   "optionsReadTime": {
+      "message": "Lea la hora junto con el anuncio de la hora."
+   },
+   "optionsSentence": {
+      "message": "oración"
+   },
+   "optionsVoiceTokens": {
+      "message": "%H: Hora (24 horas); %h: Hora (12 horas); %P: am/pm; %M: Minuto"
+   },
+   "optionsFromComputer": {
+      "message": "Desde tu computadora"
+   },
+   "optionsLoop": {
+      "message": "Habilitar bucle"
+   },
+   "optionsPreviewRingtone": {
+      "message": "Vista previa del tono de llamada actual"
+   },
+   "optionsLoad": {
+      "message": "Cargar"
+   },
+   "optionsSpeechEngine": {
+      "message": "Motor de voz"
+   },
+   "optionsSpeechIntro": {
+      "message": "Elija el motor de voz que prefiera usar en el control de voz y la conversión de texto a voz en notificaciones cada hora."
+   },
+   "optionsSpeechInstall": {
+      "message": "Las voces instaladas aparecen en el menú desplegable a continuación."
+   },
+   "optionsInstalledVoices": {
+      "message": "Motores de voz instalados"
+   },
+   "optionsLanguage": {
+      "message": "Idioma"
+   },
+   "optionsUpdateInterval": {
+      "message": "Intervalo de actualización en segundo plano"
+   },
+   "optionsKeepAwake": {
+      "message": "Evitar que el sistema entre en suspensión cuando hay alarmas activas o cuentas regresivas"
+   },
+   "optionsBackgroundRun": {
+      "message": "Continuar ejecutando Cool Clock en segundo plano cuando Google Chrome esté cerrado"
+   },
+   "optionsContextMenu": {
+      "message": "Mostrar elementos del menú contextual"
+   },
+   "optionsTranslationCredits": {
+      "message": "Todos los que contribuyeron con traducciones localizadas."
+   },
+   "optionsMore": {
+      "message": "Más"
+   },
+   "optionsMiscellaneous": {
+      "message": "Varios"
+   },
+   "optionsLunarTip": {
+      "message": "Muestra una fecha lunar china. La precisión depende de su navegador y sistema operativo."
+   },
+   "optionsTimezoneTip": {
+      "message": "Su zona horaria local puede cambiar durante el horario de verano."
+   },
+   "optionsTestTip": {
+      "message": "Muestra una notificación usando la configuración actual."
+   },
+   "optionsLocationTip": {
+      "message": "Esta es la identificación de la ubicación actual. Utilice Buscar para elegir otra ubicación."
+   },
+   "optionsAudioTip": {
+      "message": "Sólo se admiten archivos MP3, OGG o WAV."
+   },
+   "optionsVoiceTip": {
+      "message": "Seleccione un motor de voz que admita su idioma en la sección Texto a voz."
+   },
+   "optionsEmpty": {
+      "message": "(vacío)"
+   },
+   "optionsContextTip": {
+      "message": "Muestra elementos de Cool Clock en el menú contextual."
+   },
+   "optionsChooseFile": {
+      "message": "Elige un archivo..."
+   },
+   "optionsSearchPlace": {
+      "message": "Ubicación, código postal o lugar"
+   },
+   "optionsSearchByName": {
+      "message": "Buscar por nombre"
+   },
+   "optionsLoading": {
+      "message": "Cargando..."
+   },
+   "optionsNoResult": {
+      "message": "Sin resultados"
+   },
+   "optionsSearchError": {
+      "message": "Error al obtener datos"
+   },
+   "optionsImported": {
+      "message": "¡Importado!"
+   },
+   "optionsTestSoundHint": {
+      "message": "Presione Notificación de prueba para escuchar el sonido."
+   },
+   "optionsSuccess": {
+      "message": "¡Éxito!"
+   },
+   "optionsLoaded": {
+      "message": "Cargado."
+   },
+   "optionsNotice": {
+      "message": "Aviso"
+   },
+   "optionsNoRingtone": {
+      "message": "No se ha establecido ningún tono de llamada."
+   },
+   "optionsInvalidUrl": {
+      "message": "Esta URL no es válida o no es compatible."
+   },
+   "optionsRetry": {
+      "message": "Reintentar"
+   },
+   "optionsAdvanced": {
+      "message": "Avanzado"
+   },
+   "optionsAppearanceHint": {
+      "message": "Para usuarios avanzados: edite la configuración a continuación para ajustar el reloj. El ancho y el alto coinciden con el tamaño del icono, normalmente 19 × 19 dp."
+   },
+   "optionsEditAnalog": {
+      "message": "Editar la apariencia del reloj analógico"
+   },
+   "optionsEditDigital": {
+      "message": "Editar la apariencia del reloj digital"
+   },
+   "optionsInvalidJson": {
+      "message": "JSON no válido"
+   },
+   "optionsEnterValidJson": {
+      "message": "Introduzca un JSON válido."
+   },
+   "optionsYear": {
+      "message": "Año"
+   },
+   "optionsMonth": {
+      "message": "Mes"
+   },
+   "optionsDate": {
+      "message": "dia"
+   },
+   "optionsRemoved": {
+      "message": "(eliminado)"
+   },
+   "optionsUrlTip": {
+      "message": "Solo se admiten URL HTTP o HTTPS."
+   },
+   "optionsWeatherProviderCredit": {
+      "message": "Información meteorológica proporcionada por Open-Meteo"
+   },
+   "optionsGeocodingCredit": {
+      "message": "Geocodificación Open-Meteo"
+   },
+   "optionsTweet": {
+      "message": "tuitear"
+   },
+   "optionsBootstrapIconsCredit": {
+      "message": "Bootstrap Icons"
+   },
+   "optionsSoundJayCredit": {
+      "message": "Sound Jay (tono de alarma predeterminado)"
+   },
+   "optionsFactLabel": {
+      "message": "hecho"
+   },
+   "optionsFact1": {
+      "message": "Esta extensión no contiene código de seguimiento de usuario intencional."
+   },
+   "optionsFact2": {
+      "message": "En Cool Clock, nos tomamos en serio la gramática para evitar informes de errores gramaticales."
+   },
+   "optionsFact3": {
+      "message": "Cool Clock recibió su nombre porque a su creador no se le ocurrió uno mejor."
+   },
+   "optionsFact4": {
+      "message": "La respuesta a todo no es 42."
+   },
+   "optionsFact5": {
+      "message": "Esta afirmación es falsa."
+   },
+   "optionsPermissionError": {
+      "message": "No se pudo eliminar el permiso del navegador."
+   },
+   "optionsProcessing": {
+      "message": "Procesando..."
+   },
+   "optionsPleaseWait": {
+      "message": "Por favor espera un momento..."
    }
 }

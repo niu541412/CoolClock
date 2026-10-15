@@ -4,18 +4,30 @@
 		<title trans="whatsnew">Change Log</title>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="/bootstrap/migration.css">
 		<link type="text/css" rel="stylesheet" href="/scripts/update/css.css">
-		<script src="/jquery.js"></script>
-		<script src="/bootstrap/bootstrap.min.js"></script>
-		<script src="/scripts/update/js.js"></script>
+
+		<script src="/mv3/locale_catalog.js" defer></script>
+		<script src="/mv3/i18n.js" defer></script>
+		<script src="/mv3/legacy_update.js" defer></script>
 	</head>
-	<body data-spy="scroll" data-target=".col-xs-2">
-		<div class="jumbotron topbar">
+	<body>
+		<div class="p-4 mb-4 rounded-3 topbar">
 			<h2 trans="whatsnew">Change Log</h2>
 		</div>
 		<div class="container">
 			<div class="row">
-				<div class="col-xs-10 main">
+				<div class="col-10 main">
+
+					<h3 data-date="1791993600000">Ver. 4.1.0</h3>
+					<ul>
+						<li>[Update] Upgraded the interface to Bootstrap 5.3.8 and Bootstrap Icons 1.13.2, with a more balanced settings layout.</li>
+						<li>[Update] Replaced jQuery and jQuery UI in the settings, alarm, countdown, and full calendar pages with native JavaScript and dialogs.</li>
+						<li>[New] Added Celsius/Fahrenheit weather selection and current humidity in the popup and forecast.</li>
+						<li>[Fix] Improved settings and menu translations across all 28 languages, including the Voice Control entry.</li>
+						<li>[Fix] Corrected the full calendar date input and refined the popup width and toolbar clock digits.</li>
+						<li>[Cleanup] Removed unused legacy scripts, jQuery libraries, and jQuery UI assets.</li>
+					</ul>
 
 					<h3 data-date="1791936000000">Ver. 4.0.2</h3>
 					<ul>
@@ -339,7 +351,7 @@
 
 				</div>
 
-				<div class="col-xs-2" id="scrollSpy">
+				<div class="col-2" id="scrollSpy">
 					<ul class="nav nav-tabs nav-stacked">
 					</ul>
 				</div>
