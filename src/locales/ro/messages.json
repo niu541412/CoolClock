@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Vă rog să așteptați un moment..."
+   },
+   "optionsSyncSettings": {
+      "message": "Sincronizează setările"
+   },
+   "optionsSyncTip": {
+      "message": "Folosește sincronizarea browserului între dispozitive conectate la același cont."
    }
 }

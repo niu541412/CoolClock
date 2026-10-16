@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Lütfen biraz bekleyin..."
+   },
+   "optionsSyncSettings": {
+      "message": "Ayarları eşitle"
+   },
+   "optionsSyncTip": {
+      "message": "Aynı tarayıcı hesabıyla oturum açılmış cihazlarda tarayıcının yerleşik eşitlemesini kullanır."
    }
 }

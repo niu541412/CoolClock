@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Xin vui lòng chờ một chút..."
+   },
+   "optionsSyncSettings": {
+      "message": "Đồng bộ cài đặt"
+   },
+   "optionsSyncTip": {
+      "message": "Dùng tính năng đồng bộ của trình duyệt trên các thiết bị đăng nhập cùng tài khoản."
    }
 }

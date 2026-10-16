@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "请稍候…"
+   },
+   "optionsSyncSettings": {
+      "message": "同步设置"
+   },
+   "optionsSyncTip": {
+      "message": "使用浏览器自带的同步功能，在登录同一浏览器账号的设备间同步设置。"
    }
 }

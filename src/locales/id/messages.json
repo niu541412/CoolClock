@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Mohon tunggu sebentar..."
+   },
+   "optionsSyncSettings": {
+      "message": "Sinkronkan pengaturan"
+   },
+   "optionsSyncTip": {
+      "message": "Menggunakan sinkronisasi bawaan browser pada perangkat dengan akun browser yang sama."
    }
 }

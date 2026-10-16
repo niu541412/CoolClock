@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "אנא המתן רגע..."
+   },
+   "optionsSyncSettings": {
+      "message": "סנכרון הגדרות"
+   },
+   "optionsSyncTip": {
+      "message": "משתמש בסנכרון המובנה של הדפדפן בין מכשירים שמחוברים לאותו חשבון."
    }
 }

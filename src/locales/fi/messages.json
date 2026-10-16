@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Odota hetki..."
+   },
+   "optionsSyncSettings": {
+      "message": "Synkronoi asetukset"
+   },
+   "optionsSyncTip": {
+      "message": "Käyttää selaimen omaa synkronointia samaan tiliin kirjautuneiden laitteiden välillä."
    }
 }

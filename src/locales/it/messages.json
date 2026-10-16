@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Per favore aspetta un attimo..."
+   },
+   "optionsSyncSettings": {
+      "message": "Sincronizza le impostazioni"
+   },
+   "optionsSyncTip": {
+      "message": "Usa la sincronizzazione del browser tra dispositivi con lo stesso account."
    }
 }

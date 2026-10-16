@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Si us plau, espereu un moment..."
+   },
+   "optionsSyncSettings": {
+      "message": "Sincronitza la configuració"
+   },
+   "optionsSyncTip": {
+      "message": "Utilitza la sincronització del navegador entre dispositius amb el mateix compte."
    }
 }

@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "لطفا یک لحظه صبر کنید..."
+   },
+   "optionsSyncSettings": {
+      "message": "همگام‌سازی تنظیمات"
+   },
+   "optionsSyncTip": {
+      "message": "از همگام‌سازی داخلی مرورگر میان دستگاه‌های دارای حساب یکسان استفاده می‌کند."
    }
 }

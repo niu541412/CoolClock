@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "S'il vous plaît, attendez un moment..."
+   },
+   "optionsSyncSettings": {
+      "message": "Synchroniser les paramètres"
+   },
+   "optionsSyncTip": {
+      "message": "Utilise la synchronisation du navigateur entre les appareils connectés au même compte."
    }
 }

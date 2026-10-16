@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Kérem, várjon egy kicsit..."
+   },
+   "optionsSyncSettings": {
+      "message": "Beállítások szinkronizálása"
+   },
+   "optionsSyncTip": {
+      "message": "A böngésző beépített szinkronizálását használja az azonos fiókhoz tartozó eszközök között."
    }
 }

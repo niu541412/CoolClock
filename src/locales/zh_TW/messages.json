@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "請稍候…"
+   },
+   "optionsSyncSettings": {
+      "message": "同步設定"
+   },
+   "optionsSyncTip": {
+      "message": "使用瀏覽器內建的同步功能，在登入同一瀏覽器帳號的裝置間同步設定。"
    }
 }

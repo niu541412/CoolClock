@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "しばらくお待ちください..."
+   },
+   "optionsSyncSettings": {
+      "message": "設定を同期する"
+   },
+   "optionsSyncTip": {
+      "message": "同じブラウザーアカウントでログインした端末間で、ブラウザー標準の同期機能を使用します。"
    }
 }

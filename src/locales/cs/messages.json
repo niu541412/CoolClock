@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Počkejte prosím chvíli..."
+   },
+   "optionsSyncSettings": {
+      "message": "Synchronizovat nastavení"
+   },
+   "optionsSyncTip": {
+      "message": "Používá synchronizaci prohlížeče mezi zařízeními se stejným účtem."
    }
 }

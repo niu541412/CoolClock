@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "Vennligst vent et øyeblikk..."
+   },
+   "optionsSyncSettings": {
+      "message": "Synkroniser innstillinger"
+   },
+   "optionsSyncTip": {
+      "message": "Bruker nettleserens innebygde synkronisering mellom enheter med samme konto."
    }
 }

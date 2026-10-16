@@ -604,5 +604,11 @@
    },
    "optionsPleaseWait": {
       "message": "잠시만 기다려주세요..."
+   },
+   "optionsSyncSettings": {
+      "message": "설정 동기화"
+   },
+   "optionsSyncTip": {
+      "message": "같은 브라우저 계정으로 로그인한 기기 간에 브라우저 자체 동기화를 사용합니다."
    }
 }
