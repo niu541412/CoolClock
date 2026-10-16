@@ -1,6 +1,6 @@
 # Cool Clock MV3
 
-Manifest V3 port of Derek Leung's Cool Clock. Version 4.1.1 retains the original popup layouts and features, icons, sound, and translations while updating the interface to Bootstrap 5.3.8 and Bootstrap Icons 1.13.2. Page controllers use native JavaScript without jQuery. The full calendar uses native dialogs with local CSS. The statistics page uses bundled D3 v7.9.0. Some interface and icon details differ from the original.
+Manifest V3 port of Derek Leung's Cool Clock. Version 4.1.2 retains the original popup layouts and features, icons, sound, and translations while updating the interface to Bootstrap 5.3.8 and Bootstrap Icons 1.13.2. Page controllers use native JavaScript without jQuery. The full calendar uses native dialogs with local CSS. The statistics page uses bundled D3 v7.9.0. Some interface and icon details differ from the original.
 
 ## Build and install
 
