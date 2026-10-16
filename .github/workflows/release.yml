@@ -42,7 +42,7 @@ jobs:
       - name: Build and verify Chrome and Firefox packages
         if: steps.existing.outputs.exists != 'true'
         run: |
-          python3 build_mv3.py
+          python3 build_extensions.py
           python3 .github/scripts/release.py check
           python3 .github/scripts/release.py notes > "$RUNNER_TEMP/release-notes.md"
 

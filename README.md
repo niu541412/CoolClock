@@ -14,7 +14,7 @@ This app was originally created as a simple clock displayed in a badge to test t
 
 ## Build and install
 
-Run `python3 build_mv3.py` from the repository root. It creates:
+Run `python3 build_extensions.py` from the repository root. It creates:
 
 - `dist/cool-clock-mv3-chrome.zip` for Chrome 120 or newer. Unzip it and select **Load unpacked** at `chrome://extensions`.
 - `dist/cool-clock-mv3-firefox.zip` for Firefox 121 or newer. It includes the Gecko add-on ID needed for signing.

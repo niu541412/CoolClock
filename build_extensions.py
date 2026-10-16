@@ -11,7 +11,8 @@ manifest = json.loads((root / 'manifest.json').read_text())
 runtime = src / 'runtime'
 runtime_files = sorted(path for path in runtime.rglob('*') if path.is_file())
 original_assets = ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.ogg')
-legacy_assets = (
+# Files kept at their established extension paths for page resource URLs.
+page_resources = (
     'scripts/popup/css.css', 'scripts/popup/js.js',
     'scripts/popup_classic/js.js',
     'scripts/calendar/js.js', 'scripts/speech/js.js',
@@ -119,7 +120,7 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
             language = locale_path.split('/')[1]
             catalog[language] = {key: value['message'] for key, value in json.loads(contents).items()}
         archive.writestr('mv3/locale_catalog.js', 'globalThis.COOL_CLOCK_LOCALES = ' + json.dumps(catalog, ensure_ascii=False) + ';\n')
-        for package_path in legacy_assets:
+        for package_path in page_resources:
             path = source_file(package_path)
             if package_path == 'scripts/timer/css.css':
                 archive.writestr(package_path, path.read_text(encoding='utf-8-sig').replace('Roboto-Regular.tff', 'Roboto-Regular.ttf'))
