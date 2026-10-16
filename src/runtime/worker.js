@@ -3,10 +3,91 @@ var ext = globalThis.browser || globalThis.chrome;
 const STATE_KEY = 'coolClockState';
 const STATS_KEY = 'coolClockUsage';
 const PREFIX = 'coolclock:';
-const DEFAULT_STATE = {alarms: [], countdowns: [], stopwatch: {elapsed: 0, started: null}, todos: {}, settings: {hour12: true, digital: true, timezoneEnabled: false, timezone: null, keepAwake: true, badge: false, icon: true, badgeStatic: false, badgeColor: '#428bca', clockColor: '#000000', clockDefinition: null, digitalFontSizeVersion: 2, popupVersion: '1', contextMenuEnabled: true, sound: true, ringtone: 'default', ringLoop: false, hourlyEnabled: true, hourlyDuration: 7, hourlyVoice: false, hourlyVoiceText: 'It is %h %P.', hourlySound: 'none', hourlyStyle: 'default', hourlyBgColor: '#0772a1', hourlyManualClose: false, weather: null, timerPresetSaved: false, timerPreset: {seconds: 300, repeat: false, text: '', color: 'primary'}}};
+const DEFAULT_STATE = {alarms: [], countdowns: [], stopwatch: {elapsed: 0, started: null}, todos: {}, settings: {hour12: true, digital: true, timezoneEnabled: false, timezone: null, keepAwake: true, badge: false, icon: true, badgeStatic: false, badgeColor: '#428bca', clockColor: '#000000', clockDefinition: null, popupVersion: '1', contextMenuEnabled: true, language: '', sound: true, ringtone: 'default', ringLoop: false, hourlyEnabled: true, hourlyDuration: 7, hourlyVoice: false, hourlyVoiceText: 'It is %h %P.', hourlySound: 'none', hourlyStyle: 'default', hourlyBgColor: '#0772a1', hourlyManualClose: false, weather: null, timerPresetSaved: false, timerPreset: {seconds: 300, repeat: false, text: '', color: 'primary'}, syncEnabled: true}};
+const SYNC_PREFIX = 'coolClockSetting:';
+const SYNC_FIELDS = [
+  'hour12', 'digital', 'timezoneEnabled', 'timezone', 'keepAwake', 'badge', 'icon',
+  'badgeStatic', 'badgeColor', 'clockColor', 'clockDefinition', 'popupVersion',
+  'contextMenuEnabled', 'language', 'ringtone', 'ringLoop', 'hourlyEnabled',
+  'hourlyDuration', 'hourlyVoice', 'hourlyVoiceText', 'hourlySound', 'hourlyStyle',
+  'hourlyBgColor', 'hourlyManualClose', 'weather'
+];
 let work = Promise.resolve();
 let offscreenOpening;
 let iconFontPromise;
+let syncInitialized = false;
+
+function syncValue(key, value) {
+  if (key === 'weather' && value?.mode === 'device') {
+    return {mode: 'device', unit: value.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius'};
+  }
+  return value;
+}
+
+async function writeSyncedSettings(settings, previous = {}) {
+  if (settings.syncEnabled === false) return;
+  const changes = {};
+  const tooLarge = [];
+  for (const key of SYNC_FIELDS) {
+    const value = syncValue(key, settings[key]);
+    if (value === undefined) continue;
+    if (JSON.stringify(value) === JSON.stringify(syncValue(key, previous[key]))) continue;
+    const itemKey = SYNC_PREFIX + key;
+    // Browser sync storage has an 8 KB limit per item. Large imported sounds
+    // remain in local storage; ordinary sound choices and URLs still sync.
+    if (new TextEncoder().encode(JSON.stringify(value)).length + itemKey.length > 8000) {
+      tooLarge.push(itemKey);
+      continue;
+    }
+    changes[itemKey] = value;
+  }
+  if (Object.keys(changes).length) {
+    try { await ext.storage.sync.set(changes); }
+    catch (error) { console.warn('Cool Clock: settings sync unavailable', error); }
+  }
+  if (tooLarge.length) {
+    try { await ext.storage.sync.remove(tooLarge); }
+    catch (error) { console.warn('Cool Clock: unable to remove oversized synced sounds', error); }
+  }
+}
+
+async function initializeSync(data) {
+  data.settings.syncEnabled ??= true;
+  if (syncInitialized || data.settings.syncEnabled === false) return data;
+  syncInitialized = true;
+  let remote;
+  try { remote = await ext.storage.sync.get(null); }
+  catch (error) { console.warn('Cool Clock: settings sync unavailable', error); return data; }
+  const keys = SYNC_FIELDS.filter(key => Object.hasOwn(remote, SYNC_PREFIX + key));
+  if (!keys.length) {
+    await writeSyncedSettings(data.settings);
+    return data;
+  }
+  let changed = false;
+  for (const key of keys) {
+    const incoming = remote[SYNC_PREFIX + key];
+    const value = key === 'weather' && incoming?.mode === 'device' ?
+      {...(data.settings.weather || {}), ...incoming, name: '',
+        latitude: data.settings.weather?.mode === 'device' ? data.settings.weather.latitude : undefined,
+        longitude: data.settings.weather?.mode === 'device' ? data.settings.weather.longitude : undefined} : incoming;
+    if (JSON.stringify(value) !== JSON.stringify(data.settings[key])) {
+      data.settings[key] = value;
+      changed = true;
+    }
+  }
+  if (changed) {
+    globalThis.coolClockLanguage = data.settings.language || '';
+    await ext.storage.local.set({[STATE_KEY]: data});
+    await reconcile(data);
+    await rebuildContextMenus(data.settings);
+    await ext.action.setPopup({popup: data.settings.popupVersion === '0' ? 'popup_classic.html' : 'popup.html'});
+  }
+  if (keys.length < SYNC_FIELDS.length) {
+    const present = Object.fromEntries(keys.map(key => [key, data.settings[key]]));
+    await writeSyncedSettings(data.settings, present);
+  }
+  return data;
+}
 
 function enqueue(task) {
   const result = work.then(task);
@@ -19,24 +100,9 @@ async function ensureOffscreen() {
   if (offscreenOpening) return offscreenOpening;
   offscreenOpening = (async () => {
     const contexts = await ext.runtime.getContexts({contextTypes: ['OFFSCREEN_DOCUMENT'], documentUrls: [ext.runtime.getURL('mv3/offscreen.html')]});
-    if (!contexts.length) await ext.offscreen.createDocument({url: 'mv3/offscreen.html', reasons: ['LOCAL_STORAGE', 'AUDIO_PLAYBACK', 'CLIPBOARD'], justification: 'Import existing clock data, play alarm sounds, and copy the current time'});
+    if (!contexts.length) await ext.offscreen.createDocument({url: 'mv3/offscreen.html', reasons: ['AUDIO_PLAYBACK', 'CLIPBOARD'], justification: 'Play alarm sounds and copy the current time'});
   })();
   try { await offscreenOpening; } finally { offscreenOpening = null; }
-}
-
-function parseLegacy(text, fallback) {
-  try { return text == null ? fallback : JSON.parse(text); } catch { return fallback; }
-}
-
-function upgradeDefaultDigitalFontSizes(settings) {
-  const digital = settings?.clockDefinition?.digital;
-  if (!digital || digital.width !== 19 || digital.height !== 19 || digital.font !== 'default' ||
-      digital.hrFontSize !== 18 || digital.minFontSize !== 18 ||
-      !Array.isArray(digital.hrXY) || digital.hrXY[0] !== 0 || digital.hrXY[1] !== 15 ||
-      !Array.isArray(digital.minXY) || digital.minXY[0] !== 8 || digital.minXY[1] !== 32) return false;
-  digital.hrFontSize = 20;
-  digital.minFontSize = 16;
-  return true;
 }
 
 async function beginSession() {
@@ -62,74 +128,20 @@ async function touchSession() {
 async function state() {
   const saved = (await ext.storage.local.get(STATE_KEY))[STATE_KEY];
   if (saved) {
-    let updated = false;
-    if (saved.settings && saved.settings.digitalFontSizeVersion !== 2) {
-      upgradeDefaultDigitalFontSizes(saved.settings);
-      saved.settings.digitalFontSizeVersion = 2;
-      updated = true;
-    }
-    if (saved.settings?.language === 'ar') {
-      saved.settings.language = 'fa';
-      updated = true;
-    }
-    if (updated) await ext.storage.local.set({[STATE_KEY]: saved});
     globalThis.coolClockLanguage = saved.settings?.language || '';
-    return saved;
+    return initializeSync(saved);
   }
-  await ensureOffscreen();
-  const old = ext.offscreen ? await ext.runtime.sendMessage({target: 'offscreen', type: 'read-legacy'}) : readLegacy();
-  const migrated = structuredClone(DEFAULT_STATE);
-  const oldAlarms = parseLegacy(old.alarm, []);
-  migrated.alarms = (Array.isArray(oldAlarms) ? oldAlarms : []).filter(a => a && validTime(+a.hour, 23) && validTime(+a.min, 59)).map(a => ({
-    id: String(a.id || crypto.randomUUID()), hour: +a.hour, minute: +a.min,
-    days: a.type === 'd' ? [0, 1, 2, 3, 4, 5, 6] :
-      (a.type === 's' && Array.isArray(a.day) ? a.day.map(Number).filter(d => validTime(d, 6)) : []),
-    message: String(a.message || a.text || ''), enabled: a.off !== true
-  }));
-  const oldCountdowns = parseLegacy(old.countdown, []);
-  migrated.countdowns = (Array.isArray(oldCountdowns) ? oldCountdowns : []).filter(t => t && Number.isFinite(+t.end) && +t.end > Date.now()).map(t => ({
-    id: String(t.id || crypto.randomUUID()), end: +t.end, duration: +t.duration || +t.end - Date.now(),
-    start: +t.start || +t.end - (+t.duration || +t.end - Date.now()),
-    color: t.color || 'primary', repeat: !!t.repeat, message: String(t.message || '')
-  }));
-  const oldTodos = parseLegacy(old.todo, {});
-  migrated.todos = oldTodos && typeof oldTodos === 'object' && !Array.isArray(oldTodos) ? oldTodos : {};
-  migrated.settings.hour12 = old.pm == null ? true : old.pm === 'true';
-  migrated.settings.timezoneEnabled = old.enabletimezone === 'true';
-  migrated.settings.timezone = old.timezone != null && Number.isFinite(Number(old.timezone)) ? Number(old.timezone) : null;
-  migrated.settings.keepAwake = old.keepawake !== 'false';
-  migrated.settings.digital = old.use_digit !== 'false';
-  migrated.settings.sound = old.ringtone !== 'none';
-  migrated.settings.ringtone = old.ringtone && old.ringtone !== 'database' ? old.ringtone : 'default';
-  migrated.settings.ringLoop = old.ring_loop === 'true';
-  migrated.settings.hourlyEnabled = old.shownotification !== 'false';
-  migrated.settings.hourlyDuration = Math.max(1, Math.min(3600, Number(old.shownotificationtime) || 7));
-  const oldVoice = parseLegacy(old.noti_voice, {});
-  migrated.settings.hourlyVoice = oldVoice?.enabled === true;
-  migrated.settings.hourlyVoiceText = String(oldVoice?.text || 'It is %h %P.');
-  migrated.settings.hourlySound = old.noti_sound || 'none';
-  migrated.settings.hourlyStyle = old.noti_style === 'compact' ? 'compact' : 'default';
-  migrated.settings.hourlyBgColor = /^#[0-9a-f]{6}$/i.test(old.noti_bgColor || '') ? old.noti_bgColor : '#0772a1';
-  migrated.settings.hourlyManualClose = old.manuallyclosenoti === 'true';
-  migrated.settings.badge = old.badge === 'true';
-  migrated.settings.icon = old.icon !== 'false';
-  migrated.settings.badgeStatic = old.show === 'true';
-  migrated.settings.badgeColor = old.badge_color || '#428bca';
-  migrated.settings.clockColor = old.clockcolor_value || '#000000';
-  migrated.settings.clockDefinition = parseLegacy(old.clockDefinition, null);
-  upgradeDefaultDigitalFontSizes(migrated.settings);
-  migrated.settings.popupVersion = old.popup_version || '1';
-  migrated.settings.contextMenuEnabled = old.context_menu_item_enable !== 'false';
-  migrated.settings.language = old.language === 'ar' ? 'fa' : (old.language || '');
-  globalThis.coolClockLanguage = migrated.settings.language;
-  await ext.storage.local.set({[STATE_KEY]: migrated});
-  await reconcile(migrated);
-  return migrated;
+  const initial = structuredClone(DEFAULT_STATE);
+  await ext.storage.local.set({[STATE_KEY]: initial});
+  await reconcile(initial);
+  return initializeSync(initial);
 }
 
 async function save(next) {
+  const previous = (await ext.storage.local.get(STATE_KEY))[STATE_KEY];
   await ext.storage.local.set({[STATE_KEY]: next});
   await reconcile(next);
+  await writeSyncedSettings(next.settings, previous?.settings);
   return next;
 }
 
@@ -155,23 +167,29 @@ function nextAlarmTime(alarm, settings, now = new Date()) {
 async function rebuildContextMenus(settings) {
   await ext.contextMenus.removeAll();
   if (settings.contextMenuEnabled === false) return;
-  const action = ['action'];
-  const pending = [];
-  const create = (id, title, contexts = action, extra = {}) => pending.push(Promise.resolve(ext.contextMenus.create({id, title, contexts, ...extra})));
-  create('new-alarm', t('alarm'));
-  create('saved-alarms', t('viewsavedalarm'));
-  create('open-countdown', t('countdown'));
-  create('open-stopwatch', t('timer'));
-  create('open-calendar', t('calendar'));
-  create('open-voice', t('contextVoiceControl') + '...');
-  create('icon-digital', t('digital'), action, {type: 'radio', checked: settings.digital !== false});
-  create('icon-analog', t('analog'), action, {type: 'radio', checked: settings.digital === false});
-  create('open-options', t('settings'));
-  create('open-update', t('whatsnew'));
-  create('open-about', t('about'));
-  create('hide-menu', t('ctxhide'));
-  create('insert-time', t('contextCurrentTime') + '...', ['editable']);
-  await Promise.all(pending);
+  const create = properties => new Promise((resolve, reject) => {
+    ext.contextMenus.create(properties, () => {
+      const error = ext.runtime.lastError;
+      if (error) reject(Error(error.message));
+      else resolve();
+    });
+  });
+  const parentId = 'cool-clock-menu';
+  await create({id: parentId, title: t('extName'), contexts: ['action']});
+  const createAction = (id, title, extra = {}) => create({id, title, parentId, contexts: ['action'], ...extra});
+  await createAction('new-alarm', t('alarm'));
+  await createAction('saved-alarms', t('viewsavedalarm'));
+  await createAction('open-countdown', t('countdown'));
+  await createAction('open-stopwatch', t('timer'));
+  await createAction('open-calendar', t('calendar'));
+  await createAction('open-voice', t('contextVoiceControl') + '...');
+  await createAction('icon-digital', t('digital'), {type: 'radio', checked: settings.digital !== false});
+  await createAction('icon-analog', t('analog'), {type: 'radio', checked: settings.digital === false});
+  await createAction('open-options', t('settings'));
+  await createAction('open-update', t('whatsnew'));
+  await createAction('open-about', t('about'));
+  await createAction('hide-menu', t('ctxhide'));
+  await create({id: 'insert-time', title: t('contextCurrentTime') + '...', contexts: ['editable']});
 }
 
 async function reconcile(data) {
@@ -385,6 +403,15 @@ async function handleMessage(message) {
   const data = await state();
   switch (message.type) {
     case 'get': return data;
+    case 'set-sync-enabled': {
+      data.settings.syncEnabled = !!message.enabled;
+      await save(data);
+      if (data.settings.syncEnabled) {
+        await writeSyncedSettings(data.settings);
+        syncInitialized = true;
+      }
+      return data;
+    }
     case 'refresh-device-weather': {
       const weather = data.settings.weather;
       if (weather?.mode !== 'device') return data;
@@ -392,7 +419,8 @@ async function handleMessage(message) {
       const longitude = message.longitude;
       if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
           !Number.isFinite(longitude) || longitude < -180 || longitude > 180) throw Error('Invalid location');
-      const changed = Math.abs(weather.latitude - latitude) >= 0.001 ||
+      const changed = !Number.isFinite(weather.latitude) || !Number.isFinite(weather.longitude) ||
+        Math.abs(weather.latitude - latitude) >= 0.001 ||
         Math.abs(weather.longitude - longitude) >= 0.001;
       const name = typeof message.name === 'string' ? message.name.trim().slice(0, 150) : '';
       if (!changed && name === weather.name) return data;
@@ -495,7 +523,7 @@ async function handleMessage(message) {
       if (message.clockDefinition && typeof message.clockDefinition === 'object') data.settings.clockDefinition = message.clockDefinition;
       if (message.popupVersion === '1' || message.popupVersion === '0') {
         data.settings.popupVersion = message.popupVersion;
-        await ext.action.setPopup({popup: message.popupVersion === '1' ? 'new_popup2.html' : 'popup.html'});
+        await ext.action.setPopup({popup: message.popupVersion === '1' ? 'popup.html' : 'popup_classic.html'});
       }
       if (typeof message.language === 'string') {
         data.settings.language = message.language;
@@ -503,9 +531,14 @@ async function handleMessage(message) {
       }
       if (typeof message.contextMenuEnabled === 'boolean') {
         data.settings.contextMenuEnabled = message.contextMenuEnabled;
+      }
+      if (typeof message.contextMenuEnabled === 'boolean' ||
+          typeof message.digital === 'boolean' || typeof message.language === 'string') {
         await rebuildContextMenus(data.settings);
       }
-      if (message.weather === null || (message.weather && Number.isFinite(message.weather.latitude) && Number.isFinite(message.weather.longitude))) data.settings.weather = message.weather;
+      if (message.weather === null || (message.weather &&
+          (message.weather.mode === 'device' ||
+          (Number.isFinite(message.weather.latitude) && Number.isFinite(message.weather.longitude))))) data.settings.weather = message.weather;
       return save(data);
     }
     case 'set-todo': {
@@ -535,6 +568,35 @@ async function handleMessage(message) {
   }
 }
 
+ext.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'sync') return;
+  const keys = SYNC_FIELDS.filter(key => Object.hasOwn(changes, SYNC_PREFIX + key));
+  if (!keys.length) return;
+  enqueue(async () => {
+    const data = await state();
+    if (data.settings.syncEnabled === false) return;
+    let changed = false;
+    for (const key of keys) {
+      const incoming = changes[SYNC_PREFIX + key].newValue;
+      if (incoming === undefined) continue;
+      const value = key === 'weather' && incoming?.mode === 'device' ?
+        {...incoming, name: '',
+          latitude: data.settings.weather?.mode === 'device' ? data.settings.weather.latitude : undefined,
+          longitude: data.settings.weather?.mode === 'device' ? data.settings.weather.longitude : undefined} : incoming;
+      if (JSON.stringify(data.settings[key]) === JSON.stringify(value)) continue;
+      data.settings[key] = value;
+      changed = true;
+    }
+    if (changed) {
+      globalThis.coolClockLanguage = data.settings.language || '';
+      await ext.storage.local.set({[STATE_KEY]: data});
+      await reconcile(data);
+      await rebuildContextMenus(data.settings);
+      await ext.action.setPopup({popup: data.settings.popupVersion === '0' ? 'popup_classic.html' : 'popup.html'});
+    }
+  });
+});
+
 ext.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (!message || message.target !== 'worker') return;
   enqueue(() => handleMessage(message)).then(data => sendResponse({ok: true, data}), error => sendResponse({ok: false, error: error.message}));
@@ -552,10 +614,10 @@ ext.notifications.onClosed.addListener(id => {
   if (id.startsWith(PREFIX)) stopSound();
 });
 ext.notifications.onClicked.addListener(id => {
-  if (id.startsWith(PREFIX)) ext.tabs.create({url: ext.runtime.getURL('new_popup2.html')});
+  if (id.startsWith(PREFIX)) ext.tabs.create({url: ext.runtime.getURL('popup.html')});
 });
-ext.runtime.onInstalled.addListener(() => { enqueue(async () => { const data = await state(); await beginSession(); await rebuildContextMenus(data.settings); await ext.action.setPopup({popup: data.settings.popupVersion === '0' ? 'popup.html' : 'new_popup2.html'}); }); });
-ext.runtime.onStartup.addListener(() => { enqueue(async () => { await beginSession(); await reconcile(await state()); }); });
+ext.runtime.onInstalled.addListener(() => { enqueue(async () => { const data = await state(); await beginSession(); await rebuildContextMenus(data.settings); await ext.action.setPopup({popup: data.settings.popupVersion === '0' ? 'popup_classic.html' : 'popup.html'}); }); });
+ext.runtime.onStartup.addListener(() => { enqueue(async () => { await beginSession(); const data = await state(); await reconcile(data); await rebuildContextMenus(data.settings); }); });
 ext.contextMenus.onClicked.addListener((info, tab) => {
   enqueue(async () => {
     const openTab = path => ext.tabs.create({url: ext.runtime.getURL(path)});

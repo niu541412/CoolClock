@@ -1,13 +1,6 @@
 // Offscreen in Chrome; a background page in Firefox.
 var ext = globalThis.browser || globalThis.chrome;
 let audio;
-function readLegacy() {
-  const result = {};
-  for (const key of ['alarm', 'countdown', 'todo', 'use_digit', 'pm', 'language', 'ringtone', 'ring_loop', 'shownotification', 'shownotificationtime', 'noti_voice', 'noti_sound', 'noti_style', 'noti_bgColor', 'badge', 'icon', 'show', 'badge_color', 'clockcolor_value', 'clockDefinition', 'popup_version', 'context_menu_item_enable', 'manuallyclosenoti', 'enabletimezone', 'timezone', 'keepawake']) {
-    result[key] = localStorage.getItem(key);
-  }
-  return result;
-}
 function stopAudio() {
   if (audio) { audio.pause(); audio.currentTime = 0; audio = null; }
 }
@@ -37,9 +30,7 @@ function renderHourlyImage(message) {
 }
 ext.runtime.onMessage.addListener((message, _sender, respond) => {
   if (message.target !== 'offscreen') return;
-  if (message.type === 'read-legacy') {
-    respond(readLegacy());
-  } else if (message.type === 'play') {
+  if (message.type === 'play') {
     playAudio(message.url, message.repeat).then(() => respond(true), () => respond(false));
     return true;
   } else if (message.type === 'stop') {

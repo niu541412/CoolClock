@@ -1,7 +1,5 @@
 ﻿/**
- * Beware - Extremely old code ahead
- *
- * Use the Localization component instead.
+ * Translation helpers for the original pages. Load messages before rendering.
  */
 
 var languages=[
@@ -35,58 +33,38 @@ var languages=[
 		"sr"
 	];
 
-if(localStorage["language"] == null){
-	var lang = processLanguageCode(navigator.language);
-	if( ["zh-CN", "zh-TW", "pt-BR", "pt-PT"].indexOf(lang) === -1 ){
-		lang = lang.slice(0,2);
-	}
-	if(languages.indexOf(lang) === -1){
-		lang = "en";
-	}
-	/*
-	for(i = 0; i < languages.length; i++){
-		if(lang == languages[i]){
-			break;
-		}
-		if(i == languages.length){
-			lang = "en";
-		}
-	}
-	*/
-	localStorage["language"] = lang;
-}
-
-function processLanguageCode(code){
-	/*
-	if(code.indexOf("-") > 0){
-		var opt = code.split("-");
-		opt[0] = opt[0].toLowerCase();
-		opt[1] = opt[1].toUpperCase();
-		return opt.join("-");
-	}else{
-		return code.toLowerCase();
-	}*/
-	return chrome.i18n.getUILanguage();
-}
-
 var localeMessages = {};
+var localeRequests = {};
+
+function supportedLocale(language){
+	var normalized = String(language || '').replace('_', '-');
+	if(languages.includes(normalized)) return normalized;
+	var primary = normalized.split('-')[0];
+	return languages.includes(primary) ? primary : 'en';
+}
 
 function loadLocaleMessages(language){
-	if(Object.prototype.hasOwnProperty.call(localeMessages, language)) return localeMessages[language];
-	var xhr = new XMLHttpRequest();
-	try{
-		xhr.open("GET", chrome.runtime.getURL("/_locales/" + language.replace(/\-/g, "_") + "/messages.json"), false);
-		xhr.send();
-		if(xhr.status === 200 || xhr.status === 0){
-			localeMessages[language] = JSON.parse(xhr.responseText);
-			return localeMessages[language];
-		}
-	}catch(error){
-		console.warn("Could not load locale", language, error);
-	}
-	localeMessages[language] = {};
-	return localeMessages[language];
+	if(Object.prototype.hasOwnProperty.call(localeMessages, language)) return Promise.resolve(localeMessages[language]);
+	if(localeRequests[language]) return localeRequests[language];
+	var url = chrome.runtime.getURL('/_locales/' + language.replace(/-/g, '_') + '/messages.json');
+	localeRequests[language] = fetch(url).then(function(response){
+		if(!response.ok) throw Error('HTTP ' + response.status);
+		return response.json();
+	}).catch(function(error){
+		console.warn('Could not load locale', language, error);
+		return {};
+	}).then(function(messages){
+		localeMessages[language] = messages;
+		return messages;
+	});
+	return localeRequests[language];
 }
+
+i18n.load = function(language){
+	var selected = supportedLocale(language || i18n.lang());
+	return Promise.all(selected === 'en' ? [loadLocaleMessages('en')] :
+		[loadLocaleMessages(selected), loadLocaleMessages('en')]);
+};
 
 function i18n(key,lang){
 	if(window.Components && Components.getSingleton("Localization")){
@@ -97,21 +75,20 @@ function i18n(key,lang){
 		}	
 	}
 
-	var querylang = typeof lang === "undefined" ? localStorage["language"] || "en" : lang;
-	var entry = loadLocaleMessages(querylang)[key];
-	if(entry && entry.message) return entry.message;
-	return querylang === "en" ? key : i18n(key, "en");
+	var querylang = supportedLocale(typeof lang === "undefined" ? i18n.lang() : lang);
+	return localeMessages[querylang]?.[key]?.message ||
+		localeMessages.en?.[key]?.message || chrome.i18n.getMessage(key) || key;
 }
 
 i18n.lang = function(){
-	return localStorage["language"];
+	return globalThis.coolClockLanguage || chrome.i18n.getUILanguage();
 }
 
 i18n.dateString = function(date){
 	return Intl.DateTimeFormat(i18n.lang(),{day:"numeric",month:"long",year:"numeric"}).format(date);
 }
 i18n.timeString = function(date){
-	return Intl.DateTimeFormat(i18n.lang(),{hour:"numeric",minute:"numeric",hour12:localStorage["pm"]==="true"}).format(date);
+	return Intl.DateTimeFormat(i18n.lang(),{hour:"numeric",minute:"numeric",hour12:globalThis.coolClockSettings?.hour12 !== false}).format(date);
 }
 i18n.dateTimeString = function(date){
 	return Intl.DateTimeFormat(i18n.lang(),{
@@ -120,7 +97,7 @@ i18n.dateTimeString = function(date){
 		day: "numeric",
 		hour: "numeric",
 		minute: "numeric",
-		hour12: localStorage["pm"]==="true",
+		hour12: globalThis.coolClockSettings?.hour12 !== false,
 		second: "numeric"
 	}).format(date);
 }
@@ -182,13 +159,6 @@ i18n.translate = function(ctx){
 		});
 	});
 }
-
-/*
-if(localStorage['language']=="id"){
-	shownolang.innerHTML='<b> Translation update is needed for <span title="Language code">"'+localStorage['language']+'"</span>! Update it <a href="http://spreadsheets.google.com/viewform?formkey=dEtYWXduRzh4dDFtZV9PU1JRYkpEaFE6MA" target="_blank">here</a>.</b>'
-}
-*/
-
 
 function showcredit(){
 	alert('People who have helped me translate:\n\n - DerekL (繁體中文)\n\
@@ -270,9 +240,9 @@ function popuppage(){
 	info.title=i18n("stat");
 	timerbtn.title=i18n("timer");
 	viewsavedalarmbtn.title=i18n("viewsavedalarm");
-	if(localStorage["language"]=="zh-TW"||localStorage["language"]=="zh-CN"||localStorage["language"]=="ja"){
+	if(["zh-TW", "zh-CN", "ja"].includes(i18n.lang())){
 		text_tools.style.position="absolute";
-		text_tools.style.webkitTransform="rotate(-90deg) translate(5px, -7px)";
+		text_tools.style.transform="rotate(-90deg) translate(5px, -7px)";
 		text_tools.innerHTML=i18n('tools');
 	}
 }
@@ -282,30 +252,5 @@ function opquit(){
 	if(unsave==1){
 		return i18n("notsaved");
 	}
-}
-*/
-
-/*
-function bgnotitxt(){
-	var today=new Date()
-	today.applyTZ();
-	if(localStorage["pm"]=="true"){
-		var time=change_time_to_12(today.getHours())+":"+checkTime(today.getMinutes())+" "+pmam()+".";
-		var b_time=pmam()+change_time_to_12(today.getHours())+":"+checkTime(today.getMinutes());
-	}else{
-		var time=today.getHours()+":"+checkTime(today.getMinutes());
-		var b_time=today.getHours()+":"+checkTime(today.getMinutes());
-	}
-	var title="",
-		lang=localStorage["language"];
-	title=i18n("notitimeannounce")+"<br>"+i18n("notitimeis")+" ";
-	if(lang.slice(0,2)=="zh"||lang=="ja"||lang=="ko"||lang=="ar"){
-		title+=b_time;
-	}else if(lang=="de"){
-		title=title+time+" uhr."
-	}else{
-		title=title+time+".";
-	}
-	return title
 }
 */
