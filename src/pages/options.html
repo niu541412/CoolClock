@@ -18,7 +18,7 @@
     <script type="text/javascript" charset="utf-8" src="/scripts/options/js.js"></script>
 
     <link rel="icon" type="image/png" href="icons/16x16.png" />
-    <link rel="stylesheet" href="/scripts/options/css_new.css" />
+    <link rel="stylesheet" href="/scripts/options/css.css" />
 
     <style>
       .fb-like span,
@@ -67,7 +67,7 @@
           <gly icon="chevron-right" class="float-end"></gly
         ></a>
         <a href="#credits" class="list-group-item"
-          ><span trans="optionsCredits">Special Thanks</span>
+          ><gly icon="ok-circle"></gly> <span trans="optionsCredits">Special Thanks</span>
           <gly icon="chevron-right" class="float-end"></gly
         ></a>
       </div>
@@ -115,12 +115,6 @@
       </div>
     </div>
     <div id="content">
-      <!--
-			<div class="alert alert-info alert-dismissable">
-				<button type="button" class="close" data-bs-dismiss="alert" aria-hidden="true">&times;</button>
-				Welcome to the new settings page! All options are rearranged into categories for the purpose of finding it easier. You can still access the old settings page via <a href="/options.html" class="alert-link">this link</a>.
-			</div>-->
-
       <!-- Display -->
       <div class="card" id="display">
         <div class="card-header">
@@ -852,7 +846,9 @@
       <!-- Credits -->
       <div class="card" id="credits">
         <div class="card-header">
-          <h3 class="card-title" trans="optionsCredits">Special Thanks</h3>
+          <h3 class="card-title">
+            <gly icon="ok-circle"></gly> <span trans="optionsCredits">Special Thanks</span>
+          </h3>
         </div>
         <div class="card-body">
           <div class="list-group">

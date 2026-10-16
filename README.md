@@ -10,7 +10,7 @@ This app was originally created as a simple clock displayed in a badge to test t
 - Two popup layouts, alarms, countdowns, stopwatch, hourly announcements, calendar, statistics, and voice or text commands.
 - Weather and a seven-day forecast from Open-Meteo, with manual location search or optional browser location. Temperature can be shown in Celsius or Fahrenheit.
 - Calendar event import from a public Google Calendar iCal URL or an exported `.ics` file.
-- Settings in `options_new.html` sync through the browser's own account by default. Turn off **Sync settings** to keep them on this device. Chrome and Firefox accounts do not sync with each other. Alarms, countdowns, calendar entries, stopwatch data, usage history, and automatic weather coordinates stay local.
+- Settings in `options.html` sync through the browser's own account by default. Turn off **Sync settings** to keep them on this device. Chrome and Firefox accounts do not sync with each other. Alarms, countdowns, calendar entries, stopwatch data, usage history, and automatic weather coordinates stay local.
 
 ## Build and install
 

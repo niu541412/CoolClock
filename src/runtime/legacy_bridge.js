@@ -210,7 +210,7 @@ var LegacyBackground = {
   alarmModels = clockState.alarms.map((entry) => new AlarmModel(entry));
   timerModels = clockState.countdowns.map((entry) => new CountdownModel(entry));
   const page = location.pathname.split('/').pop();
-  if (page === 'calendar_full.html' || page === 'options_new.html') {
+  if (page === 'calendar_full.html' || page === 'options.html') {
     const extraKeys = [
       'dateorder',
       'lunar',
@@ -238,7 +238,7 @@ var LegacyBackground = {
   }
   globalThis.optionValues = pageValues;
   globalThis.calendarPrefs = pageValues;
-  if (page === 'options_new.html') {
+  if (page === 'options.html') {
     const saved = clockState.settings;
     const tracked = {
       pm: String(saved.hour12),
@@ -351,7 +351,7 @@ var LegacyBackground = {
       ? '/mv3/original_alarm.js'
       : page === 'calendar_full.html'
         ? '/mv3/original_calendar.js'
-        : page === 'options_new.html'
+        : page === 'options.html'
           ? '/mv3/original_options.js'
           : '/mv3/original_countdown.js';
   document.head.append(script);

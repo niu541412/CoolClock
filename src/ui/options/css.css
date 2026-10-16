@@ -111,15 +111,27 @@ h1 {
   vertical-align: middle;
 }
 
-.list-group > .list-heading {
-  font-style: italic;
-  background: #f9f9f9;
-}
-.list-group > .list-heading-single {
-  background: #f9f9f9;
-}
-.list-group > .list-heading > button {
+#content .list-group > .list-heading {
+  font-size: 14px;
   font-style: normal;
+  font-weight: 600;
+  background: #f9f9f9;
+}
+#content .list-group > .list-heading-single {
+  background: #f9f9f9;
+}
+#content .list-group > .list-group-item:not(.list-heading, .list-heading-single) {
+  padding-inline-start: 30px;
+}
+#content .list-group .list-group > .list-heading {
+  font-size: 13px;
+}
+#content .list-group > .list-heading + .list-heading-single {
+  padding-inline-start: 30px;
+}
+#content .list-heading .gray {
+  font-size: 12px;
+  font-weight: normal;
 }
 
 span[data-bs-toggle='tooltip']:not(.no-underline) {
@@ -218,6 +230,7 @@ span[data-bs-toggle='tooltip']:not(.no-underline) {
 #dateorder {
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 6px;
 }
 #dateorder > li {
   height: 40px !important;
@@ -228,6 +241,9 @@ span[data-bs-toggle='tooltip']:not(.no-underline) {
 #dateorder > li:not(.list-heading) {
   flex: 0 0 auto;
   min-width: 96px;
+  padding-inline-start: 16px;
+  border-top-width: 1px;
+  border-radius: 4px;
   text-align: center;
   white-space: nowrap;
   cursor: grab;

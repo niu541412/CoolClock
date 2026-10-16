@@ -320,7 +320,9 @@ async function reconcile(data) {
         clockShift(data.settings)
     );
   }
-  expected.set(PREFIX + 'badge', Date.now() + 60_000);
+  const badgeInterval =
+    !data.settings.digital && data.settings.badge && !data.settings.badgeStatic ? 30_000 : 60_000;
+  expected.set(PREFIX + 'badge', Date.now() + badgeInterval);
   const existing = await ext.alarms.getAll();
   for (const entry of existing) {
     if (
@@ -366,19 +368,19 @@ function loadIconFont() {
   return iconFontPromise;
 }
 
+function badgeClockText(now, settings) {
+  if (settings.digital || !settings.badge) return '';
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  if (settings.badgeStatic) return hours + minutes;
+  return now.getSeconds() < 30 ? `${hours}:` : `:${minutes}`;
+}
+
 async function updateBadge(data) {
   const now = clockNow(data.settings);
   const settings = data.settings;
   const hour = settings.hour12 ? now.getHours() % 12 || 12 : now.getHours();
-  const badgeText =
-    !settings.digital && settings.badge
-      ? settings.badgeStatic
-        ? now.getMinutes() < 30
-          ? `${String(now.getHours()).padStart(2, '0')}:`
-          : `:${String(now.getMinutes()).padStart(2, '0')}`
-        : `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-      : '';
-  await ext.action.setBadgeText({ text: badgeText });
+  await ext.action.setBadgeText({ text: badgeClockText(now, settings) });
   await ext.action.setBadgeBackgroundColor({ color: settings.badgeColor || '#428bca' });
   await ext.action.setTitle({ title: now.toLocaleString() });
   const canvas = globalThis.OffscreenCanvas

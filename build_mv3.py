@@ -19,7 +19,7 @@ legacy_assets = (
     'scripts/alarm_interface/css.css', 'scripts/countdown_interface/css.css',
     'scripts/timer/css.css', 'scripts/timer/js.js', 'scripts/stopwatch_split/js.js',
     'scripts/calendar_full/css.css', 'scripts/calendar_full/dialog_native.css',
-    'scripts/options/css_new.css',
+    'scripts/options/css.css',
     'scripts/statistics/css.css', 'scripts/statistics/js.js',
     'd3/d3.v7.min.js', 'd3/D3-LICENSE',
     'scripts/about/css.css', 'scripts/about/js.js',
@@ -160,12 +160,12 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
         calendar_html = calendar_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
         archive.writestr('calendar_full.html', calendar_html)
         archive.writestr('mv3/original_calendar.js', source_file('scripts/calendar_full/js.js').read_text(encoding='utf-8-sig'))
-        options_html = source_file('options_new.html').read_text(encoding='utf-8-sig')
+        options_html = source_file('options.html').read_text(encoding='utf-8-sig')
         options_html = re.sub(r'<script\b[^>]*src="/scripts/options/js\.js"[^>]*>\s*</script>', '', options_html)
         options_html = options_html.replace('Weather information provided by Yahoo! Weather', 'Weather information provided by Open-Meteo')
         options_html = options_html.replace('This shows the WOEID of the current location.', 'This shows the location ID.')
         options_html = options_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
-        archive.writestr('options_new.html', options_html)
+        archive.writestr('options.html', options_html)
         archive.writestr('mv3/original_options.js', source_file('scripts/options/js.js').read_text(encoding='utf-8-sig'))
         stats_html = source_file('statistics.html').read_text(encoding='utf-8-sig')
         stats_html = re.sub(r'<script\b[^>]*>\s*</script>', '', stats_html)
