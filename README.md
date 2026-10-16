@@ -70,7 +70,7 @@ Original icons used in the extension:
 - [famfamfam Silk Icons](http://www.famfamfam.com/lab/icons/silk/) — Creative Commons Attribution 2.5 License.
 - [Material Icons](https://material.io/icons/) — Apache License 2.0.
 
-Original fonts include Roboto, Noto Sans, Oswald, and Meteocons; the original build also used Glyphicons from Bootstrap 3. The default ringtone is from Sound Jay. The current build bundles Bootstrap 5, Bootstrap Icons, and D3; their license files are included under `src/vendor/`. Font and icon license files supplied with the project remain under `src/assets/`.
+Original fonts include Roboto, Noto Sans, Oswald, and Meteocons; the original build also used Glyphicons from Bootstrap 3. The default ringtone is from Sound Jay and is bundled as Ogg Opus audio. The current build bundles Bootstrap 5, Bootstrap Icons, and D3; their license files are included under `src/vendor/`. Font and icon license files supplied with the project remain under `src/assets/`.
 
 The original repository does not include a project-level license file. This update does not add one.
 

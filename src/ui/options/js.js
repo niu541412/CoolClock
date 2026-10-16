@@ -542,7 +542,7 @@ function setupAudioPlayer() {
       return;
     }
     audio = document.createElement('audio');
-    audio.src = !data || data === 'default' ? 'sounds/alarm.mp3' : data;
+    audio.src = !data || data === 'default' ? 'sounds/alarm.ogg' : data;
     audio.className = 'hide';
     document.body.append(audio);
     reset();

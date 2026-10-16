@@ -472,7 +472,7 @@ async function notify(kind, entry) {
     await ensureOffscreen();
     const url =
       data.settings.ringtone === 'default'
-        ? ext.runtime.getURL('sounds/alarm.mp3')
+        ? ext.runtime.getURL('sounds/alarm.ogg')
         : data.settings.ringtone;
     if (ext.offscreen)
       await ext.runtime.sendMessage({

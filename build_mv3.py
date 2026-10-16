@@ -10,7 +10,7 @@ src = root / 'src'
 manifest = json.loads((root / 'manifest.json').read_text())
 runtime = src / 'runtime'
 runtime_files = sorted(path for path in runtime.rglob('*') if path.is_file())
-original_assets = ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.mp3')
+original_assets = ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.ogg')
 legacy_assets = (
     'scripts/popup/css.css', 'scripts/popup/js.js',
     'scripts/popup_classic/js.js',

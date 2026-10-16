@@ -10,7 +10,7 @@ function stopAudio() {
 }
 async function playAudio(url, repeat = false) {
   stopAudio();
-  audio = new Audio(url || ext.runtime.getURL('sounds/alarm.mp3'));
+  audio = new Audio(url || ext.runtime.getURL('sounds/alarm.ogg'));
   audio.loop = repeat;
   await audio.play();
 }
