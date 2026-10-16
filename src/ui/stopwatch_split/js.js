@@ -1,3 +1,4 @@
+			let savedSplits;
 			function ce(e){
 				return document.createElement(e);
 			}
@@ -41,8 +42,8 @@
 				tr.appendChild(td3);
 				tbody.appendChild(tr);
 				
-				if(localStorage["save_split"]){
-					var splits=JSON.parse(localStorage["save_split"]);
+				if(savedSplits){
+					var splits=JSON.parse(savedSplits);
 					for(var i=0;i<splits.length;i++){
 						var ltr=ce("tr"),
 							ltd1=ce("td"),
@@ -142,7 +143,16 @@
 				},300)
 			}
 			
-			document.addEventListener("DOMContentLoaded", function(){
+			document.addEventListener("DOMContentLoaded", async function(){
+				const api = globalThis.browser || globalThis.chrome;
+				const key = 'coolClockLegacy:save_split';
+				savedSplits = (await api.storage.local.get(key))[key];
+				api.storage.onChanged.addListener((changes, area) => {
+					if (area === 'local' && Object.hasOwn(changes, key)) {
+						savedSplits = changes[key].newValue;
+						show_splits();
+					}
+				});
 				//events
 				window.addEventListener("resize", resize_it);
 				document.body.addEventListener("contextmenu", function(event){

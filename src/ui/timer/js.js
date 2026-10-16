@@ -1,4 +1,27 @@
-﻿document.addEventListener("DOMContentLoaded", loadin);
+﻿const timerApi = globalThis.browser || globalThis.chrome;
+const timerKeys = ['timer_timestamp', 'timer_ori_timestamp', 'timer_paused_timestamp',
+  'timer_quit_msg', 'save_split', 'timer_units'];
+const timerValues = {};
+function saveTimerValue(key, value) {
+  timerValues[key] = value;
+  return timerApi.storage.local.set({['coolClockLegacy:' + key]: value});
+}
+function removeTimerValue(key) {
+  delete timerValues[key];
+  return timerApi.storage.local.remove('coolClockLegacy:' + key);
+}
+document.addEventListener('DOMContentLoaded', async () => {
+  const [stored, response] = await Promise.all([
+    timerApi.storage.local.get(timerKeys.map(key => 'coolClockLegacy:' + key)),
+    timerApi.runtime.sendMessage({target: 'worker', type: 'get'})
+  ]);
+  if (!response?.ok) throw Error(response?.error || 'Unable to load clock settings');
+  for (const key of timerKeys) timerValues[key] = stored['coolClockLegacy:' + key];
+  globalThis.coolClockSettings = response.data.settings;
+  globalThis.coolClockLanguage = response.data.settings.language || '';
+  await i18n.load();
+  loadin();
+});
 
 var paused=false
 var time=0
@@ -44,8 +67,8 @@ function move_window(){
 
 //Start counting (start)
 function start_count(){
-  localStorage["timer_timestamp"]=Number(new Date())
-  localStorage["timer_ori_timestamp"]=Number(new Date())
+  saveTimerValue('timer_timestamp', Date.now())
+  saveTimerValue('timer_ori_timestamp', Date.now())
   firstByClass("setting").classList.add("hide");
   firstByClass("counting").classList.remove("hide");
   
@@ -59,7 +82,7 @@ function start_count(){
 
 //Calculate time
 function cal_time(valueonly){
-  if(localStorage["timer_timestamp"]==null){
+  if(timerValues.timer_timestamp==null){
     return false
   }
   if(paused==true){
@@ -67,7 +90,7 @@ function cal_time(valueonly){
   }
 
   var ele=byId("p_time")
-  var t=localStorage["timer_timestamp"]
+  var t=timerValues.timer_timestamp
   var d=Number(new Date())
   if(valueonly){
     return (d-t)
@@ -85,7 +108,8 @@ function cal_time(valueonly){
 
 //Stop counting (Pause)
 function stop_count(){
-  localStorage["timer_paused_timestamp"]=Number(new Date())
+  saveTimerValue('timer_paused_timestamp', Date.now())
+  saveTimerValue('timer_quit_msg', window.time)
   window.paused=true;
   //byId("c_button_stop").classList.add("hide");
   byId("c_running").classList.add("hide");
@@ -95,20 +119,18 @@ function stop_count(){
 }
 
 //Restart counting
-function restart_count(){
-  localStorage.removeItem("timer_paused_timestamp");
-  localStorage.removeItem("timer_timestamp");
-  localStorage.removeItem("timer_ori_timestamp");
-  localStorage.removeItem("save_split");
-  location=location;
+async function restart_count(){
+  await Promise.all(['timer_paused_timestamp', 'timer_timestamp', 'timer_ori_timestamp',
+    'timer_quit_msg', 'save_split'].map(removeTimerValue));
+  location.reload();
 }
 
 //Continue counting
 function continue_count(once){
-  var t=localStorage["timer_paused_timestamp"]
+  var t=timerValues.timer_paused_timestamp
   var d=Number(new Date())
-  localStorage["timer_timestamp"]=((d-parseInt(localStorage["timer_paused_timestamp"],10))+parseInt(localStorage["timer_timestamp"],10))
-  localStorage.removeItem("timer_paused_timestamp");
+  saveTimerValue('timer_timestamp', (d-parseInt(timerValues.timer_paused_timestamp,10))+parseInt(timerValues.timer_timestamp,10))
+  removeTimerValue('timer_paused_timestamp');
   window.paused=false;
   //byId("c_button_stop").classList.remove("hide");
   byId("c_running").classList.remove("hide");
@@ -121,12 +143,12 @@ function continue_count(once){
 //Split
 function save_split(){
 	var data=[]
-	if(localStorage["save_split"]){
-		data=JSON.parse(localStorage["save_split"]);
+	if(timerValues.save_split){
+		data=JSON.parse(timerValues.save_split);
 	}
 	data[data.length]=cal_time(true);
 	data=JSON.stringify(data);
-	localStorage["save_split"]=data;
+	saveTimerValue('save_split', data);
 	
 	save_split.view();
 }
@@ -180,7 +202,7 @@ function loadin(){
   byId("c_button_restart").addEventListener("click",restart_count,false);
   byId("c_button_close").addEventListener("click",(function(){window.close()}),false);
   byId("o_units").addEventListener("change", function(){
-	localStorage['timer_units'] = this.checked;
+	saveTimerValue('timer_units', this.checked);
 	window.units = this.checked;
   });
 	byId("stay").disabled = true;
@@ -190,18 +212,18 @@ function loadin(){
 
   window.status="setting"
 
-  if(localStorage["timer_timestamp"]!=null){
+  if(timerValues.timer_timestamp!=null){
     window.status="counting"
 
     firstByClass("setting").classList.add("hide");
     firstByClass("counting").classList.remove("hide");
-      if(localStorage["timer_paused_timestamp"]!=null){
+      if(timerValues.timer_paused_timestamp!=null){
         window.paused=true;
         //byId("c_button_stop").classList.add("hide");
         byId("c_running").classList.add("hide");
         byId("c_stopped").classList.remove("hide");
-        byId("p_time").innerHTML=format(localStorage["timer_quit_msg"])
-        window.time=parseInt(localStorage["timer_quit_msg"],10);
+        byId("p_time").innerHTML=format(timerValues.timer_quit_msg)
+        window.time=parseInt(timerValues.timer_quit_msg,10);
 
         window.status="paused"
       }
@@ -216,9 +238,9 @@ function loadin(){
   //Logging
   console.group("Log");
   console.log("Note:'undefined' means not set.");
-  console.log("  Start time: "+localStorage["timer_timestamp"]);
-  console.log("  Paused time: "+localStorage["timer_paused_timestamp"]);
-  console.log("  Quit Msg: "+localStorage["timer_quit_msg"]);
+  console.log("  Start time: "+timerValues.timer_timestamp);
+  console.log("  Paused time: "+timerValues.timer_paused_timestamp);
+  console.log("  Quit Msg: "+timerValues.timer_quit_msg);
   console.log("  Status: \""+window.status+"\"");
   console.groupEnd();
 
@@ -242,7 +264,7 @@ function loadin(){
 
 //Restore settings
 function restore(){
-  byId("o_units").checked = (localStorage['timer_units'] == true);
+  byId("o_units").checked = timerValues.timer_units === true || timerValues.timer_units === 'true';
   window.units = byId("o_units").checked
 
 }
@@ -316,14 +338,14 @@ function status_writer(){
     firstByTag("h2").innerHTML=t
   }
 
-  byId("c_starttime").innerHTML=new Date(parseInt(localStorage["timer_ori_timestamp"]));
-  byId("c_starttime").setAttribute("title",new Date(parseInt(localStorage["timer_ori_timestamp"])));
+  byId("c_starttime").innerHTML=new Date(parseInt(timerValues.timer_ori_timestamp));
+  byId("c_starttime").setAttribute("title",new Date(parseInt(timerValues.timer_ori_timestamp)));
 
 }
 
 function quit(){
-	if(localStorage["timer_paused_timestamp"]!=null){
-		localStorage["timer_quit_msg"]=window.time
+	if(timerValues.timer_paused_timestamp!=null){
+		saveTimerValue('timer_quit_msg', window.time)
 	}
 	
 	if(save_split.view.opened){

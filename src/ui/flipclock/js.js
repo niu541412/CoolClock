@@ -1,20 +1,22 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", async function(){
+	const api = globalThis.browser || globalThis.chrome;
+	const result = await api.runtime.sendMessage({target: 'worker', type: 'get'});
+	if (!result?.ok) throw Error(result?.error || 'Unable to load clock settings');
+	globalThis.coolClockSettings = result.data.settings;
+	globalThis.coolClockLanguage = result.data.settings.language || '';
+	await i18n.load();
 	//AM or PM
-	if(localStorage["pm"]=="true"){
+	if(globalThis.coolClockSettings.hour12){
 		var ele=document.getElementsByClassName("apm")[0]
 		ele.style.opacity=1;
-		ele.innerHTML=pmam().toUpperCase();
-		try{
-			var inside_ele=ele.getElementsByTagName("font")[0]
-			inside_ele.outerHTML=inside_ele.innerHTML
-		}catch(err){
-		  console.log("No sub element found.")
-		}
+		ele.textContent=pmam().toUpperCase();
 	}
 	
-	if(location.search!=null){
-		document.body.style.webkitTransformOrigin="0 0"
-		document.body.style.webkitTransform="scale("+decodeURI(location.search).slice(7,decodeURI(location.search).search(/ /))+","+decodeURI(location.search).slice(decodeURI(location.search).search(/ /)+1,location.search.length+1)+")"
+	const scale = new URLSearchParams(location.search).get('scale');
+	const [scaleX, scaleY] = (scale || '').trim().split(/\s+/).map(Number);
+	if (scale && Number.isFinite(scaleX) && Number.isFinite(scaleY) && scaleX > 0 && scaleY > 0) {
+		document.body.style.transformOrigin = '0 0';
+		document.body.style.transform = `scale(${scaleX}, ${scaleY})`;
 	}
 
 	//check if in popup
@@ -26,7 +28,9 @@ document.addEventListener("DOMContentLoaded", function(){
 	//check if not in popup
 	if (self === top){
 		document.body.style.overflowX="visible"
-		document.getElementsByTagName("input")[0].value=Math.floor(decodeURI(location.search).slice(7,decodeURI(location.search).search(/ /))*100)
+		if (scale && Number.isFinite(scaleX) && scaleX > 0) {
+			document.getElementsByTagName('input')[0].value = Math.floor(scaleX * 100);
+		}
 	}
 	ctrl();
 	setInterval(ctrl, 1000);
@@ -63,7 +67,7 @@ function flip(mode){
   if(mode=="hour"){
     //var sec=new Date().getHours()
     var sec=d.getHours()
-    if(localStorage["pm"]=="true"){
+    if(globalThis.coolClockSettings.hour12){
       if(sec>12){
         sec-=12
       }else if(sec==0){

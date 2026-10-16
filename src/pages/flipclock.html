@@ -7,7 +7,6 @@
 	<head>
 		<script type="text/javascript" src="/translation.js"></script>
 		<script type="text/javascript" src="/jstimezone.js"></script>
-		<script type="text/javascript" src="/tools.js"></script>
 		<script type="text/javascript" src="/scripts/flipclock/js.js"></script>
 		<title>Clock</title>
 		<style>
@@ -17,8 +16,8 @@
 				overflow: hidden;
 				margin: 0;
 				padding: 0;
-				-webkit-transform-origin: 0 0;
-				-webkit-transform: scale(.5,.5);
+				transform-origin: 0 0;
+				transform: scale(.5,.5);
 				text-align: center;
 				width: 330px;
 			}
@@ -54,29 +53,17 @@
 			}
 
 			.up{
-				background: -webkit-gradient(
-					linear,
-					left bottom,
-					left top,
-					color-stop(0.27, rgb(59,59,59)),
-					color-stop(0.73, rgb(0,0,0))
-				);
+				background: linear-gradient(to top, rgb(59,59,59) 27%, rgb(0,0,0) 73%);
 				border-bottom-left-radius: 0px;
 				border-bottom-right-radius: 0px;
-				-webkit-box-shadow: inset 0px -5px 10px black,1px 1px 2px rgba(220,220,220,7);
+				box-shadow: inset 0px -5px 10px black,1px 1px 2px rgb(220,220,220);
 			}
 
 			.down{
-				background: -webkit-gradient(
-					linear,
-					left top,
-					left bottom,
-					color-stop(0.27, rgb(59,59,59)),
-					color-stop(0.73, rgb(0,0,0))
-				);
+				background: linear-gradient(to bottom, rgb(59,59,59) 27%, rgb(0,0,0) 73%);
 				border-top-left-radius: 0px;
 				border-top-right-radius: 0px;
-				-webkit-box-shadow: inset 0px -5px 10px black,1px 1px 2px rgba(220,220,220,7);
+				box-shadow: inset 0px -5px 10px black,1px 1px 2px rgb(220,220,220);
 			}
 
 
@@ -85,7 +72,7 @@
 				z-index: 2;
 				top: 0px;
 				left: 0px;
-				-webkit-transition: height .1s ease-in,top .1s ease-in;
+				transition: height .1s ease-in,top .1s ease-in;
 			}
 
 			.digit{
@@ -162,12 +149,12 @@
 
 		<br>
 		<br>
-		<div id="nopopup" style="text-align:left;margin-left:20px;font-size:10px;-webkit-user-select:none;cursor:default;">
+		<div id="nopopup" style="text-align:left;margin-left:20px;font-size:10px;user-select:none;cursor:default;">
 			Zoom in:<br>
 			Press and hold the button to change.<br>
-			<input type="number" autofocus="true" value="200" step="10" max="500" min="50" style="width:70px;-webkit-user-select:none;">%
+			<input type="number" autofocus="true" value="200" step="10" max="500" min="50" style="width:70px;user-select:none;">%
 			<hr>
-			<div style="-webkit-transform-origin:0 0;-webkit-transform:scale(.7,.7)">
+			<div style="transform-origin:0 0;transform:scale(.7,.7)">
 				This flip clock uses CSS3 for the animation and styling.<br>
 				Learn more: <a href="http://en.wikipedia.org/wiki/CSS" target="_blank" style="color:blue;" onmouseover="this.href='http://'+navigator.language.slice(0,2)+'.wikipedia.org/wiki/CSS'">here</a> (Wikipedia)
 			</div>

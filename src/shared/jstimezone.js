@@ -5,8 +5,8 @@ Date.prototype.getTimeZone = function(){
 }
 
 Date.prototype.applyTZ = function(){
-  if(localStorage["enabletimezone"]=="true"){
-    var TZ=Number(localStorage["timezone"]),
+  if(globalThis.coolClockSettings?.timezoneEnabled){
+    var TZ=Number(globalThis.coolClockSettings.timezone),
         Time=this.getTime(),
         offsetHour=((-1*this.getTimeZone())+TZ)*1000*60*60,
         newTime=Time+offsetHour;
@@ -17,8 +17,8 @@ Date.prototype.applyTZ = function(){
 }
 
 Date.prototype.toCurrentTZ = function(){
-  if(localStorage["enabletimezone"] == "true"){
-    var TZ = Number(localStorage["timezone"]),
+  if(globalThis.coolClockSettings?.timezoneEnabled){
+    var TZ = Number(globalThis.coolClockSettings.timezone),
         Time = this.getTime(),
         offsetHour = ((-1 * this.getTimeZone()) + TZ)*1000*60*60,
         newTime = Time - offsetHour;
@@ -48,8 +48,8 @@ function getTimezone(){
   var d = new Date()
   var gmtHours = getCurrenttimezone(d);
   
-  if(localStorage["enabletimezone"]=="true"){
-    var newhour=d.getUTCHours()+Number(localStorage["timezone"])
+  if(globalThis.coolClockSettings?.timezoneEnabled){
+    var newhour=d.getUTCHours()+Number(globalThis.coolClockSettings.timezone)
     if(newhour>=24){
       newhour=newhour-24
     }
@@ -67,8 +67,8 @@ function getTimezoneDate(){
   var gmtHours = getCurrenttimezone(d);
   
   var date=d.getDate()
-  if(localStorage["enabletimezone"]=="true"){
-    var newhour=d.getUTCHours()+Number(localStorage["timezone"])
+  if(globalThis.coolClockSettings?.timezoneEnabled){
+    var newhour=d.getUTCHours()+Number(globalThis.coolClockSettings.timezone)
     if(newhour>=24){
       date=date+1
     }
@@ -82,8 +82,8 @@ function getTimezoneDay(){
   var gmtHours = getCurrenttimezone(d);
 
   var day=d.getDay()
-  if(localStorage["enabletimezone"]=="true"){
-    var newhour=d.getUTCHours()+Number(localStorage["timezone"])
+  if(globalThis.coolClockSettings?.timezoneEnabled){
+    var newhour=d.getUTCHours()+Number(globalThis.coolClockSettings.timezone)
     if(newhour>=24){
       day=day+1
     }
