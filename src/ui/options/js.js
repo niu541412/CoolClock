@@ -3,6 +3,27 @@ const Components = LegacyBackground.Components;
 const $id = id => document.getElementById(id);
 const $all = selector => Array.from(document.querySelectorAll(selector));
 const notifyChange = element => element.dispatchEvent(new Event('change', {bubbles: true}));
+const optionValues = globalThis.optionValues;
+globalThis.optionValues = optionValues;
+const extraSyncOptions = new Set(['dateorder', 'lunar', 'voice', 'shownotificationtodo',
+  'timeupdateicon', 'showupdate', 'bg_run', 'use_dark_mode']);
+
+async function saveOption(key, updateWorker = true) {
+  const itemKey = 'coolClockLegacy:' + key;
+  const value = Object.hasOwn(optionValues, key) ? String(optionValues[key]) : null;
+  if (extraSyncOptions.has(key)) {
+    if (value === null) await legacyApi.storage.local.remove(itemKey);
+    else await legacyApi.storage.local.set({[itemKey]: value});
+  }
+  if (clockState.settings.syncEnabled !== false && extraSyncOptions.has(key)) {
+    try {
+      if (value === null) await legacyApi.storage.sync.remove(itemKey);
+      else await legacyApi.storage.sync.set({[itemKey]: value});
+    } catch (error) { console.warn('Cool Clock: option sync unavailable', error); }
+  }
+  if (updateWorker) return syncLegacyOption(key);
+  return clockState;
+}
 
 function icon(name) {
   return createBootstrapIcon(name);
@@ -84,7 +105,7 @@ function bindOption(config) {
   let target = option.type === 'radio' ?
     $all('input[type="radio"][name="' + option.name + '"]') : [$id(option.id)].filter(Boolean);
   if (!target.length) return;
-  let value = localStorage[option.key];
+  let value = optionValues[option.key];
   if (option.json !== undefined) {
     value = JSON.parse(value || '{}')[option.json];
   } else if (option.type === 'boolean') {
@@ -133,15 +154,15 @@ function bindOption(config) {
       }
       if (option.key !== undefined) {
         if (option.json !== undefined) {
-          const data = JSON.parse(localStorage[option.key] || '{}');
+          const data = JSON.parse(optionValues[option.key] || '{}');
           data[option.json] = changed;
-          localStorage[option.key] = JSON.stringify(data);
+          optionValues[option.key] = JSON.stringify(data);
         } else {
-          localStorage[option.key] = changed;
+          optionValues[option.key] = String(changed);
         }
       }
       option.onChange.call(element, event);
-      if (option.key !== undefined) syncLegacyOption(option.key);
+      if (option.key !== undefined) saveOption(option.key);
     });
     if (option.onClick) element.addEventListener('click', option.onClick);
   }
@@ -179,7 +200,7 @@ function setupRequirements() {
 
 function setupDateOrder() {
   const list = $id('dateorder');
-  const saved = JSON.parse(localStorage.dateorder || '{"1":"Date","2":"Month","3":"Year"}');
+  const saved = JSON.parse(optionValues.dateorder || '{"1":"Date","2":"Month","3":"Year"}');
   Array.from(list.children).slice(1).forEach((item, index) => {
     const value = saved[String(index + 1)] || item.dataset.value;
     item.dataset.value = value;
@@ -191,7 +212,8 @@ function setupDateOrder() {
     Array.from(list.children).slice(1).forEach((item, index) => {
       result[String(index + 1)] = item.dataset.value;
     });
-    localStorage.dateorder = JSON.stringify(result);
+    optionValues.dateorder = JSON.stringify(result);
+    saveOption('dateorder');
   };
   let dragged = null;
   Array.from(list.children).slice(1).forEach(item => {
@@ -203,8 +225,8 @@ function setupDateOrder() {
     item.addEventListener('dragover', event => {
       if (!dragged || dragged === item) return;
       event.preventDefault();
-      const middle = item.getBoundingClientRect().top + item.offsetHeight / 2;
-      const before = event.clientY < middle ? item : item.nextSibling;
+      const middle = item.getBoundingClientRect().left + item.offsetWidth / 2;
+      const before = event.clientX < middle ? item : item.nextSibling;
       if (dragged !== before && dragged.nextSibling !== before) list.insertBefore(dragged, before);
     });
   });
@@ -247,49 +269,51 @@ function readAudio(input, callback) {
 }
 
 function setupWeather() {
-  const weather = JSON.parse(localStorage.weather || '{}');
+  const weather = JSON.parse(optionValues.weather || '{}');
   const saveLocation = (name, latitude, longitude, woeid, mode = 'manual') => {
     const selected = {enabled: true, name, woeid, latitude, longitude, mode,
       unit: $id('weather_fahrenheit').checked ? 'fahrenheit' : 'celsius'};
-    localStorage.weather = JSON.stringify(selected);
+    optionValues.weather = JSON.stringify(selected);
     $id('weather_woeid').value = woeid;
     $id('weather_name').textContent = name;
     $id('weather').checked = true;
     $id('weather_auto').checked = mode === 'device';
     refreshRequirements();
-    syncLegacyOption('weather');
+    saveOption('weather');
   };
   $id('weather').checked = !!weather.enabled;
   $id('weather_fahrenheit').checked = weather.unit === 'fahrenheit';
   $id('weather_auto').checked = weather.mode === 'device';
   if (weather.mode === 'device') {
     weather.name = i18n('optionsCurrentLocation');
-    localStorage.weather = JSON.stringify(weather);
+    optionValues.weather = JSON.stringify(weather);
     $id('weather_name').textContent = weather.name;
   }
   legacyApi.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
     const latest = changes.coolClockState?.newValue?.settings?.weather;
-    const local = JSON.parse(localStorage.weather || '{}');
-    if (local.mode !== 'device' || latest?.mode !== 'device') return;
+    const local = JSON.parse(optionValues.weather || '{}');
+    if (local.mode !== 'device' || latest?.mode !== 'device' ||
+        !Number.isFinite(latest.latitude) || !Number.isFinite(latest.longitude)) return;
     const coords = `${latest.latitude.toFixed(3)}, ${latest.longitude.toFixed(3)}`;
-    localStorage.weather = JSON.stringify({...local, name: i18n('optionsCurrentLocation'),
+    optionValues.weather = JSON.stringify({...local, name: i18n('optionsCurrentLocation'),
       latitude: latest.latitude, longitude: latest.longitude, woeid: coords});
     $id('weather_name').textContent = i18n('optionsCurrentLocation');
+    saveOption('weather', false);
     $id('weather_woeid').value = coords;
   });
   $id('weather').addEventListener('change', function() {
-    const value = JSON.parse(localStorage.weather || '{}');
+    const value = JSON.parse(optionValues.weather || '{}');
     value.enabled = this.checked;
-    localStorage.weather = JSON.stringify(value);
-    syncLegacyOption('weather');
+    optionValues.weather = JSON.stringify(value);
+    saveOption('weather');
   });
   $id('weather_fahrenheit').addEventListener('change', function() {
-    const value = JSON.parse(localStorage.weather || '{}');
+    const value = JSON.parse(optionValues.weather || '{}');
     if (!value.enabled) return;
     value.unit = this.checked ? 'fahrenheit' : 'celsius';
-    localStorage.weather = JSON.stringify(value);
-    syncLegacyOption('weather');
+    optionValues.weather = JSON.stringify(value);
+    saveOption('weather');
   });
   $id('weather_auto').addEventListener('change', async function() {
     if (!this.checked) {
@@ -297,14 +321,14 @@ function setupWeather() {
       try {
         const result = await legacyApi.runtime.sendMessage({target: 'worker', type: 'get'}).catch(() => null);
         const selected = result?.ok ? result.data.settings.weather : null;
-        const current = selected || JSON.parse(localStorage.weather || '{}');
+        const current = selected || JSON.parse(optionValues.weather || '{}');
         if (Number.isFinite(current.latitude) && Number.isFinite(current.longitude)) {
           const coords = `${current.latitude.toFixed(3)}, ${current.longitude.toFixed(3)}`;
           saveLocation(coords, current.latitude, current.longitude, coords);
         } else {
           current.mode = 'manual';
-          localStorage.weather = JSON.stringify(current);
-          syncLegacyOption('weather');
+          optionValues.weather = JSON.stringify(current);
+          saveOption('weather');
         }
       } finally {
         this.disabled = false;
@@ -410,7 +434,7 @@ function setupAudioPlayer() {
   load.addEventListener('click', event => {
     event.preventDefault();
     if (audio) { audio.pause(); audio.remove(); }
-    const data = localStorage.ringtone;
+    const data = optionValues.ringtone;
     if (data === 'none') {
       modalDialog({title: modalTitle('exclamation-sign', i18n('optionsNotice')), content: i18n('optionsNoRingtone')});
       play.disabled = true;
@@ -463,7 +487,7 @@ function setupAudioPlayer() {
 function setupAppearanceEditor(kind) {
   const button = $id(kind === 'analog' ? 'editAnalog' : 'editDigital');
   button.addEventListener('click', () => {
-    const definition = JSON.parse(localStorage.clockDefinition || '{}');
+    const definition = JSON.parse(optionValues.clockDefinition || '{}');
     const content = document.createElement('div');
     const heading = document.createElement('p');
     const bold = document.createElement('b');
@@ -489,8 +513,8 @@ function setupAppearanceEditor(kind) {
             LegacyBackground.createNoti({title: i18n('optionsInvalidJson'), message: i18n('optionsEnterValidJson')});
             return;
           }
-          localStorage.clockDefinition = JSON.stringify(definition);
-          syncLegacyOption('clockDefinition');
+          optionValues.clockDefinition = JSON.stringify(definition);
+          saveOption('clockDefinition');
           Components.getSingleton('BrowserActionHandler').updateIcon();
           hideBootstrapModal(modal);
         }
@@ -547,7 +571,7 @@ function setupOptions() {
   setupFileButtons();
   const voiceMenu = $id('vc_engine').nextElementSibling;
   chrome.tts.getVoices(voices => {
-    const selected = JSON.parse(localStorage.voice || '{"voiceName":"native"}').voiceName;
+    const selected = JSON.parse(optionValues.voice || '{"voiceName":"native"}').voiceName;
     for (const voice of voices) {
       const item = document.createElement('li');
       const link = document.createElement('a');
@@ -571,24 +595,45 @@ function setupOptions() {
   $id('testnotibtn').addEventListener('click', () =>
     Components.getSingleton('HourlyTimeAnnouncementHandler').displayNotification());
   setupWeather();
+  const syncSettings = $id('sync_settings');
+  syncSettings.checked = clockState.settings.syncEnabled !== false;
+  syncSettings.addEventListener('change', async () => {
+    const enabled = syncSettings.checked;
+    syncSettings.disabled = true;
+    try {
+      const result = await legacyApi.runtime.sendMessage({target: 'worker', type: 'set-sync-enabled', enabled});
+      if (!result?.ok) throw Error(result?.error || 'Unable to update sync setting');
+      clockState = result.data;
+      if (enabled) {
+        const extras = Object.fromEntries([...extraSyncOptions]
+          .filter(key => optionValues[key] != null)
+          .map(key => ['coolClockLegacy:' + key, String(optionValues[key])]));
+        if (Object.keys(extras).length) await legacyApi.storage.sync.set(extras);
+      }
+    } catch (error) {
+      syncSettings.checked = !syncSettings.checked;
+      console.error('Cool Clock settings sync:', error);
+      modalDialog({title: modalTitle('exclamation-sign', i18n('optionsNotice')), content: error.message});
+    } finally { syncSettings.disabled = false; }
+  });
   $id('noti_ringtone').addEventListener('change', function() {
     readAudio(this, result => {
-      localStorage.noti_sound = result;
-      syncLegacyOption('noti_sound');
+      optionValues.noti_sound = result;
+      saveOption('noti_sound');
       modalDialog({title: modalTitle('ok-circle', i18n('optionsImported')), content: i18n('optionsTestSoundHint')});
     });
   });
   $id('ringtone').addEventListener('change', function() {
     readAudio(this, result => {
-      localStorage.ringtone = result;
-      syncLegacyOption('ringtone');
+      optionValues.ringtone = result;
+      saveOption('ringtone');
       modalDialog({title: modalTitle('ok-circle', i18n('optionsSuccess')), content: i18n('optionsImported')});
     });
   });
   setupAudioPlayer();
   $id('language').addEventListener('change', function() {
-    localStorage.language = this.value;
-    Promise.resolve(syncLegacyOption('language')).finally(() => location.reload());
+    optionValues.language = this.value;
+    Promise.resolve(saveOption('language')).finally(() => location.reload());
   });
   $id('ring_url_input').addEventListener('blur', function() {
     const input = this;
@@ -603,8 +648,8 @@ function setupOptions() {
         ]
       });
     } else {
-      localStorage.ringtone = input.value;
-      syncLegacyOption('ringtone');
+      optionValues.ringtone = input.value;
+      saveOption('ringtone');
     }
   });
   $id('lang_credits').addEventListener('click', event => { event.preventDefault(); showcredit(); });
@@ -636,7 +681,7 @@ function setupOptions() {
       LStoValueRegex: [[/^none$/, false], [/^data:audio.+$/, true]], regexAction() {},
       onClick() {
         if (this.checked) $id('noti_ringtone').click();
-        else { localStorage.noti_sound = 'none'; syncLegacyOption('noti_sound'); }
+        else { optionValues.noti_sound = 'none'; saveOption('noti_sound'); }
       }},
     {id: 'noti_voice', type: 'boolean', key: 'noti_voice', json: 'enabled'},
     {id: 'noti_voice_text', type: 'string', key: 'noti_voice', json: 'text'},
@@ -650,48 +695,42 @@ function setupOptions() {
     {id: 'bg_run', type: 'boolean', key: 'bg_run', onChange: function() {
       if (this.checked) {
         chrome.permissions.request({permissions: ['background']}, granted => {
-          if (!granted) { this.checked = false; localStorage.bg_run = 'false'; }
+          if (!granted) { this.checked = false; optionValues.bg_run = 'false'; saveOption('bg_run'); }
         });
       } else {
         chrome.permissions.remove({permissions: ['background']}, removed => {
-          if (!removed) { this.checked = true; localStorage.bg_run = 'true'; }
+          if (!removed) { this.checked = true; optionValues.bg_run = 'true'; saveOption('bg_run'); }
         });
       }
     }},
-    {id: 'show_ctx_menu', type: 'boolean', key: 'context_menu_item_enable',
-      onChange: function() {
-        if (this.checked) LegacyBackground.createMenuItem();
-        else chrome.contextMenus.removeAll();
-      }},
+    {id: 'show_ctx_menu', type: 'boolean', key: 'context_menu_item_enable'},
     {name: 'clockmode', type: 'radio',
-      onLoad() { this.checked = (this.id === 'digital') === (localStorage.use_digit === 'true'); },
+      onLoad() { this.checked = (this.id === 'digital') === (optionValues.use_digit === 'true'); },
       onClick() {
         if (!this.checked) return;
-        localStorage.use_digit = String(this.id === 'digital');
-        syncLegacyOption('use_digit');
+        optionValues.use_digit = String(this.id === 'digital');
+        saveOption('use_digit');
         updateIcon();
-        chrome.contextMenus.removeAll();
-        LegacyBackground.createMenuItem();
       }},
     {name: 'noti_style', type: 'radio',
-      onLoad() { this.checked = this.id === 'noti_style_' + localStorage.noti_style; },
+      onLoad() { this.checked = this.id === 'noti_style_' + optionValues.noti_style; },
       onChange() {
         if (this.checked) {
-          localStorage.noti_style = this.id.replace('noti_style_', '');
-          syncLegacyOption('noti_style');
+          optionValues.noti_style = this.id.replace('noti_style_', '');
+          saveOption('noti_style');
         }
       }},
     {name: 'noti_display', type: 'radio',
-      onLoad() { this.checked = (this.id === 'noti_close_manual') === (localStorage.manuallyclosenoti === 'true'); },
+      onLoad() { this.checked = (this.id === 'noti_close_manual') === (optionValues.manuallyclosenoti === 'true'); },
       onChange() {
         if (this.checked) {
-          localStorage.manuallyclosenoti = String(this.id === 'noti_close_manual');
-          syncLegacyOption('manuallyclosenoti');
+          optionValues.manuallyclosenoti = String(this.id === 'noti_close_manual');
+          saveOption('manuallyclosenoti');
         }
       }},
     {name: 'ringtone', type: 'radio',
       onLoad() {
-        const stored = localStorage.ringtone;
+        const stored = optionValues.ringtone;
         const choice = stored === 'none' ? 'ring_none' : stored === 'default' || !stored ?
           'ring_default' : stored === 'database' || /^data:audio/.test(stored) ? 'ring_comp' : 'ring_url';
         this.checked = this.id === choice;
@@ -701,8 +740,8 @@ function setupOptions() {
       onChange() {
         if (!this.checked) return;
         if (this.id === 'ring_none' || this.id === 'ring_default') {
-          localStorage.ringtone = this.id === 'ring_none' ? 'none' : 'default';
-          syncLegacyOption('ringtone');
+          optionValues.ringtone = this.id === 'ring_none' ? 'none' : 'default';
+          saveOption('ringtone');
         }
       }}
   ].forEach(bindOption);

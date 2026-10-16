@@ -2,6 +2,7 @@
 const oldApi = globalThis.browser || globalThis.chrome;
 let oldState;
 let oldPage = 0;
+let oldPrefs = {};
 
 function oldOpen(path, width, height) {
   oldApi.windows.create({url: oldApi.runtime.getURL(path), type: 'popup', width, height});
@@ -43,7 +44,7 @@ function oldUpdate() {
   document.getElementById('month').textContent = now.toLocaleString(oldApi.i18n.getUILanguage(), {month: 'short'});
   document.getElementById('year').textContent = now.getFullYear();
   document.getElementById('day').textContent = now.toLocaleString(oldApi.i18n.getUILanguage(), {weekday: 'long'});
-  if (localStorage.lunar === 'true') {
+  if (oldPrefs.lunar === 'true') {
     const parts = new Intl.DateTimeFormat('zh-TW-u-ca-chinese', {month: 'long', day: 'numeric'}).formatToParts(now);
     document.getElementById('lunar').textContent = `（農曆${parts.find(part => part.type === 'month')?.value || ''}${parts.find(part => part.type === 'day')?.value || ''}）`;
   } else document.getElementById('lunar').textContent = '';
@@ -70,13 +71,23 @@ async function oldInit() {
   const result = await oldApi.runtime.sendMessage({target: 'worker', type: 'get'});
   if (!result?.ok) throw Error(result?.error || 'Clock unavailable');
   oldState = result.data;
-  localStorage.pm = String(oldState.settings.hour12);
-  localStorage.todo = JSON.stringify(oldState.todos);
+  globalThis.coolClockLanguage = oldState.settings.language || '';
+  globalThis.coolClockSettings = oldState.settings;
+  const keys = ['lunar', 'dateorder', 'flipclock', 'mini'].map(key => 'coolClockLegacy:' + key);
+  const local = await oldApi.storage.local.get(keys);
+  let synced = {};
+  if (oldState.settings.syncEnabled !== false) {
+    try { synced = await oldApi.storage.sync.get(keys.slice(0, 2)); }
+    catch (error) { console.warn('Cool Clock: option sync unavailable', error); }
+  }
+  for (const key of ['lunar', 'dateorder', 'flipclock', 'mini']) {
+    oldPrefs[key] = synced['coolClockLegacy:' + key] ?? local['coolClockLegacy:' + key];
+  }
   document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
   document.getElementById('version').append(' ' + oldApi.runtime.getManifest().version);
   document.getElementById('startupblocker').style.display = 'none';
   try {
-    const order = Object.values(JSON.parse(localStorage.dateorder || '{}'));
+    const order = Object.values(JSON.parse(oldPrefs.dateorder || '{}'));
     if (order.length === 3 && ['Year', 'Month', 'Date'].every(part => order.includes(part))) {
       const container = document.getElementById('datespace');
       container.replaceChildren(document.createTextNode('　'));
@@ -92,12 +103,13 @@ async function oldInit() {
   oldShow(0);
   oldUpdate();
   setInterval(oldUpdate, 1000);
-  document.getElementById('flipbtn').checked = localStorage.flipclock !== 'false';
+  document.getElementById('flipbtn').checked = oldPrefs.flipclock !== 'false';
   const setFlip = () => {
     const flip = document.getElementById('flipbtn').checked;
     document.getElementById('flipclock').style.display = flip ? '' : 'none';
     document.getElementById('noflipclock').style.display = flip ? 'none' : '';
-    localStorage.flipclock = String(flip);
+    oldPrefs.flipclock = String(flip);
+    oldApi.storage.local.set({'coolClockLegacy:flipclock': oldPrefs.flipclock});
   };
   document.getElementById('flipbtn').addEventListener('change', setFlip);
   setFlip();
@@ -105,9 +117,10 @@ async function oldInit() {
   document.getElementById('to_right').addEventListener('click', () => oldShow(oldPage + 1));
   document.getElementById('toggleSize').addEventListener('click', () => {
     const mini = document.documentElement.classList.toggle('mini');
-    localStorage.mini = String(mini);
+    oldPrefs.mini = String(mini);
+    oldApi.storage.local.set({'coolClockLegacy:mini': oldPrefs.mini});
   });
-  if (localStorage.mini === 'true') document.documentElement.classList.add('mini');
+  if (oldPrefs.mini === 'true') document.documentElement.classList.add('mini');
   document.getElementById('alarmbtn').addEventListener('click', () => oldOpen('alarm_interface.html', 785, 490));
   document.getElementById('viewsavedalarmbtn').addEventListener('click', () => oldOpen('alarm_interface.html', 785, 490));
   document.getElementById('countdownbtn').addEventListener('click', () => oldOpen('countdown_interface.html', 700, 450));

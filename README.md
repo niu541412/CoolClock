@@ -9,7 +9,7 @@ Run `python3 build_mv3.py`. The resulting archives are:
 - `dist/cool-clock-mv3-chrome.zip` for Chrome 120 or newer. Unzip it and choose **Load unpacked** at `chrome://extensions`.
 - `dist/cool-clock-mv3-firefox.zip` for Firefox 121 or newer. It uses an MV3 background event page and includes a Gecko add-on ID for signing.
 
-The Chrome package uses a service worker plus an offscreen document for legacy data import and audio. The Firefox package uses a background event page. Both packages include the original UI resources, original `_locales`, Bootstrap 5 CSS and JavaScript, a local subset of Bootstrap Icons 1.13.2, and D3 with its license.
+The Chrome package uses a service worker plus an offscreen document for audio and clipboard operations. The Firefox package uses a background event page. Both packages include the original UI resources, original `_locales`, Bootstrap 5 CSS and JavaScript, a local subset of Bootstrap Icons 1.13.2, and D3 with its license.
 
 ## Source layout
 
@@ -17,10 +17,10 @@ The repository keeps `manifest.json`, the build script, and release workflow at 
 
 | Directory | Contents | Location in the built extension |
 | --- | --- | --- |
-| `src/pages/` | Popup, settings, calendar, and other HTML pages | Extension root |
-| `src/runtime/` | Background, offscreen, browser adapters, and page controllers | `mv3/` |
-| `src/ui/` | Original page scripts and styles | `scripts/` |
-| `src/shared/` | Shared scripts and input styles | Extension root |
+| `src/pages/` | Popup, settings, calendar, and other HTML pages | Extension root, except the weather details page under `mv3/` |
+| `src/runtime/` | Background worker, offscreen document, and page bridge | `mv3/` |
+| `src/ui/` | Page controllers and styles | `scripts/` |
+| `src/shared/` | Shared scripts and input styles | Extension root or `mv3/`, according to the existing resource URL |
 | `src/assets/` | Icons, images, fonts, and sounds | Their original extension paths |
 | `src/vendor/` | Bundled Bootstrap and D3 with their licenses | `bootstrap/` and `d3/` |
 | `src/locales/` | Translations | `_locales/` |
@@ -31,7 +31,11 @@ To publish a new GitHub release, change the version in `manifest.json` and add a
 
 The default popup is the original blue 300 × 500 design. The original 250px popup is also available through the original **Popup Design** setting. Alarms, repeating countdowns, calendar todos, hourly announcements, voice and text commands, address bar `clock` commands, and the main original settings controls are connected to MV3 storage and browser APIs. The original Yahoo weather service has been replaced with Open-Meteo. Weather location can be chosen by search or by checking **Use browser location automatically** in settings. Device location is refreshed when the popup or forecast opens, and both open weather views refresh every five minutes; the last successful location is used when a refresh fails. Automatic location is labeled **Current location**; turning it off keeps the last coordinates as a fixed weather location. Clicking the popup weather opens a seven-day forecast. Weather defaults to Celsius, can be switched to Fahrenheit, and shows current humidity when available. Public Google Calendars can be imported through iCal, and private calendars can be imported from an exported `.ics` file.
 
-On an in-place update with the same extension ID, the first run imports alarms, countdowns, todos, and clock preferences from extension `localStorage`. A new extension ID has a separate storage area and cannot read the old installation's data. The original Chrome Web Store listing ID cannot be reused for a new listing.
+The original Chrome Web Store listing ID cannot be reused for a new listing.
+
+Settings from `options_new.html` sync through the browser's `storage.sync` by default. Clear **Sync settings** in the Extension section to keep settings on this device. Chrome and Firefox use separate account systems, so settings sync only between installations of the same browser. Alarms, countdowns, todos, stopwatch data, usage history, and automatic weather coordinates remain local. Imported audio files that exceed the browser's sync storage limit also remain local.
+
+Each page loads its settings before initializing its controls. The popup, alarms, countdowns, and calendar request current state from the background; page-specific preferences and stopwatch data use `storage.local` directly. The old synchronous `legacyStore` layer is no longer included.
 
 ## Known limits
 

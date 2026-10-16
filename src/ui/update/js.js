@@ -1,4 +1,6 @@
-document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
+loadClockLanguage().then(() => {
+  document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
+}).catch(error => console.warn('Cool Clock: unable to load language', error));
 const headings = [...document.querySelectorAll('.main h3')];
 const navigation = document.querySelector('#scrollSpy ul');
 headings.forEach(heading => {

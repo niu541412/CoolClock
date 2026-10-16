@@ -1,6 +1,7 @@
 // Keep the original popup markup and styling while replacing Custom Elements v0.
 var popupApi = globalThis.browser || globalThis.chrome;
 var popupState;
+var popupStopwatch = {};
 
 function popupNow() {
   const settings = popupState?.settings;
@@ -13,7 +14,6 @@ function popupNow() {
 function templateFor(host, name) {
   const template = document.getElementById(name);
   const fragment = template.content.cloneNode(true);
-  fragment.querySelectorAll('content').forEach(oldSlot => oldSlot.replaceWith(document.createElement('slot')));
   const root = host.attachShadow({mode: 'open'});
   root.append(fragment);
   return root;
@@ -74,7 +74,7 @@ class TitleDate extends HTMLElement {
   connectedCallback() {
     const root = templateFor(this, 'title-date');
     const update = () => {
-      root.getElementById('content').textContent = popupNow().toLocaleDateString(localStorage.language || popupApi.i18n.getUILanguage(), {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+      root.getElementById('content').textContent = popupNow().toLocaleDateString(popupState?.settings.language || popupApi.i18n.getUILanguage(), {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
     };
     this.update = update;
     update();
@@ -178,7 +178,7 @@ function updateStatuses() {
     }
     return null;
   }).filter(Boolean).sort((a, b) => a - b)[0];
-  item('alarm-status').setAttribute('message', nextAlarm ? `Next alarm at ${nextAlarm.toLocaleTimeString(localStorage.language || popupApi.i18n.getUILanguage(), {hour: 'numeric', minute: '2-digit'})}` : 'Set a new alarm');
+  item('alarm-status').setAttribute('message', nextAlarm ? `Next alarm at ${nextAlarm.toLocaleTimeString(popupState.settings.language || popupApi.i18n.getUILanguage(), {hour: 'numeric', minute: '2-digit'})}` : 'Set a new alarm');
   if (alarms.length) item('alarm-status').setAttribute('label', String(alarms.length));
   else item('alarm-status').removeAttribute('label');
 
@@ -187,8 +187,8 @@ function updateStatuses() {
   if (timers.length) item('countdown-status').setAttribute('label', String(timers.length));
   else item('countdown-status').removeAttribute('label');
 
-  const stopwatchStart = Number(localStorage.getItem('timer_timestamp'));
-  const stopwatchPaused = Number(localStorage.getItem('timer_paused_timestamp'));
+  const stopwatchStart = Number(popupStopwatch['coolClockLegacy:timer_timestamp']);
+  const stopwatchPaused = Number(popupStopwatch['coolClockLegacy:timer_paused_timestamp']);
   const running = Number.isFinite(stopwatchStart) && stopwatchStart > 0;
   const stopwatchTime = running ? (stopwatchPaused || Date.now()) - stopwatchStart : 0;
   item('stopwatch-status').setAttribute('message', running ? `Timer: ${(stopwatchTime / 1000).toFixed(stopwatchPaused ? 2 : 0)}s` : 'Start stopwatch');
@@ -204,10 +204,14 @@ function updateStatuses() {
 }
 
 async function initPopup() {
-  document.documentElement.lang = localStorage.language || popupApi.i18n.getUILanguage();
-  document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
   try {
-    popupState = await request('get');
+    [popupState, popupStopwatch] = await Promise.all([
+      request('get'), popupApi.storage.local.get([
+        'coolClockLegacy:timer_timestamp', 'coolClockLegacy:timer_paused_timestamp'])
+    ]);
+    globalThis.coolClockLanguage = popupState.settings.language || '';
+    document.documentElement.lang = popupState.settings.language || popupApi.i18n.getUILanguage();
+    document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
     updateStatuses();
     item('title').querySelector('title-clock').update();
     item('title').querySelector('title-date').update();
@@ -216,6 +220,15 @@ async function initPopup() {
     item('alarm-status').setAttribute('message', error.message);
   }
   setInterval(updateStatuses, 1000);
+  popupApi.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    for (const key of ['coolClockLegacy:timer_timestamp', 'coolClockLegacy:timer_paused_timestamp']) {
+      if (!Object.hasOwn(changes, key)) continue;
+      if (changes[key].newValue === undefined) delete popupStopwatch[key];
+      else popupStopwatch[key] = changes[key].newValue;
+    }
+    updateStatuses();
+  });
   setInterval(async () => {
     try {
       popupState = await request('get');
@@ -236,4 +249,4 @@ async function initPopup() {
   item('action-forum').addEventListener('click', () => popupApi.tabs.create({url: 'https://groups.google.com/forum/#!forum/chrome-clock'}));
   item('action-about').addEventListener('click', () => popupApi.tabs.create({url: targetUrl('about.html')}));
 }
-initPopup();
+initPopup().catch(error => console.error('Cool Clock popup:', error));

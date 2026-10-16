@@ -12,27 +12,31 @@ runtime = src / 'runtime'
 runtime_files = sorted(path for path in runtime.rglob('*') if path.is_file())
 original_assets = ('icons/16x16.png', 'icons/128x128.png', 'n_icon.png', 'sounds/alarm.mp3')
 legacy_assets = (
-    'scripts/new_popup2/css.css',
+    'scripts/popup/css.css', 'scripts/popup/js.js',
+    'scripts/popup_classic/js.js',
+    'scripts/calendar/js.js', 'scripts/speech/js.js',
+    'scripts/weather_details/js.js',
     'scripts/alarm_interface/css.css', 'scripts/countdown_interface/css.css',
     'scripts/timer/css.css', 'scripts/timer/js.js', 'scripts/stopwatch_split/js.js',
     'scripts/calendar_full/css.css', 'scripts/calendar_full/dialog_native.css',
     'scripts/options/css_new.css',
-    'scripts/statistics/css.css',
+    'scripts/statistics/css.css', 'scripts/statistics/js.js',
     'd3/d3.v7.min.js', 'd3/D3-LICENSE',
-    'scripts/about/css.css', 'scripts/update/css.css',
+    'scripts/about/css.css', 'scripts/about/js.js',
+    'scripts/update/css.css', 'scripts/update/js.js',
     'bootstrap/bootstrap.min.css', 'bootstrap/bootstrap.bundle.min.js',
     'bootstrap/icons.css', 'bootstrap/fonts/bootstrap-icons.woff',
     'bootstrap/icons-LICENSE', 'bootstrap/migration.css', 'bootstrap/native.js',
     'bootstrap/LICENSE',
     'input.css',
-    'jstimezone.js', 'tools.js',
+    'jstimezone.js',
     'fonts/Roboto-Thin.ttf', 'fonts/Roboto-Regular.ttf', 'fonts/Roboto-Medium.ttf', 'fonts/NotoSans-Regular.ttf',
     'fonts/Oswald.woff',
     'fonts/LICENSE (Roboto).txt',
     'images/icons/timeline_24dp.png', 'images/icons/settings_24dp.png',
     'images/icons/help_24dp.png', 'images/icons/forum_24dp.png',
     'images/icons/info_24dp.png', 'images/icons/License',
-    'scripts/popup/css.css', 'scripts/flipclock/js.js',
+    'scripts/popup_classic/css.css', 'scripts/flipclock/js.js',
     'scripts/speech/css.css',
     'check.png', 'radio2.png', 'fonts/mic.woff',
     'images/to_left.png', 'images/to_left_down.png', 'images/to_right.png', 'images/to_right_down.png',
@@ -64,7 +68,7 @@ def source_file(package_path):
         return groups[path.parts[0]].joinpath(*path.parts[1:])
     if path.suffix == '.html':
         return src / 'pages' / path
-    if path.name in ('translation.js', 'jstimezone.js', 'tools.js', 'input.css'):
+    if path.name in ('translation.js', 'jstimezone.js', 'input.css'):
         return src / 'shared' / path
     if path.name == 'n_icon.png':
         return src / 'assets' / 'icons' / path
@@ -79,6 +83,7 @@ def locale_files():
         contents = path.read_text(encoding='utf-8-sig')
         json.loads(contents)
         yield f'_locales/{language}/messages.json', contents
+
 
 firefox = copy.deepcopy(manifest)
 firefox['background'] = {'scripts': ['mv3/locale_catalog.js', 'mv3/i18n.js', 'mv3/offscreen.js', 'mv3/worker.js']}
@@ -99,7 +104,14 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
         for path in runtime_files:
             if browser == 'firefox' and path.name == 'offscreen.html':
                 continue
-            archive.write(path, Path('mv3') / path.relative_to(runtime))
+            package_path = Path('mv3') / path.relative_to(runtime)
+            if path.suffix == '.html' and path.name != 'offscreen.html':
+                archive.writestr(str(package_path), path.read_text(encoding='utf-8-sig'))
+            else:
+                archive.write(path, package_path)
+        archive.write(src / 'shared' / 'device_location.js', 'mv3/device_location.js')
+        archive.write(src / 'shared' / 'i18n.js', 'mv3/i18n.js')
+        archive.writestr('mv3/weather_details.html', (src / 'pages' / 'weather_details.html').read_text(encoding='utf-8-sig'))
         for package_path in original_assets:
             archive.write(source_file(package_path), package_path)
         catalog = {}
@@ -113,27 +125,27 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
                 archive.writestr(package_path, path.read_text(encoding='utf-8-sig').replace('Roboto-Regular.tff', 'Roboto-Regular.ttf'))
             else:
                 archive.write(path, package_path)
-        popup_html = source_file('new_popup2.html').read_text(encoding='utf-8-sig')
+        popup_html = source_file('popup.html').read_text(encoding='utf-8-sig')
         popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', popup_html)
         popup_html = popup_html.replace('<head>', '<head><meta charset="utf-8">', 1)
-        popup_html = popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/device_location.js" defer></script><script src="/mv3/legacy_popup.js" defer></script></head>', 1)
-        archive.writestr('new_popup2.html', popup_html)
-        old_popup_html = source_file('popup.html').read_text(encoding='utf-8-sig')
+        popup_html = popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/device_location.js" defer></script><script src="/scripts/popup/js.js" defer></script></head>', 1)
+        archive.writestr('popup.html', popup_html)
+        old_popup_html = source_file('popup_classic.html').read_text(encoding='utf-8-sig')
         old_popup_html = re.sub(r'<script\b[^>]*>\s*</script>', '', old_popup_html)
-        old_popup_html = old_popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_old_popup.js" defer></script></head>', 1)
-        archive.writestr('popup.html', old_popup_html)
+        old_popup_html = old_popup_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/scripts/popup_classic/js.js" defer></script></head>', 1)
+        archive.writestr('popup_classic.html', old_popup_html)
         speech_html = source_file('speech.html').read_text(encoding='utf-8-sig')
         speech_html = re.sub(r'<script\b[^>]*>\s*</script>', '', speech_html)
-        speech_html = speech_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_speech.js" defer></script></head>', 1)
+        speech_html = speech_html.replace('</head>', '<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/scripts/speech/js.js" defer></script></head>', 1)
         archive.writestr('speech.html', speech_html)
-        archive.write(source_file('flipclock.html'), 'flipclock.html')
+        archive.writestr('flipclock.html', source_file('flipclock.html').read_text(encoding='utf-8-sig'))
         small_calendar_html = source_file('calendar.html').read_text(encoding='utf-8-sig')
         small_calendar_html = re.sub(r'<script\b[^>]*>\s*</script>', '', small_calendar_html, flags=re.I)
-        small_calendar_html = small_calendar_html.replace('</head>', '<script src="/mv3/legacy_small_calendar.js" defer></script></head>', 1)
+        small_calendar_html = small_calendar_html.replace('</head>', '<script src="/scripts/calendar/js.js" defer></script></head>', 1)
         archive.writestr('calendar.html', small_calendar_html)
         for page in ('timer.html', 'stopwatch_split.html'):
-            archive.write(source_file(page), page)
-        translation = source_file('translation.js').read_text(encoding='utf-8-sig').replace('chrome.extension.getURL', 'chrome.runtime.getURL')
+            archive.writestr(page, source_file(page).read_text(encoding='utf-8-sig'))
+        translation = source_file('translation.js').read_text(encoding='utf-8-sig')
         translation = translation.replace('if(window.Components && Components.getSingleton("Localization")){', 'if(window.Components && typeof Components.getSingleton === "function" && Components.getSingleton("Localization")){')
         archive.writestr('translation.js', translation)
         for page, controller in [('alarm_interface.html', 'alarm_interface'), ('countdown_interface.html', 'countdown_interface')]:
@@ -145,27 +157,27 @@ for browser, configured in [('chrome', manifest), ('firefox', firefox)]:
             archive.writestr('mv3/original_' + ('alarm' if controller == 'alarm_interface' else 'countdown') + '.js', code)
         calendar_html = source_file('calendar_full.html').read_text(encoding='utf-8-sig')
         calendar_html = re.sub(r'<script\b[^>]*src="/scripts/calendar_full/js\.js"[^>]*>\s*</script>', '', calendar_html)
-        calendar_html = calendar_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script><script src="/mv3/legacy_calendar_import.js" defer></script></head>', 1)
+        calendar_html = calendar_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
         archive.writestr('calendar_full.html', calendar_html)
         archive.writestr('mv3/original_calendar.js', source_file('scripts/calendar_full/js.js').read_text(encoding='utf-8-sig'))
         options_html = source_file('options_new.html').read_text(encoding='utf-8-sig')
-        options_html = re.sub(r'<script\b[^>]*src="/scripts/options/js_new\.js"[^>]*>\s*</script>', '', options_html)
+        options_html = re.sub(r'<script\b[^>]*src="/scripts/options/js\.js"[^>]*>\s*</script>', '', options_html)
         options_html = options_html.replace('Weather information provided by Yahoo! Weather', 'Weather information provided by Open-Meteo')
         options_html = options_html.replace('This shows the WOEID of the current location.', 'This shows the location ID.')
         options_html = options_html.replace('</head>', '<script src="/mv3/legacy_bridge.js" defer></script></head>', 1)
         archive.writestr('options_new.html', options_html)
-        archive.writestr('mv3/original_options.js', source_file('scripts/options/js_new.js').read_text(encoding='utf-8-sig'))
+        archive.writestr('mv3/original_options.js', source_file('scripts/options/js.js').read_text(encoding='utf-8-sig'))
         stats_html = source_file('statistics.html').read_text(encoding='utf-8-sig')
         stats_html = re.sub(r'<script\b[^>]*>\s*</script>', '', stats_html)
-        stats_html = stats_html.replace('</head>', '<script src="/d3/d3.v7.min.js" defer></script><script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/legacy_stats.js" defer></script></head>', 1)
+        stats_html = stats_html.replace('</head>', '<script src="/d3/d3.v7.min.js" defer></script><script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/scripts/statistics/js.js" defer></script></head>', 1)
         archive.writestr('statistics.html', stats_html)
         for page, replacement in (
-            ('about.html', 'legacy_about.js'),
-            ('update.html', 'legacy_update.js'),
+            ('about.html', 'about'),
+            ('update.html', 'update'),
         ):
             html = source_file(page).read_text(encoding='utf-8-sig')
             html = re.sub(r'<script\b[^>]*>\s*</script>', '', html)
-            html = html.replace('</head>', f'<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/mv3/{replacement}" defer></script></head>', 1)
+            html = html.replace('</head>', f'<script src="/mv3/locale_catalog.js" defer></script><script src="/mv3/i18n.js" defer></script><script src="/scripts/{replacement}/js.js" defer></script></head>', 1)
             archive.writestr(page, html)
         for path, contents in locale_files():
             archive.writestr(path, contents)

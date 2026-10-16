@@ -40,8 +40,11 @@ async function command(text) {
     else if (/^(help|commands)$/.test(normalized)) printVoice('Try "What time is it?", "start timer", "set an alarm", or "set a countdown".', true);
     else if (/^(bye|goodbye|exit|close)$/.test(normalized)) { printVoice('See you later!', true); setTimeout(() => window.close(), 1500); }
     else if (/^(start|set|add)( a| an| the)? timer$/.test(normalized)) {
-      localStorage.timer_timestamp = String(Date.now());
-      localStorage.timer_ori_timestamp = localStorage.timer_timestamp;
+      const started = String(Date.now());
+      await voiceApi.storage.local.set({
+        'coolClockLegacy:timer_timestamp': started,
+        'coolClockLegacy:timer_ori_timestamp': started
+      });
       printVoice('Okay, I have started the timer for you.', true);
       const frame = document.createElement('iframe'); frame.src = 'timer.html'; frame.style.width = '100%'; frame.title = 'Stopwatch'; document.getElementById('opt').append(frame);
     } else if (/^(start|set|add)( a| an| the)? countdown$/.test(normalized)) {
@@ -83,6 +86,8 @@ document.getElementById('speech').addEventListener('click', () => {
   recognition.start();
   document.getElementById('speech').classList.add('listening');
 });
-document.title = t('contextVoiceControl') + ' - Cool Clock';
-printVoice(t('contextVoiceControl') + '. version 0.1');
-printVoice('Welcome! Press the button below to begin, or switch to text mode. Say "help" for examples.', true);
+loadClockLanguage().then(() => {
+  document.title = t('contextVoiceControl') + ' - Cool Clock';
+  printVoice(t('contextVoiceControl') + '. version 0.1');
+  printVoice('Welcome! Press the button below to begin, or switch to text mode. Say "help" for examples.', true);
+}).catch(error => console.warn('Cool Clock: unable to load language', error));

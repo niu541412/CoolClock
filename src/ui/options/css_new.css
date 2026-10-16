@@ -207,15 +207,29 @@ span[data-bs-toggle=tooltip]:not(.no-underline){
 	height: -webkit-calc(100%);
 }
 
+#dateorder{
+	flex-direction: row;
+	flex-wrap: wrap;
+}
 #dateorder > li{
 	height: 40px !important;
 }
+#dateorder > .list-heading{
+	flex-basis: 100%;
+}
 #dateorder > li:not(.list-heading){
-	cursor: -webkit-grab;
+	flex: 0 0 auto;
+	min-width: 96px;
+	text-align: center;
+	white-space: nowrap;
+	cursor: grab;
+}
+#dateorder > li:not(.list-heading) .bi::before{
+	transform: rotate(90deg);
 }
 #dateorder > li:not(.list-heading):active{
-	cursor: -webkit-grabbing;
-	-webkit-box-shadow: 0px 0px 7px #CCC;
+	cursor: grabbing;
+	box-shadow: 0px 0px 7px #CCC;
 	opacity: 0.9;
 }
 

@@ -11,7 +11,7 @@
   "action": {
     "default_icon": "icons/16x16.png",
     "default_title": "Cool Clock",
-    "default_popup": "new_popup2.html"
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "mv3/worker.js"

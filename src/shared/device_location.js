@@ -21,9 +21,13 @@ async function resolveWeatherLocation(location, api) {
   const name = deviceWeatherLabel();
   let position;
   try { position = await getCurrentWeatherPosition(); }
-  catch { return {...location, name}; }
+  catch (error) {
+    if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) throw error;
+    return {...location, name};
+  }
   const {latitude, longitude} = position;
-  const moved = Math.abs(location.latitude - latitude) >= 0.001 ||
+  const moved = !Number.isFinite(location.latitude) || !Number.isFinite(location.longitude) ||
+    Math.abs(location.latitude - latitude) >= 0.001 ||
     Math.abs(location.longitude - longitude) >= 0.001;
   const current = {...location, latitude, longitude, name};
   if (!moved && location.name === name) return current;

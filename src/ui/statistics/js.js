@@ -92,6 +92,7 @@ function renderStats() {
 }
 
 async function initStats() {
+  await loadClockLanguage();
   document.querySelectorAll('[trans]').forEach(node => { node.textContent = t(node.getAttribute('trans')); });
   document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const updateClock = () => {
