@@ -1,7 +1,7 @@
 /* Alarm page controller. Loaded after mv3/legacy_bridge.js receives alarm data. */
 const AlarmClock = LegacyBackground.Components.getSingleton('AlarmClock');
 const alarmList = [];
-const byId = id => document.getElementById(id);
+const byId = (id) => document.getElementById(id);
 const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
 function glyph(name) {
@@ -15,10 +15,20 @@ function refreshCount() {
 }
 
 function createModal(options = {}) {
-  const settings = Object.assign({
-    title: '', content: '', backdrop: true, size: 'lg', buttons: [],
-    closeBtn: true, closeBtnText: i18n('close'), onClose() {}, onShown() {}
-  }, options);
+  const settings = Object.assign(
+    {
+      title: '',
+      content: '',
+      backdrop: true,
+      size: 'lg',
+      buttons: [],
+      closeBtn: true,
+      closeBtnText: i18n('close'),
+      onClose() {},
+      onShown() {}
+    },
+    options
+  );
   const modal = document.createElement('div');
   modal.className = 'modal fade';
   modal.setAttribute('role', 'dialog');
@@ -59,11 +69,15 @@ function createModal(options = {}) {
   content.append(header, body, footer);
   dialog.append(content);
   modal.append(dialog);
-  modal.addEventListener('shown.bs.modal', settings.onShown, {once: true});
-  modal.addEventListener('hidden.bs.modal', () => {
-    modal.remove();
-    settings.onClose();
-  }, {once: true});
+  modal.addEventListener('shown.bs.modal', settings.onShown, { once: true });
+  modal.addEventListener(
+    'hidden.bs.modal',
+    () => {
+      modal.remove();
+      settings.onClose();
+    },
+    { once: true }
+  );
   document.body.append(modal);
   showBootstrapModal(modal);
   return modal;
@@ -76,21 +90,21 @@ function createControl(parent, name, title, container) {
   button.title = title;
   button.append(glyph(name));
   parent.append(button);
-  initBootstrapTooltip(button, {container, delay: {show: 300}});
+  initBootstrapTooltip(button, { container, delay: { show: 300 } });
   return button;
 }
 
 function editContent(source) {
   const group = source.parentElement.cloneNode(true);
   const label = source.parentElement.previousElementSibling.cloneNode(true);
-  [group, label].forEach(node => {
+  [group, label].forEach((node) => {
     node.removeAttribute('id');
-    selectAll('[id]', node).forEach(child => child.removeAttribute('id'));
+    selectAll('[id]', node).forEach((child) => child.removeAttribute('id'));
   });
   group.style.textAlign = 'center';
   const content = document.createElement('div');
   content.append(label, group);
-  return {content, group, label};
+  return { content, group, label };
 }
 
 function timeValue(input, maximum) {
@@ -108,13 +122,16 @@ function bindTimeInputs(inputs, setButton) {
     input.addEventListener('blur', () => timeValue(input, index === 0 ? 24 : 59));
     input.addEventListener('input', () => {
       input.value = input.value.replace(/[^0-9]/g, '').slice(0, 2);
-      if ((input.value.length === 2 || (index === 0 && Number(input.value) > 2)) && inputs[index + 1]) {
+      if (
+        (input.value.length === 2 || (index === 0 && Number(input.value) > 2)) &&
+        inputs[index + 1]
+      ) {
         inputs[index + 1].focus();
         inputs[index + 1].select();
       }
       if (setButton) updateSetButton();
     });
-    input.addEventListener('keydown', event => {
+    input.addEventListener('keydown', (event) => {
       if (event.key === 'Backspace' && !input.value && inputs[index - 1]) {
         inputs[index - 1].select();
         event.preventDefault();
@@ -125,7 +142,7 @@ function bindTimeInputs(inputs, setButton) {
 }
 
 function bindWeekdays(root) {
-  root.addEventListener('change', event => {
+  root.addEventListener('change', (event) => {
     if (event.target.matches('input[type="checkbox"]')) {
       event.target.closest('label').classList.toggle('active', event.target.checked);
     }
@@ -133,10 +150,10 @@ function bindWeekdays(root) {
 }
 
 function selectEveryDay(root) {
-  selectAll('label input', root).forEach(input => {
+  selectAll('label input', root).forEach((input) => {
     if (!input.checked) {
       input.checked = true;
-      input.dispatchEvent(new Event('change', {bubbles: true}));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
     }
   });
 }
@@ -147,16 +164,29 @@ function openEditModal(content, save, focus, finish) {
     content,
     closeBtn: false,
     buttons: [
-      {title: 'Apply Edit', primary: true, onclick() {
-        if (save()) hideBootstrapModal(modal);
-      }},
-      {title: 'Finish Edit', primary: true, onclick() {
-        if (save()) {
-          if (finish) modal.addEventListener('hidden.bs.modal', finish, {once: true});
+      {
+        title: 'Apply Edit',
+        primary: true,
+        onclick() {
+          if (save()) hideBootstrapModal(modal);
+        }
+      },
+      {
+        title: 'Finish Edit',
+        primary: true,
+        onclick() {
+          if (save()) {
+            if (finish) modal.addEventListener('hidden.bs.modal', finish, { once: true });
+            hideBootstrapModal(modal);
+          }
+        }
+      },
+      {
+        title: i18n('cancel'),
+        onclick() {
           hideBootstrapModal(modal);
         }
-      }},
-      {title: i18n('cancel'), onclick() { hideBootstrapModal(modal); }}
+      }
     ],
     onShown: focus
   });
@@ -209,7 +239,8 @@ function Entry(data, initial = false) {
     id: data.id,
     node: block,
     update() {
-      time.textContent = String(data.hour).padStart(2, '0') + ':' + String(data.min).padStart(2, '0');
+      time.textContent =
+        String(data.hour).padStart(2, '0') + ':' + String(data.min).padStart(2, '0');
       block.classList.toggle('day', data.hour >= 6 && data.hour < 18);
       block.classList.toggle('night', data.hour < 6 || data.hour >= 18);
       message.textContent = data.text || '-';
@@ -248,10 +279,11 @@ function Entry(data, initial = false) {
     toggleEdit() {
       editing = !editing;
       block.classList.toggle('edit', editing);
-      if (editing) LegacyBackground.createNoti({
-        title: 'Click on the part you wish to edit.',
-        message: 'When done, click the checkmark to finish.'
-      });
+      if (editing)
+        LegacyBackground.createNoti({
+          title: 'Click on the part you wish to edit.',
+          message: 'When done, click the checkmark to finish.'
+        });
     }
   };
   commands.update();
@@ -266,36 +298,46 @@ function Entry(data, initial = false) {
 
   time.addEventListener('click', () => {
     if (!editing) return;
-    const {content, group} = editContent(byId('h'));
+    const { content, group } = editContent(byId('h'));
     const inputs = selectAll('input', group);
     inputs[0].value = data.hour;
     inputs[1].value = data.min;
     bindTimeInputs(inputs, false);
     inputs[0].dispatchEvent(new Event('blur'));
     inputs[1].dispatchEvent(new Event('blur'));
-    openEditModal(content, () => {
-      if (!inputs[0].value || !inputs[1].value) return false;
-      data.set({hour: Number(inputs[0].value), min: Number(inputs[1].value)});
-      commands.update();
-      return true;
-    }, () => inputs[0].focus(), () => commands.toggleEdit());
+    openEditModal(
+      content,
+      () => {
+        if (!inputs[0].value || !inputs[1].value) return false;
+        data.set({ hour: Number(inputs[0].value), min: Number(inputs[1].value) });
+        commands.update();
+        return true;
+      },
+      () => inputs[0].focus(),
+      () => commands.toggleEdit()
+    );
   });
 
   message.addEventListener('click', () => {
     if (!editing) return;
-    const {content, group} = editContent(byId('message'));
+    const { content, group } = editContent(byId('message'));
     const input = group.querySelector('input');
     input.value = data.text || '';
-    openEditModal(content, () => {
-      data.set('text', input.value);
-      commands.update();
-      return true;
-    }, () => input.focus(), () => commands.toggleEdit());
+    openEditModal(
+      content,
+      () => {
+        data.set('text', input.value);
+        commands.update();
+        return true;
+      },
+      () => input.focus(),
+      () => commands.toggleEdit()
+    );
   });
 
   weekdays.addEventListener('click', () => {
     if (!editing) return;
-    const {content, group, label} = editContent(byId('weekdays'));
+    const { content, group, label } = editContent(byId('weekdays'));
     const dayGroup = group.querySelector('.btn-group');
     bindWeekdays(dayGroup);
     const inputs = selectAll('input', dayGroup);
@@ -305,12 +347,17 @@ function Entry(data, initial = false) {
     });
     const daily = label.querySelector('button');
     if (daily) daily.addEventListener('click', () => selectEveryDay(dayGroup));
-    openEditModal(content, () => {
-      const days = inputs.flatMap((input, index) => input.checked ? [index] : []);
-      data.set({day: days, type: days.length ? 's' : 'o'});
-      commands.update();
-      return true;
-    }, () => inputs[0].focus(), () => commands.toggleEdit());
+    openEditModal(
+      content,
+      () => {
+        const days = inputs.flatMap((input, index) => (input.checked ? [index] : []));
+        data.set({ day: days, type: days.length ? 's' : 'o' });
+        commands.update();
+        return true;
+      },
+      () => inputs[0].focus(),
+      () => commands.toggleEdit()
+    );
   });
 
   return commands;
@@ -318,22 +365,23 @@ function Entry(data, initial = false) {
 
 function setupAlarmPage() {
   i18n.translate();
-  selectAll('gly').forEach(element => {
+  selectAll('gly').forEach((element) => {
     const replacement = glyph(element.getAttribute('icon'));
     replacement.className += ' ' + element.className;
     element.replaceWith(replacement);
   });
-  selectAll('[data-bs-toggle="tooltip"]').forEach(element => {
+  selectAll('[data-bs-toggle="tooltip"]').forEach((element) => {
     initBootstrapTooltip(element, {
       placement: element.getAttribute('data-bs-placement') || 'auto',
-      delay: {show: 500, hide: 0}, container: 'body'
+      delay: { show: 500, hide: 0 },
+      container: 'body'
     });
   });
-  document.addEventListener('contextmenu', event => {
+  document.addEventListener('contextmenu', (event) => {
     if (!event.target.matches('input[type="text"]')) event.preventDefault();
   });
 
-  byId('add').addEventListener('click', function() {
+  byId('add').addEventListener('click', function () {
     const configure = byId('configure');
     const opening = configure.classList.contains('collapsed');
     this.replaceChildren(glyph(opening ? 'minus' : 'plus'));
@@ -341,8 +389,8 @@ function setupAlarmPage() {
     if (opening) byId('h').focus();
   });
   bindTimeInputs([byId('h'), byId('m')], true);
-  selectAll('.input-time > input, #message').forEach(input => {
-    input.addEventListener('keydown', event => {
+  selectAll('.input-time > input, #message').forEach((input) => {
+    input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' && !byId('set').disabled) {
         byId('set').click();
         input.blur();
@@ -352,34 +400,57 @@ function setupAlarmPage() {
   bindWeekdays(byId('weekdays'));
   byId('daily').addEventListener('click', () => selectEveryDay(byId('weekdays')));
   byId('set').addEventListener('click', () => {
-    const days = selectAll('#weekdays input').flatMap((input, index) => input.checked ? [index] : []);
+    const days = selectAll('#weekdays input').flatMap((input, index) =>
+      input.checked ? [index] : []
+    );
     const alarm = AlarmClock.create(Number(byId('h').value), Number(byId('m').value), {
-      type: days.length ? 's' : 'o', day: days, text: byId('message').value, off: false
+      type: days.length ? 's' : 'o',
+      day: days,
+      text: byId('message').value,
+      off: false
     });
     alarmList.push(new Entry(alarm));
     refreshCount();
     byId('add').click();
-    byId('configure').querySelectorAll('input').forEach(input => input.blur());
+    byId('configure')
+      .querySelectorAll('input')
+      .forEach((input) => input.blur());
   });
-  byId('removeAll').addEventListener('click', function() {
+  byId('removeAll').addEventListener('click', function () {
     this.blur();
     const title = document.createElement('span');
     title.append(glyph('info-sign'), ' Are you sure?');
     const modal = createModal({
-      title, content: 'This cannot be reverted.', closeBtn: false, backdrop: 'static', size: 'sm',
+      title,
+      content: 'This cannot be reverted.',
+      closeBtn: false,
+      backdrop: 'static',
+      size: 'sm',
       buttons: [
-        {title: i18n('cancel'), primary: true, onclick() { hideBootstrapModal(modal); }},
-        {title: i18n('OK'), onclick() {
-          alarmList.slice().forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
-          hideBootstrapModal(modal);
-        }}
+        {
+          title: i18n('cancel'),
+          primary: true,
+          onclick() {
+            hideBootstrapModal(modal);
+          }
+        },
+        {
+          title: i18n('OK'),
+          onclick() {
+            alarmList
+              .slice()
+              .forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
+            hideBootstrapModal(modal);
+          }
+        }
       ]
     });
   });
   window.addEventListener('beforeunload', () =>
-    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window));
+    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window)
+  );
 
-  AlarmClock.getAll().forEach(alarm => alarmList.push(new Entry(alarm, true)));
+  AlarmClock.getAll().forEach((alarm) => alarmList.push(new Entry(alarm, true)));
   refreshCount();
   if (!alarmList.length || location.hash === '#set') {
     if (location.hash === '#set') history.replaceState(null, '', location.pathname);

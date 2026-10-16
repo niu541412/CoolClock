@@ -2,7 +2,11 @@
 var ext = globalThis.browser || globalThis.chrome;
 let audio;
 function stopAudio() {
-  if (audio) { audio.pause(); audio.currentTime = 0; audio = null; }
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio = null;
+  }
 }
 async function playAudio(url, repeat = false) {
   stopAudio();
@@ -31,7 +35,10 @@ function renderHourlyImage(message) {
 ext.runtime.onMessage.addListener((message, _sender, respond) => {
   if (message.target !== 'offscreen') return;
   if (message.type === 'play') {
-    playAudio(message.url, message.repeat).then(() => respond(true), () => respond(false));
+    playAudio(message.url, message.repeat).then(
+      () => respond(true),
+      () => respond(false)
+    );
     return true;
   } else if (message.type === 'stop') {
     stopAudio();

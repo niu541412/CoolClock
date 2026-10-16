@@ -3,9 +3,9 @@ let currentMonth = [new Date().getFullYear(), new Date().getMonth()];
 let calendarAnimations = [];
 let slideToken = 0;
 let focusTimers = [];
-const byId = id => document.getElementById(id);
+const byId = (id) => document.getElementById(id);
 const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-const pad = number => String(number).padStart(2, '0');
+const pad = (number) => String(number).padStart(2, '0');
 
 function make(tag, className, text) {
   const node = document.createElement(tag);
@@ -20,16 +20,20 @@ function readTodos() {
 
 function writeTodos(value) {
   clockState.todos = value;
-  sendLegacy('replace-todos', {todos: value});
+  sendLegacy('replace-todos', { todos: value });
 }
 
 function formattedDate(key) {
-  const parts = {Year: key.slice(0, 4), Month: key.slice(4, 6), Date: key.slice(6, 8)};
+  const parts = { Year: key.slice(0, 4), Month: key.slice(4, 6), Date: key.slice(6, 8) };
   let order;
-  try { order = JSON.parse(calendarPrefs.dateorder || '{}'); }
-  catch { order = {}; }
+  try {
+    order = JSON.parse(calendarPrefs.dateorder || '{}');
+  } catch {
+    order = {};
+  }
   return [order['1'] || 'Date', order['2'] || 'Month', order['3'] || 'Year']
-    .map(part => parts[part]).join('-');
+    .map((part) => parts[part])
+    .join('-');
 }
 
 function isoDate(key) {
@@ -44,7 +48,10 @@ function dialogButton(label, onclick) {
 }
 
 function openDialog(source, options = {}) {
-  const settings = Object.assign({title: source.title || '', width: 500, buttons: [], onClose() {}}, options);
+  const settings = Object.assign(
+    { title: source.title || '', width: 500, buttons: [], onClose() {} },
+    options
+  );
   const parent = source.parentNode;
   const next = source.nextSibling;
   const dialog = document.createElement('dialog');
@@ -75,15 +82,16 @@ function openDialog(source, options = {}) {
     settings.onClose();
   }
   closeButton.addEventListener('click', close);
-  dialog.addEventListener('cancel', event => event.preventDefault());
+  dialog.addEventListener('cancel', (event) => event.preventDefault());
   dialog.showModal();
-  return {dialog, close};
+  return { dialog, close };
 }
 
 function openMessage(text, title = '') {
   const content = make('div', '', text);
   return openDialog(content, {
-    title, buttons: [{text: i18n('OK'), click: close => close()}]
+    title,
+    buttons: [{ text: i18n('OK'), click: (close) => close() }]
   });
 }
 
@@ -121,8 +129,11 @@ function makeDayCell(date, month, editable) {
   cell.append(make('div', 'digit', date.getDate()), make('div', 'todoArea'));
   if (editable) {
     const today = new Date();
-    if (date.getFullYear() === today.getFullYear() &&
-        date.getMonth() === today.getMonth() && date.getDate() === today.getDate()) {
+    if (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    ) {
       cell.classList.add('today');
     }
     cell.addEventListener('click', () => createTodo(key));
@@ -132,7 +143,9 @@ function makeDayCell(date, month, editable) {
     try {
       const label = LegacyBackground.Functions.time().getCalendar('lunar', date);
       lunar.textContent = label.slice(-2);
-    } catch (error) { console.warn('Lunar date:', error); }
+    } catch (error) {
+      console.warn('Lunar date:', error);
+    }
     cell.append(lunar);
   }
   return cell;
@@ -156,10 +169,10 @@ function createCalendar() {
 
 function finishCalendarSlide() {
   slideToken++;
-  calendarAnimations.forEach(animation => animation.cancel());
+  calendarAnimations.forEach((animation) => animation.cancel());
   calendarAnimations = [];
   const contents = selectAll('#wrapper > .content');
-  contents.slice(0, -1).forEach(content => content.remove());
+  contents.slice(0, -1).forEach((content) => content.remove());
   if (contents.length) {
     contents.at(-1).style.position = '';
     contents.at(-1).style.inset = '';
@@ -184,12 +197,16 @@ function moveMonth(direction) {
       content.style.inset = '0';
     }
     calendarAnimations = [
-      old.animate([{transform: 'translateY(0px)'}, {transform: 'translateY(' + (-from) + 'px)'}],
-        {duration: 300, easing: 'ease', fill: 'forwards'}),
-      next.animate([{transform: 'translateY(' + from + 'px)'}, {transform: 'translateY(0px)'}],
-        {duration: 300, easing: 'ease', fill: 'forwards'})
+      old.animate(
+        [{ transform: 'translateY(0px)' }, { transform: 'translateY(' + -from + 'px)' }],
+        { duration: 300, easing: 'ease', fill: 'forwards' }
+      ),
+      next.animate(
+        [{ transform: 'translateY(' + from + 'px)' }, { transform: 'translateY(0px)' }],
+        { duration: 300, easing: 'ease', fill: 'forwards' }
+      )
     ];
-    Promise.allSettled(calendarAnimations.map(animation => animation.finished)).then(() => {
+    Promise.allSettled(calendarAnimations.map((animation) => animation.finished)).then(() => {
       if (token === slideToken && next.isConnected) {
         old.remove();
         next.style.position = '';
@@ -211,8 +228,8 @@ function saveTodo(date, text, addition = {}) {
   if (!date || !text?.trim()) return false;
   const key = date.replaceAll('-', '');
   const todos = readTodos();
-  const entries = todos[key] ||= [];
-  entries.push({text: text.trim(), id: Date.now() + Math.random(), ...addition});
+  const entries = (todos[key] ||= []);
+  entries.push({ text: text.trim(), id: Date.now() + Math.random(), ...addition });
   writeTodos(todos);
   return true;
 }
@@ -221,7 +238,7 @@ function deleteTodo(date, id) {
   const key = date.replaceAll('-', '');
   const todos = readTodos();
   if (!todos[key]) return;
-  todos[key] = todos[key].filter(entry => String(entry.id) !== String(id));
+  todos[key] = todos[key].filter((entry) => String(entry.id) !== String(id));
   if (!todos[key].length) delete todos[key];
   writeTodos(todos);
 }
@@ -245,23 +262,35 @@ function openEntry(date, entry) {
   const view = openDialog(content, {
     title: date,
     buttons: [
-      {text: 'View', click: close => { close(); goToDate(date, true); }},
-      {text: 'Delete', click: () => {
-        const confirm = make('div', '', 'Todo will be deleted permanently.');
-        openDialog(confirm, {
-          title: 'Confirm delete?',
-          buttons: [
-            {text: i18n('OK'), click: close => {
-              deleteTodo(date, entry.id);
-              close();
-              view.close();
-              updateContent();
-            }},
-            {text: i18n('cancel'), click: close => close()}
-          ]
-        });
-      }},
-      {text: i18n('OK'), click: close => close()}
+      {
+        text: 'View',
+        click: (close) => {
+          close();
+          goToDate(date, true);
+        }
+      },
+      {
+        text: 'Delete',
+        click: () => {
+          const confirm = make('div', '', 'Todo will be deleted permanently.');
+          openDialog(confirm, {
+            title: 'Confirm delete?',
+            buttons: [
+              {
+                text: i18n('OK'),
+                click: (close) => {
+                  deleteTodo(date, entry.id);
+                  close();
+                  view.close();
+                  updateContent();
+                }
+              },
+              { text: i18n('cancel'), click: (close) => close() }
+            ]
+          });
+        }
+      },
+      { text: i18n('OK'), click: (close) => close() }
     ]
   });
 }
@@ -269,14 +298,14 @@ function openEntry(date, entry) {
 function renderTodos() {
   const sidebar = byId('todo');
   sidebar.replaceChildren();
-  selectAll('#wrapper .todoArea').forEach(area => area.replaceChildren());
+  selectAll('#wrapper .todoArea').forEach((area) => area.replaceChildren());
   const todos = readTodos();
   const dates = Object.keys(todos).sort();
   if (!dates.length) {
     sidebar.textContent = 'No event.';
     return;
   }
-  const cells = new Map(selectAll('#wrapper .grid').map(cell => [cell.dataset.id, cell]));
+  const cells = new Map(selectAll('#wrapper .grid').map((cell) => [cell.dataset.id, cell]));
   for (const key of dates) {
     const group = make('div');
     group.append(make('div', 'legend', formattedDate(key)));
@@ -298,14 +327,17 @@ function createTodo(key) {
   const dialog = openDialog(content, {
     title: content.title,
     buttons: [
-      {text: 'Save', click: close => {
-        if (saveTodo(byId('create_date').value, text.value)) {
-          text.value = '';
-          close();
-          updateContent();
+      {
+        text: 'Save',
+        click: (close) => {
+          if (saveTodo(byId('create_date').value, text.value)) {
+            text.value = '';
+            close();
+            updateContent();
+          }
         }
-      }},
-      {text: i18n('cancel'), click: close => close()}
+      },
+      { text: i18n('cancel'), click: (close) => close() }
     ]
   });
   text.focus();
@@ -315,8 +347,17 @@ function createTodo(key) {
 function openCalendarOptions() {
   const content = byId('options');
   openDialog(content, {
-    title: i18n('settings'), width: 600,
-    buttons: [{text: 'Done', click: close => { close(); updateContent(); }}]
+    title: i18n('settings'),
+    width: 600,
+    buttons: [
+      {
+        text: 'Done',
+        click: (close) => {
+          close();
+          updateContent();
+        }
+      }
+    ]
   });
 }
 
@@ -327,13 +368,24 @@ function openDateChooser() {
   openDialog(content, {
     title: content.title,
     buttons: [
-      {text: 'Today', click: close => {
-        const today = new Date();
-        close();
-        goToDate(today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate()));
-      }},
-      {text: i18n('OK'), click: close => { close(); goToDate(input.value, true); }},
-      {text: i18n('cancel'), click: close => close()}
+      {
+        text: 'Today',
+        click: (close) => {
+          const today = new Date();
+          close();
+          goToDate(
+            today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate())
+          );
+        }
+      },
+      {
+        text: i18n('OK'),
+        click: (close) => {
+          close();
+          goToDate(input.value, true);
+        }
+      },
+      { text: i18n('cancel'), click: (close) => close() }
     ]
   });
 }
@@ -345,7 +397,8 @@ function goToDate(value, focus = false) {
   const month = Number(match[2]) - 1;
   const day = Number(match[3]);
   const date = new Date(year, month, day);
-  if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return false;
+  if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day)
+    return false;
   if (year !== currentMonth[0] || month !== currentMonth[1]) {
     currentMonth = [year, month];
     updateContent();
@@ -354,7 +407,7 @@ function goToDate(value, focus = false) {
     focusTimers.forEach(clearTimeout);
     focusTimers = [];
     const key = match[1] + match[2] + match[3];
-    const target = selectAll('#wrapper .grid').find(cell => cell.dataset.id === key);
+    const target = selectAll('#wrapper .grid').find((cell) => cell.dataset.id === key);
     if (target) {
       for (let index = 0; index < 3; index++) {
         focusTimers.push(setTimeout(() => target.classList.add('focus'), index * 1000 + 250));
@@ -380,9 +433,11 @@ function parseCalendar(text, source) {
     const start = fields.DTSTART?.match(/^(\d{4})(\d{2})(\d{2})/);
     if (!start || !fields.SUMMARY) continue;
     const key = start[1] + start[2] + start[3];
-    const summary = fields.SUMMARY.replace(/\\[nN]/g, ' ').replace(/\\([,;\\])/g, '$1').trim();
+    const summary = fields.SUMMARY.replace(/\\[nN]/g, ' ')
+      .replace(/\\([,;\\])/g, '$1')
+      .trim();
     if (!summary) continue;
-    events.push({date: key, text: summary.slice(0, 500), source});
+    events.push({ date: key, text: summary.slice(0, 500), source });
   }
   return events;
 }
@@ -390,17 +445,21 @@ function parseCalendar(text, source) {
 async function importCalendar(text, source) {
   const entries = parseCalendar(text, source);
   if (!entries.length) throw Error('No calendar events found in this iCal file.');
-  const response = await calendarApi.runtime.sendMessage({target: 'worker', type: 'get'});
+  const response = await calendarApi.runtime.sendMessage({ target: 'worker', type: 'get' });
   if (!response?.ok) throw Error(response?.error || 'Unable to load calendar');
   const todos = response.data.todos;
   let added = 0;
   for (const entry of entries) {
-    const list = todos[entry.date] ||= [];
-    if (list.some(item => item.text === entry.text && item.importFrom === source)) continue;
-    list.push({text: entry.text, id: Date.now() + added, importFrom: source});
+    const list = (todos[entry.date] ||= []);
+    if (list.some((item) => item.text === entry.text && item.importFrom === source)) continue;
+    list.push({ text: entry.text, id: Date.now() + added, importFrom: source });
     added++;
   }
-  const saved = await calendarApi.runtime.sendMessage({target: 'worker', type: 'replace-todos', todos});
+  const saved = await calendarApi.runtime.sendMessage({
+    target: 'worker',
+    type: 'replace-todos',
+    todos
+  });
   if (!saved?.ok) throw Error(saved?.error || 'Unable to save calendar');
   alert(`Imported ${added} calendar events.`);
   location.reload();
@@ -413,15 +472,28 @@ function setupCalendarImport() {
     let url;
     if (value.startsWith('https://')) {
       url = new URL(value);
-      if (url.hostname !== 'calendar.google.com' || !url.pathname.endsWith('.ics')) { alert('Use a Google Calendar iCal URL.'); return; }
+      if (url.hostname !== 'calendar.google.com' || !url.pathname.endsWith('.ics')) {
+        alert('Use a Google Calendar iCal URL.');
+        return;
+      }
     } else if (/^[^\s@]+@[^\s@]+$/.test(value)) {
-      url = new URL(`https://calendar.google.com/calendar/ical/${encodeURIComponent(value)}/public/basic.ics`);
-    } else { alert('Enter a public calendar email address or iCal URL.'); return; }
+      url = new URL(
+        `https://calendar.google.com/calendar/ical/${encodeURIComponent(value)}/public/basic.ics`
+      );
+    } else {
+      alert('Enter a public calendar email address or iCal URL.');
+      return;
+    }
     try {
       const response = await fetch(url);
-      if (!response.ok) throw Error(`Unable to fetch public calendar (${response.status}). Check that it is public.`);
+      if (!response.ok)
+        throw Error(
+          `Unable to fetch public calendar (${response.status}). Check that it is public.`
+        );
       await importCalendar(await response.text(), value);
-    } catch (error) { alert(error.message); }
+    } catch (error) {
+      alert(error.message);
+    }
   });
 
   document.getElementById('importPrivateCalendar').addEventListener('click', () => {
@@ -431,8 +503,11 @@ function setupCalendarImport() {
     picker.onchange = async () => {
       const file = picker.files?.[0];
       if (!file) return;
-      try { await importCalendar(await file.text(), file.name); }
-      catch (error) { alert(error.message); }
+      try {
+        await importCalendar(await file.text(), file.name);
+      } catch (error) {
+        alert(error.message);
+      }
     };
     picker.click();
   });
@@ -442,7 +517,7 @@ function setupCalendar() {
   i18n.translate();
   setupCalendarImport();
   createCalendarHeader();
-  byId('menu').style.maxWidth = byId('container').clientWidth * .33 + 'px';
+  byId('menu').style.maxWidth = byId('container').clientWidth * 0.33 + 'px';
   byId('wrapper').append(createCalendar());
   renderTodos();
   byId('addTodo').addEventListener('click', () => {
@@ -454,8 +529,15 @@ function setupCalendar() {
     openDialog(content, {
       title: 'Confirm',
       buttons: [
-        {text: 'Continue', click: close => { writeTodos({}); close(); updateContent(); }},
-        {text: i18n('cancel'), click: close => close()}
+        {
+          text: 'Continue',
+          click: (close) => {
+            writeTodos({});
+            close();
+            updateContent();
+          }
+        },
+        { text: i18n('cancel'), click: (close) => close() }
       ]
     });
   });
@@ -464,10 +546,13 @@ function setupCalendar() {
   lunar.addEventListener('change', async () => {
     calendarPrefs.lunar = String(lunar.checked);
     const key = 'coolClockLegacy:lunar';
-    await legacyApi.storage.local.set({[key]: calendarPrefs.lunar});
+    await legacyApi.storage.local.set({ [key]: calendarPrefs.lunar });
     if (clockState.settings.syncEnabled !== false) {
-      try { await legacyApi.storage.sync.set({[key]: calendarPrefs.lunar}); }
-      catch (error) { console.warn('Cool Clock: option sync unavailable', error); }
+      try {
+        await legacyApi.storage.sync.set({ [key]: calendarPrefs.lunar });
+      } catch (error) {
+        console.warn('Cool Clock: option sync unavailable', error);
+      }
     }
   });
   if (location.hash === '#viewall') byId('menu').classList.toggle('expanded');

@@ -1,7 +1,7 @@
 /* Countdown page controller. Loaded after mv3/legacy_bridge.js receives timer data. */
 const CountdownTimer = LegacyBackground.Components.getSingleton('CountdownTimer');
 const timerList = [];
-const byId = id => document.getElementById(id);
+const byId = (id) => document.getElementById(id);
 const selectAll = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
 function glyph(name) {
@@ -9,10 +9,19 @@ function glyph(name) {
 }
 
 function countdownModal(options = {}) {
-  const settings = Object.assign({
-    title: '', content: '', backdrop: true, size: 'lg', buttons: [],
-    closeBtn: true, closeBtnText: i18n('close'), onClose() {}
-  }, options);
+  const settings = Object.assign(
+    {
+      title: '',
+      content: '',
+      backdrop: true,
+      size: 'lg',
+      buttons: [],
+      closeBtn: true,
+      closeBtnText: i18n('close'),
+      onClose() {}
+    },
+    options
+  );
   const modal = document.createElement('div');
   modal.className = 'modal fade';
   modal.setAttribute('role', 'dialog');
@@ -53,10 +62,14 @@ function countdownModal(options = {}) {
   content.append(header, body, footer);
   dialog.append(content);
   modal.append(dialog);
-  modal.addEventListener('hidden.bs.modal', () => {
-    modal.remove();
-    settings.onClose();
-  }, {once: true});
+  modal.addEventListener(
+    'hidden.bs.modal',
+    () => {
+      modal.remove();
+      settings.onClose();
+    },
+    { once: true }
+  );
   document.body.append(modal);
   showBootstrapModal(modal);
   return modal;
@@ -64,10 +77,13 @@ function countdownModal(options = {}) {
 
 function formatTime(seconds) {
   const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor(seconds % 3600 / 60);
+  const minutes = Math.floor((seconds % 3600) / 60);
   const remainder = seconds % 60;
-  return (hours ? hours + ':' + String(minutes).padStart(2, '0') : minutes) +
-    ':' + String(remainder).padStart(2, '0');
+  return (
+    (hours ? hours + ':' + String(minutes).padStart(2, '0') : minutes) +
+    ':' +
+    String(remainder).padStart(2, '0')
+  );
 }
 
 function updateCount() {
@@ -134,9 +150,9 @@ function Entry(data, initial = false) {
       if (refreshing) return;
       refreshing = true;
       try {
-        const response = await legacyApi.runtime.sendMessage({target: 'worker', type: 'get'});
+        const response = await legacyApi.runtime.sendMessage({ target: 'worker', type: 'get' });
         if (!response?.ok) return;
-        const current = response.data.countdowns.find(timer => timer.id === data.id);
+        const current = response.data.countdowns.find((timer) => timer.id === data.id);
         if (current) Object.assign(data, current);
         else this.remove(true);
       } catch (error) {
@@ -153,8 +169,10 @@ function Entry(data, initial = false) {
       }
       if (remainingMs <= 0 && data.repeat) this.refreshExpired();
       bar.className = 'progress-bar progress-bar-' + data.color;
-      bar.style.width = Math.max(0, Math.min(100, (data.end - Date.now()) / data.duration * 100)) + '%';
-      remaining.textContent = 'Remaining Time: ' + formatTime(Math.max(0, Math.ceil(remainingMs / 1000)));
+      bar.style.width =
+        Math.max(0, Math.min(100, ((data.end - Date.now()) / data.duration) * 100)) + '%';
+      remaining.textContent =
+        'Remaining Time: ' + formatTime(Math.max(0, Math.ceil(remainingMs / 1000)));
       message.textContent = data.message || '-';
       repeatButton.classList.toggle('active', !!data.repeat);
     }
@@ -170,12 +188,12 @@ function Entry(data, initial = false) {
 
 function setupCountdownPage() {
   i18n.translate();
-  selectAll('gly').forEach(element => {
+  selectAll('gly').forEach((element) => {
     const replacement = glyph(element.getAttribute('icon'));
     replacement.className += ' ' + element.className;
     element.replaceWith(replacement);
   });
-  byId('add').addEventListener('click', function() {
+  byId('add').addEventListener('click', function () {
     const panel = byId('addpanel');
     panel.classList.add('animate');
     if (panel.classList.contains('shrink')) {
@@ -193,7 +211,8 @@ function setupCountdownPage() {
   });
   const timeInputs = [byId('h'), byId('m'), byId('s')];
   const refreshSet = () => {
-    byId('set').disabled = timeInputs.reduce((sum, input) => sum + Number(input.value || 0), 0) === 0;
+    byId('set').disabled =
+      timeInputs.reduce((sum, input) => sum + Number(input.value || 0), 0) === 0;
   };
   timeInputs.forEach((input, index) => {
     input.addEventListener('blur', () => {
@@ -207,35 +226,44 @@ function setupCountdownPage() {
       }
       refreshSet();
     });
-    input.addEventListener('keydown', event => {
+    input.addEventListener('keydown', (event) => {
       if (event.key === 'Backspace' && !input.value && timeInputs[index - 1]) {
         timeInputs[index - 1].select();
         event.preventDefault();
       }
     });
   });
-  [...timeInputs, byId('message')].forEach(input => input.addEventListener('keydown', event => {
-    if (event.key === 'Enter' && !byId('set').disabled) {
-      byId('set').click();
-      input.blur();
-    }
-  }));
+  [...timeInputs, byId('message')].forEach((input) =>
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !byId('set').disabled) {
+        byId('set').click();
+        input.blur();
+      }
+    })
+  );
 
-  selectAll('.input-color button').forEach(button => button.addEventListener('click', function() {
-    selectAll('.input-color button').forEach(item => item.classList.toggle('active', item === this));
-  }));
-  byId('repeat').addEventListener('click', function() {
+  selectAll('.input-color button').forEach((button) =>
+    button.addEventListener('click', function () {
+      selectAll('.input-color button').forEach((item) =>
+        item.classList.toggle('active', item === this)
+      );
+    })
+  );
+  byId('repeat').addEventListener('click', function () {
     this.classList.toggle('active');
     this.dataset.value = String(this.classList.contains('active'));
   });
   byId('set').addEventListener('click', () => {
-    const duration = Number(byId('h').value || 0) * 3600 +
-      Number(byId('m').value || 0) * 60 + Number(byId('s').value || 0);
+    const duration =
+      Number(byId('h').value || 0) * 3600 +
+      Number(byId('m').value || 0) * 60 +
+      Number(byId('s').value || 0);
     if (!Number.isInteger(duration) || duration < 1) return;
     const color = document.querySelector('.input-color button.active')?.value || 'primary';
     const data = CountdownTimer.create(Date.now() + duration * 1000, {
       message: byId('message').value,
-      color, repeat: byId('repeat').classList.contains('active')
+      color,
+      repeat: byId('repeat').classList.contains('active')
     });
     byId('add').replaceChildren(glyph('plus'));
     const panel = byId('addpanel');
@@ -247,33 +275,49 @@ function setupCountdownPage() {
       updateCount();
     }, 300);
   });
-  byId('removeAll').addEventListener('click', function() {
+  byId('removeAll').addEventListener('click', function () {
     this.blur();
     const title = document.createElement('span');
     title.append(glyph('info-sign'), ' Are you sure?');
     const modal = countdownModal({
-      title, content: 'This cannot be reverted.', closeBtn: false, backdrop: 'static', size: 'sm',
+      title,
+      content: 'This cannot be reverted.',
+      closeBtn: false,
+      backdrop: 'static',
+      size: 'sm',
       buttons: [
-        {title: i18n('cancel'), primary: true, onclick() { hideBootstrapModal(modal); }},
-        {title: i18n('OK'), onclick() {
-          timerList.slice().forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
-          hideBootstrapModal(modal);
-        }}
+        {
+          title: i18n('cancel'),
+          primary: true,
+          onclick() {
+            hideBootstrapModal(modal);
+          }
+        },
+        {
+          title: i18n('OK'),
+          onclick() {
+            timerList
+              .slice()
+              .forEach((entry, index) => setTimeout(() => entry.remove(), index * 100));
+            hideBootstrapModal(modal);
+          }
+        }
       ]
     });
   });
-  document.addEventListener('contextmenu', event => {
+  document.addEventListener('contextmenu', (event) => {
     if (event.target.id !== 'message') event.preventDefault();
   });
-  document.addEventListener('keydown', event => {
+  document.addEventListener('keydown', (event) => {
     if (event.key === 'F5') event.preventDefault();
   });
   window.addEventListener('beforeunload', () =>
-    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window));
+    LegacyBackground.Components.getSingleton('WindowManager').registerOnClose(window)
+  );
 
   restoreLegacyCountdownPreset();
   refreshSet();
-  CountdownTimer.getAll().forEach(data => timerList.push(new Entry(data, true)));
+  CountdownTimer.getAll().forEach((data) => timerList.push(new Entry(data, true)));
   updateCount();
   if (!timerList.length) setTimeout(() => byId('add').click(), 200);
   if (i18n.lang() === 'en') {
@@ -287,10 +331,12 @@ function setupCountdownPage() {
     document.querySelector('h1').append(plural);
   }
   initBootstrapTooltip(selectAll('[data-bs-toggle="tooltip"]'), {
-    placement: 'auto', delay: {show: 500, hide: 0}, container: 'body'
+    placement: 'auto',
+    delay: { show: 500, hide: 0 },
+    container: 'body'
   });
   setInterval(() => {
-    timerList.slice().forEach(entry => entry.update());
+    timerList.slice().forEach((entry) => entry.update());
     updateCount();
   }, 300);
 }
